@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "language": "zh",
+    "title": "大阪 + 京都 5天4夜 吃货之旅（示例）",
+    "destination_country": "JP",
+    "destination_name": "日本",
+    "cities": ["大阪", "京都"],
+    "start_date": "2027-03-10",
+    "end_date": "2027-03-14",
+    "travelers": {"adults": 2, "children": 0, "seniors": 0},
+    "home_state": "雪兰莪 Selangor (SGR)",
+    "departure_airport": "KUL (KLIA)",
+    "generated_on": "2026-11-16",
+    "preferences": {
+      "ranking": ["food", "attraction", "shopping"],
+      "diet": "none",
+      "pace": "normal"
+    }
+  },
+  "fx": {
+    "currency": "JPY",
+    "rate_myr_per_unit": 0.029,
+    "rate_date": "2026-11-16",
+    "source": "示例汇率 (example) — 实际请跑 fx.py"
+  },
+  "holiday_analysis": {
+    "summary": "3/10-3/14 只需请 1 天假（3/12 星期五），但撞到开斋节 + 学校第一学期假期，机票和酒店会偏贵。",
+    "price_impact": "high",
+    "leave_needed": 1,
+    "leave_dates": ["2027-03-12"],
+    "reasons": [
+      "撞到大马学校假期（家庭出游多，机票贵）",
+      "碰上大节日（开斋节）出国高峰",
+      "回教节日日期属预测，需以宪报为准"
+    ],
+    "my_holidays": [
+      {"date": "2027-03-10", "weekday": "星期三", "name": "开斋节"},
+      {"date": "2027-03-11", "weekday": "星期四", "name": "开斋节（第二天）"}
+    ],
+    "school_holidays": [
+      {"start": "2027-03-06", "end": "2027-03-14", "name": "第一学期假期（B 组）"}
+    ],
+    "destination_events": [],
+    "recommendation": "如果只想用最少假期：维持 3/10-3/14（只请 1 天），但要尽早订机票。如果日期能动、想省钱：2/25-3/1（请 3 天，价格压力低）或 4/14-4/18（樱花季刚过，请 3 天）。",
+    "alternatives": [
+      {"start": "2027-02-25", "end": "2027-03-01", "leave_needed": 3, "price_impact": "low", "note": "淡季，机票酒店便宜；天气还冷（约 3-10°C）"},
+      {"start": "2027-04-14", "end": "2027-04-18", "leave_needed": 3, "price_impact": "low", "note": "樱花季刚结束，人少一些；可能还看到晚樱"},
+      {"start": "2027-02-20", "end": "2027-02-24", "leave_needed": 2, "price_impact": "low", "note": "2/24 可兰经降世日（雪州假期），只需请 2 天"}
+    ]
+  },
+  "flights_note": "票价为估算（2026-11 查询经验值），不是实时报价。下单前请在各航司官网 / Google Flights 确认。",
+  "flights": [
+    {"airline": "AirAsia X (D7)", "type": "LCC", "route": "KUL ⇄ KIX 直飞", "schedule": "去 23:55→07:30(+1) / 回 13:30→20:00", "duration": "约 6.5 小时", "fare_myr": 1100, "baggage": "只含 7kg 手提", "addons_myr": 290, "notes": "加 20kg 托运 + 2 餐 + 选位（估算）。红眼航班，第一天会累。", "recommended": true},
+    {"airline": "Malaysia Airlines (MH)", "type": "FSC", "route": "KUL ⇄ KIX 直飞", "schedule": "去 23:30→07:10(+1) / 回 10:45→16:50", "duration": "约 6.5 小时", "fare_myr": 1750, "baggage": "视票种（Basic 以上含托运）", "addons_myr": 0, "notes": "含餐、可累积 Enrich 里程；回程时间更好。"},
+    {"airline": "Batik Air (OD)", "type": "Hybrid", "route": "KUL ⇄ KIX 直飞 (A330)", "schedule": "每周约 3 班，需配合日期", "duration": "约 6.5 小时", "fare_myr": 1400, "baggage": "通常含 20kg（视票种）", "addons_myr": 0, "notes": "2025 年 12 月开航，班次少；日期对得上的话很划算。"},
+    {"airline": "日本航司 JAL / ANA", "type": "FSC", "route": "KUL → 东京 → KIX（转机）", "schedule": "需在成田/羽田转机", "duration": "10 小时以上", "fare_myr": 2300, "baggage": "2 x 23kg", "addons_myr": 0, "notes": "大阪没有日本航司直飞，不推荐这趟行程。"}
+  ],
+  "itinerary": [
+    {"day": 1, "date": "2027-03-10", "city": "大阪", "theme": "抵达 + 难波吃一轮", "items": [
+      {"time": "07:30", "name": "抵达关西机场 KIX，买 ICOCA", "category": "transport", "cost_local": 1000, "notes": "南海电铁到难波约 40 分钟", "open_ok": true},
+      {"time": "09:30", "name": "酒店寄放行李（难波）", "category": "hotel", "notes": "一般 15:00 才能 check-in"},
+      {"time": "10:00", "name": "黑门市场 Kuromon Market", "category": "food", "open_hours": "约 09:00-18:00（各摊不同）", "closed": "部分摊位星期日休息", "open_ok": true, "cost_local": 3000, "notes": "安排在平日，避开星期日"},
+      {"time": "13:00", "name": "心斋桥筋商店街", "category": "shopping", "open_hours": "约 10:00-21:00", "open_ok": true, "notes": "药妆、Uniqlo、GU 都在这一带"},
+      {"time": "16:00", "name": "回酒店 check-in 休息", "category": "hotel", "notes": "红眼航班，下午一定要睡一下"},
+      {"time": "18:30", "name": "道顿堀 Dotonbori", "category": "food", "open_hours": "街区全天开放", "open_ok": true, "cost_local": 3500, "notes": "章鱼烧、大阪烧、固力果看板拍照"}
+    ]},
+    {"day": 2, "date": "2027-03-11", "city": "京都", "theme": "京都经典一日", "items": [
+      {"time": "07:30", "name": "JR 大阪 → 京都", "category": "transport", "cost_local": 580, "notes": "新快速约 30 分钟"},
+      {"time": "08:30", "name": "伏见稻荷大社 Fushimi Inari", "category": "attraction", "open_hours": "24 小时", "open_ok": true, "cost_local": 0, "notes": "早去人少；千本鸟居走到四之辻就够"},
+      {"time": "11:30", "name": "清水寺 Kiyomizu-dera", "category": "attraction", "open_hours": "06:00-18:00（随季节变）", "open_ok": true, "cost_local": 500},
+      {"time": "13:00", "name": "二年坂·三年坂 吃午餐", "category": "food", "open_hours": "店铺约 10:00-17:00", "open_ok": true, "cost_local": 2000},
+      {"time": "15:00", "name": "锦市场 Nishiki Market", "category": "food", "open_hours": "约 10:00-17:00", "closed": "不少店星期三/星期日休", "open_ok": true, "cost_local": 2500, "notes": "今天星期四 OK"},
+      {"time": "17:30", "name": "祇园·花见小路", "category": "attraction", "open_hours": "街区", "open_ok": true, "notes": "不要拍摄或拦截艺伎，部分小巷禁止进入"}
+    ]},
+    {"day": 3, "date": "2027-03-12", "city": "京都 → 大阪", "theme": "岚山 + 梅田夜景", "items": [
+      {"time": "08:00", "name": "岚山竹林 Arashiyama Bamboo Grove", "category": "attraction", "open_hours": "24 小时", "open_ok": true, "cost_local": 0, "notes": "08:00 前到人最少"},
+      {"time": "09:30", "name": "天龙寺 Tenryu-ji", "category": "attraction", "open_hours": "08:30-17:00", "open_ok": true, "cost_local": 500},
+      {"time": "12:00", "name": "岚山午餐（汤豆腐 / 抹茶甜点）", "category": "food", "cost_local": 2500, "open_ok": true},
+      {"time": "15:00", "name": "梅田 LUCUA / HEP FIVE 逛街", "category": "shopping", "open_hours": "约 10:00-21:00", "open_ok": true},
+      {"time": "18:30", "name": "梅田蓝天大厦 空中庭园", "category": "attraction", "open_hours": "09:30-22:30", "open_ok": true, "cost_local": 2000, "notes": "看日落 + 夜景"}
+    ]},
+    {"day": 4, "date": "2027-03-13", "city": "大阪", "theme": "大阪城 + 新世界 + 扫货", "items": [
+      {"time": "09:00", "name": "大阪城天守阁", "category": "attraction", "open_hours": "09:00-17:00", "closed": "12/28-1/1", "open_ok": true, "cost_local": 1200, "notes": "星期六人多，开门就进"},
+      {"time": "12:30", "name": "新世界 吃串炸", "category": "food", "open_hours": "约 11:00-22:30", "open_ok": true, "cost_local": 2500},
+      {"time": "14:30", "name": "Pokémon Center Osaka（大丸梅田）", "category": "shopping", "open_hours": "10:00-20:00", "open_ok": true},
+      {"time": "17:00", "name": "药妆店扫货（松本清 / Sundrug）", "category": "shopping", "open_hours": "约 10:00-22:00", "open_ok": true, "notes": "保留收据 + 护照，离境办退税"},
+      {"time": "19:30", "name": "和牛烧肉晚餐", "category": "food", "cost_local": 8000, "open_ok": "check", "notes": "星期六一定要先订位"},
+      {"time": "21:30", "name": "唐吉诃德 道顿堀店", "category": "shopping", "open_hours": "营业至深夜", "open_ok": true}
+    ]},
+    {"day": 5, "date": "2027-03-14", "city": "大阪 → KUL", "theme": "Outlet + 回国", "items": [
+      {"time": "09:00", "name": "退房，搭南海电铁到临空城", "category": "transport", "cost_local": 1000},
+      {"time": "10:00", "name": "临空城 Rinku Premium Outlets", "category": "shopping", "open_hours": "10:00-20:00", "open_ok": true, "notes": "离机场一站，可寄放行李"},
+      {"time": "11:30", "name": "到 KIX 办理登机 + 退税确认", "category": "transport", "notes": "国际线提前 2 小时"},
+      {"time": "13:30", "name": "航班 KIX → KUL", "category": "flight", "notes": "20:00 抵达 KLIA"}
+    ]}
+  ],
+  "food": [
+    {"name": "章鱼烧", "local_name": "たこ焼き", "where": "道顿堀 Kukuru / Wanaka", "price_local": 700, "halal": "unknown", "in_malaysia": "partial", "worth_it": "must", "notes": "大马也有，但现做的口感完全不同"},
+    {"name": "大阪烧", "local_name": "お好み焼き", "where": "美津の Mizuno（道顿堀）", "price_local": 1600, "halal": "contains-pork", "in_malaysia": "partial", "worth_it": "must", "notes": "经典口味有猪肉，可点海鲜口味；排队约 30-60 分钟"},
+    {"name": "串炸", "local_name": "串カツ", "where": "新世界 だるま Daruma", "price_local": 2500, "halal": "contains-pork", "in_malaysia": "no", "worth_it": "worth", "notes": "酱汁禁止二次沾"},
+    {"name": "和牛烧肉", "local_name": "焼肉", "where": "难波一带烧肉店（先订位）", "price_local": 8000, "halal": "unknown", "in_malaysia": "partial", "worth_it": "worth", "notes": "大马的日本和牛贵很多，在当地吃最划算；大阪也有清真和牛店"},
+    {"name": "抹茶芭菲", "local_name": "抹茶パフェ", "where": "祇园 辻利 Tsujiri", "price_local": 1800, "halal": "no-pork", "in_malaysia": "partial", "worth_it": "worth", "notes": "下午人多，先抽号码牌"},
+    {"name": "豚骨拉面", "local_name": "一蘭", "where": "一兰 道顿堀店", "price_local": 1200, "halal": "contains-pork", "in_malaysia": "no", "worth_it": "maybe", "notes": "大马没有分店，但日本到处都有，不必特地排长队"},
+    {"name": "回转寿司", "local_name": "スシロー", "where": "寿司郎 Sushiro", "price_local": 2000, "halal": "unknown", "in_malaysia": "yes", "worth_it": "maybe", "notes": "大马已有分店（KLCC、1 Utama），日本比较便宜、选择多，但不用专程去"},
+    {"name": "豆皮乌冬", "local_name": "きつねうどん", "where": "うさみ亭マツバヤ（大阪发源店）", "price_local": 900, "halal": "unknown", "in_malaysia": "partial", "worth_it": "worth", "notes": "大阪名物，便宜好吃"}
+  ],
+  "shopping": [
+    {"name": "药妆店（松本清 / Sundrug）", "type": "药妆 / 护肤", "in_malaysia": "no", "price_diff": "比大马便宜很多（估算）", "worth_it": "must", "notes": "退税制度已改（2026-11 起先付税、离境退）。保留收据 + 护照。"},
+    {"name": "Pokémon Center", "type": "动漫周边", "in_malaysia": "no", "price_diff": "大马买不到正版限定", "worth_it": "must", "notes": "粉丝必去，大阪限定款很快卖完"},
+    {"name": "Loft / 东急 Hands", "type": "文具 / 杂货", "in_malaysia": "no", "price_diff": "-", "worth_it": "worth", "notes": "文具控的天堂"},
+    {"name": "唐吉诃德 Don Quijote", "type": "综合百货", "in_malaysia": "partial", "price_diff": "日本店种类多很多", "worth_it": "worth", "notes": "大马 DON DON DONKI 以食品为主；日本店有药妆、电器、零食"},
+    {"name": "Uniqlo", "type": "服装", "in_malaysia": "yes", "price_diff": "日本约便宜 15-30%（估算，看汇率）", "worth_it": "maybe", "notes": "日本限定联名款才值得，基本款大马买就好"},
+    {"name": "临空城 Outlets", "type": "名牌折扣", "in_malaysia": "partial", "price_diff": "部分品牌比 Genting/Mitsui Outlet 便宜", "worth_it": "maybe", "notes": "回程顺路，可寄放行李"},
+    {"name": "Muji 无印良品", "type": "生活杂货", "in_malaysia": "yes", "price_diff": "差价不大", "worth_it": "skip", "notes": "大马买就好"},
+    {"name": "Daiso", "type": "百元店", "in_malaysia": "yes", "price_diff": "日本 ¥110 vs 大马 RM 6.50", "worth_it": "skip", "notes": "除非要日本限定款"}
+  ],
+  "budget": [
+    {"category": "flight", "item": "AirAsia X 来回 + 20kg + 餐", "amount": 1390, "currency": "MYR", "qty": 1, "per": "person", "notes": "估算"},
+    {"category": "hotel", "item": "难波商务酒店 双人房", "amount": 16000, "currency": "local", "qty": 4, "per": "group", "notes": "每晚 ¥16,000（估算，假期会更贵）"},
+    {"category": "transport", "item": "ICOCA 充值 + 京都来回 + 机场线", "amount": 6500, "currency": "local", "qty": 1, "per": "person"},
+    {"category": "attraction", "item": "门票（清水寺、天龙寺、大阪城、空中庭园）", "amount": 4200, "currency": "local", "qty": 1, "per": "person"},
+    {"category": "food", "item": "三餐 + 小吃", "amount": 6000, "currency": "local", "qty": 5, "per": "person", "notes": "每天 ¥6,000；和牛晚餐另计"},
+    {"category": "food", "item": "和牛烧肉晚餐", "amount": 8000, "currency": "local", "qty": 1, "per": "person"},
+    {"category": "other", "item": "eSIM 5 天", "amount": 35, "currency": "MYR", "qty": 1, "per": "person"},
+    {"category": "other", "item": "旅游保险", "amount": 60, "currency": "MYR", "qty": 1, "per": "person"},
+    {"category": "shopping", "item": "购物预算", "amount": 800, "currency": "MYR", "qty": 1, "per": "person", "notes": "自己调整"}
+  ],
+  "checklist": [
+    {"item": "护照有效期 6 个月以上", "notes": "大马 e-passport 赴日免签（出发前再查日本外务省）"},
+    {"item": "填 Visit Japan Web（入境 + 海关 QR）", "notes": "出发前几天填好，截图 QR"},
+    {"item": "旅游保险", "notes": "确认有包航班延误"},
+    {"item": "转换插头 Type A（两扁脚）", "notes": "日本 100V，手机/相机充电器一般没问题"},
+    {"item": "eSIM / 漫游", "notes": ""},
+    {"item": "多币种卡（Wise / BigPay 等）+ 少量日元现金", "notes": "小店、神社、市场常常只收现金"},
+    {"item": "下载 Google Maps 离线地图 + 乘换案内 App", "notes": ""},
+    {"item": "和牛餐厅提前订位", "notes": "星期六晚上"},
+    {"item": "退税：保留收据 + 护照，离境前在机场办理", "notes": "2026-11-01 起改为退款制"}
+  ],
+  "tips": [
+    "红眼航班第一天别排太满，下午回酒店睡一觉。",
+    "锦市场很多店星期三/星期日休息，所以排在星期四。",
+    "寿司郎大马已经有分店，在日本吃更便宜，但不用专程排队。",
+    "日本退税从 2026-11-01 起改成先付税、离境退款，消耗品不要在日本拆开用。",
+    "3 月初大阪约 5-13°C，带薄羽绒或保暖外套。"
+  ],
+  "sources": [
+    {"title": "日本观光厅：退税新制度（Refund Method）", "url": "https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00028.html", "checked": "2026-11-16"},
+    {"title": "Visit Japan Web", "url": "https://services.digital.go.jp/en/visit-japan-web/", "checked": "2026-11-16"},
+    {"title": "大马 2027 公共假期（首相署 BKPP，FMM 通告 GI/15/2026）", "url": "https://www.kabinet.gov.my", "checked": "2026-11-16"},
+    {"title": "Sushiro Malaysia 1 Utama 开幕", "url": "https://newswav.com/article/sushiro-brings-its-conveyor-belt-sushi-to-1-utama-A2607_X9WTsr", "checked": "2026-11-16"},
+    {"title": "AirAsia", "url": "https://www.airasia.com", "checked": "2026-11-16"},
+    {"title": "Malaysia Airlines", "url": "https://www.malaysiaairlines.com", "checked": "2026-11-16"}
+  ]
+}
