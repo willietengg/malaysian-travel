@@ -12,7 +12,7 @@ One file drives both `make_excel.py` and `make_ppt.py`. Every text field is free
     "cities": ["大阪", "京都"],
     "start_date": "2027-03-10",             // required, YYYY-MM-DD
     "end_date": "2027-03-14",               // required
-    "travelers": {"adults": 2, "children": 0, "seniors": 0},
+    "travelers": {"adults": 2, "children": 1, "seniors": 0, "children_ages": [7]},
     "home_state": "Selangor (SGR)",
     "departure_airport": "KUL",
     "budget_myr_pp": 4000,                  // optional: user's all-in budget per person, checked by check_trip.py
@@ -20,7 +20,8 @@ One file drives both `make_excel.py` and `make_ppt.py`. Every text field is free
     "preferences": {
       "ranking": ["food", "attraction", "shopping"],  // order = priority
       "diet": "none",                        // halal | muslim-friendly | no-pork | vegetarian | none
-      "pace": "normal"                       // relaxed | normal | packed
+      "pace": "normal",                      // relaxed | normal (alias: balanced) | packed
+      "muslim": true                         // optional: Friday prayer + Ramadan/Raya checks
     }
   },
   "fx": {                                    // required
@@ -65,13 +66,14 @@ One file drives both `make_excel.py` and `make_ppt.py`. Every text field is free
       "open_ok": true,                        // true | false | "check"  (omit for transport/hotel)
       "cost_local": 3000,                     // per person, local currency
       "notes": "...",
-      "map": "https://maps.google.com/..."    // optional; auto-generated from name + city if omitted
+      "map": "https://maps.google.com/..."    // optional; auto-generated for attraction/shopping/food/prayer; "" = no link
     }]
   }],
   "food": [{
     "name": "章鱼烧", "local_name": "たこ焼き", "where": "道顿堀 Kukuru",
     "price_local": 700,
     "halal": "unknown",                       // halal | muslim-friendly | no-pork | contains-pork | vegetarian | unknown
+    "halal_source": "KMF certified · https://...",  // required when halal / muslim-friendly
     "in_malaysia": "partial",                 // yes | no | partial | online | unknown
     "worth_it": "must",                       // must | worth | maybe | skip
     "notes": "..."
@@ -86,7 +88,7 @@ One file drives both `make_excel.py` and `make_ppt.py`. Every text field is free
     "amount": 16000,
     "currency": "local",                      // local | MYR
     "qty": 4,
-    "per": "group",                           // person | group
+    "per": "group",                           // person (everyone) | adult (adults + seniors) | child | group
     "notes": "每晚 ¥16,000"
   }],
   "checklist": [{"item": "护照有效期 6 个月以上", "notes": "..."}],   // or plain strings
@@ -97,9 +99,9 @@ One file drives both `make_excel.py` and `make_ppt.py`. Every text field is free
 
 ## Budget maths
 
-`subtotal_RM = (amount if MYR else amount × FX) × qty × (travellers if per=person else 1)`
+`subtotal_RM = (amount if MYR else amount × FX) × qty × N`, where N = all travellers (`person`), adults + seniors (`adult`), children (`child`) or 1 (`group`).
 
-Per-person total = group total ÷ travellers. In Excel these are formulas tied to the named cells `FX` and `PAX` on the Overview sheet.
+Per-person total = group total ÷ travellers. In Excel these are formulas tied to the named cells `FX`, `PAX`, `ADULTS` and `KIDS` on the Overview sheet.
 
 ## Validation
 

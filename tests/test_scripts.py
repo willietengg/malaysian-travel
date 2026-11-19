@@ -169,6 +169,76 @@ class CalendarTests(unittest.TestCase):
         self.assertEqual([d["date"].day for d in trip if d["holiday"]], [10, 11])
 
 
+class MuslimFamilyTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.hdata, cls.peaks = holidays.load_data()
+
+    def test_raya_day1_abroad_ranked_lower(self):
+        cal = holidays.StateCalendar(self.hdata, "PNG")
+        res = holidays.find_windows(cal, self.peaks, "KR", date(2027, 3, 1), date(2027, 4, 30), 3, 6, 6, "en",
+                                    muslim=True, family=True)
+        self.assertEqual(res[0]["start"], "2027-03-11")
+        bad = [w for w in res if w["start"] == "2027-03-05"]
+        self.assertTrue(bad and bad[0]["muslim_conflict"] >= 2)
+
+    def test_school_days_missed(self):
+        cal = holidays.StateCalendar(self.hdata, "PNG")
+        self.assertEqual(cal.school_days_missed(date(2027, 3, 11), date(2027, 3, 16)), 2)  # 15, 16 Mar
+
+    def test_allow_overlap_returns_more(self):
+        cal = holidays.StateCalendar(self.hdata, "PNG")
+        a = holidays.find_windows(cal, self.peaks, "KR", date(2027, 3, 1), date(2027, 4, 30), 3, 6, 6, "en")
+        b = holidays.find_windows(cal, self.peaks, "KR", date(2027, 3, 1), date(2027, 4, 30), 3, 6, 6, "en",
+                                  allow_overlap=True)
+        self.assertGreaterEqual(len(b), len(a))
+
+
+class ChildBudgetTests(unittest.TestCase):
+    def test_per_multiplier(self):
+        from common import per_multiplier, travelers_text
+        meta = {"travelers": {"adults": 2, "children": 1, "seniors": 1, "children_ages": [7]}}
+        self.assertEqual(per_multiplier("person", meta), 4)
+        self.assertEqual(per_multiplier("adult", meta), 3)
+        self.assertEqual(per_multiplier("child", meta), 1)
+        self.assertEqual(per_multiplier("group", meta), 1)
+        self.assertEqual(travelers_text(meta, "en"), "2 adults, 1 child (7), 1 senior")
+
+    def test_excel_child_formula(self):
+        from openpyxl import load_workbook
+        seoul = SKILL / "examples" / "seoul-6d-family-halal.json"
+        with tempfile.TemporaryDirectory() as tmp:
+            x = Path(tmp) / "s.xlsx"
+            run("make_excel.py", str(seoul), str(x))
+            wb = load_workbook(x)
+            self.assertIn("ADULTS", wb.defined_names)
+            self.assertIn("KIDS", wb.defined_names)
+
+    def test_fmt_rate_precision(self):
+        from common import fmt_rate
+        self.assertIn("RM 0.00306", fmt_rate(0.00306, "KRW"))
+        self.assertIn("RM 0.000172", fmt_rate(0.000172, "VND"))
+
+    def test_friday_prayer_warning(self):
+        import check_trip
+        trip = load_json(SKILL / "examples" / "seoul-6d-family-halal.json")
+        _, warns = check_trip.check(trip, date(2026, 11, 19))
+        self.assertFalse(any("Friday" in w for w in warns))
+        for it in trip["itinerary"][1]["items"]:
+            it["name"] = it["name"].replace("Mosque", "Park").replace("prayer", "walk").replace("Jumu'ah", "Stroll")
+            it["notes"] = ""
+        _, warns = check_trip.check(trip, date(2026, 11, 19))
+        self.assertTrue(any("Friday" in w for w in warns))
+
+    def test_destination_peaks_cover_new_countries(self):
+        peaks = load_json(SKILL / "data" / "destination_peaks.json")
+        for c in ("SG", "ID", "HK", "FI", "NO", "SE", "DK", "IS", "AU"):
+            self.assertIn(c, peaks["countries"])
+            self.assertTrue(any(p["country"] == c for p in peaks["periods"]))
+        for c in peaks["countries"]:
+            pass
+
+
 class FxTests(unittest.TestCase):
     def test_manual_rate(self):
         js = json.loads(run("fx.py", "JPY", "--rate", "0.03", "--amount", "10000", "--json"))

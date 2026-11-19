@@ -24,7 +24,7 @@
 
 ## Seed list
 
-*Last reviewed 2026-11. `verify` = re-check before stating. Pull requests welcome.*
+*Last reviewed 2026-11-19. `verify` = re-check before stating. Pull requests welcome.*
 
 ### From Japan
 
@@ -51,10 +51,12 @@
 | Brand | In MY | Notes |
 |---|---|---|
 | Olive Young | partial | No standalone store. Olive Young K-Beauty Edit inside Sephora (from Sep 2026, e.g. Fahrenheit88), plus an official Shopee store. Korea's flagship stores have a far bigger range. |
-| Gentle Monster | yes | verify |
-| Kyochon | yes | |
+| Gentle Monster | yes | The Exchange TRX (2023), Suria KLCC flagship (May 2026). |
+| Kyochon | yes | JAKIM-halal **in Malaysia only**; Korean outlets are not halal-certified. |
 | Daiso Korea | no | Different company from Japanese Daiso; cheap Korean beauty and stationery. |
-| Musinsa (store) | no | verify |
+| Musinsa | partial | Distribution deal with MAP announced Aug 2026; no standalone store yet (verify). |
+| Musinsa Standard / Stand Oil / Tamburins | partial | Stand Oil at Pavilion KL L4; Tamburins Suria KLCC announced Nov 2026 (verify opening). |
+| LINE Friends | partial | Pop-ups only. |
 
 ### From China
 

@@ -102,6 +102,9 @@ class StateCalendar:
                 self.holidays.setdefault(d(h["date"]), []).append(h)
         self._add_replacements()
         self.school = [s for s in hdata["school_holidays"] if s["group"] == self.group]
+        self.ramadan = [(d(o["start"]), d(o["end"])) for o in hdata.get("observances", []) if o["kind"] == "ramadan"]
+        self.raya_day1 = {x for x, hs in self.holidays.items()
+                          for h in hs if h.get("en") == "Hari Raya Aidilfitri"}
 
     def _add_replacements(self):
         for day in sorted(list(self.holidays)):
@@ -129,6 +132,16 @@ class StateCalendar:
     def in_coverage(self, day: date) -> bool:
         return self.coverage is not None and self.coverage[0] - timedelta(days=60) <= day <= self.coverage[1]
 
+    def in_school_holiday(self, day: date) -> bool:
+        return any(d(s["start"]) <= day <= d(s["end"]) for s in self.school)
+
+    def school_days_missed(self, a: date, b: date) -> int:
+        """School days (state's working days, not public or school holidays) inside the trip."""
+        return sum(1 for x in daterange(a, b) if not self.is_off(x) and not self.in_school_holiday(x))
+
+    def ramadan_days(self, a: date, b: date) -> int:
+        return sum(1 for x in daterange(a, b) for rs, re_ in self.ramadan if rs <= x <= re_)
+
     def school_overlap(self, a: date, b: date):
         out = []
         for s in self.school:
@@ -148,7 +161,8 @@ def destination_overlap(peaks: dict, country: str | None, a: date, b: date):
 # ---------------------------------------------------------------------------
 # Analysis
 # ---------------------------------------------------------------------------
-def analyse(cal: StateCalendar, peaks: dict, country: str | None, a: date, b: date, lang: str) -> dict:
+def analyse(cal: StateCalendar, peaks: dict, country: str | None, a: date, b: date, lang: str,
+            muslim: bool = False, family: bool = False) -> dict:
     days = list(daterange(a, b))
     leave_days = [x for x in days if not cal.is_off(x)]
     hols = [(x, h) for x in days for h in cal.holidays.get(x, [])]
@@ -191,6 +205,28 @@ def analyse(cal: StateCalendar, peaks: dict, country: str | None, a: date, b: da
         warnings.append({"zh": "部分回教节日日期属预测（看月亮），需以政府宪报为准。",
                          "en": "Some Islamic holiday dates are provisional (moon sighting) - confirm with the gazette.",
                          "ms": "Sesetengah tarikh cuti Islam masih anggaran."}[lang])
+    if school and any(sh.get("status") == "approx" for sh in school):
+        warnings.append({"zh": "学校假期日期是非官方整理的，请对照教育部（KPM）日历。",
+                         "en": "School-holiday dates are from unofficial sources - confirm with the KPM calendar.",
+                         "ms": "Tarikh cuti sekolah daripada sumber tidak rasmi - semak kalendar KPM."}[lang])
+    muslim_conflict = 0
+    if muslim:
+        rd = cal.ramadan_days(a, b)
+        if rd:
+            muslim_conflict += 1
+            warnings.append({"zh": f"有 {rd} 天在斋戒月：要安排封斋饭和开斋时间，部分清真餐厅白天不营业。",
+                             "en": f"{rd} day(s) fall in Ramadan: plan sahur/iftar times; some halal restaurants close by day.",
+                             "ms": f"{rd} hari dalam bulan Ramadan: rancang sahur/iftar."}[lang])
+        if any(a <= x <= b for x in cal.raya_day1):
+            muslim_conflict += 2
+            warnings.append({"zh": "开斋节第一天在国外，确认是否要在家过节。",
+                             "en": "Hari Raya day 1 is spent abroad - check the family is OK celebrating away.",
+                             "ms": "Hari Raya pertama di luar negara - pastikan keluarga setuju."}[lang])
+    school_missed = cal.school_days_missed(a, b) if family else 0
+    if family and school_missed:
+        warnings.append({"zh": f"小孩要请 {school_days_txt(school_missed, 'zh')} 上学日的假。",
+                         "en": f"Children miss {school_missed} school day(s).",
+                         "ms": f"Anak-anak terlepas {school_missed} hari sekolah."}[lang])
     if any(p["kind"] == "closure" for p in dest):
         warnings.append({"zh": "当地节日期间很多店休息，景点和餐厅要逐一确认营业。",
                          "en": "Local festival closures - confirm each shop/attraction is open.",
@@ -213,13 +249,20 @@ def analyse(cal: StateCalendar, peaks: dict, country: str | None, a: date, b: da
                                 "level": p["level"], "kind": p["kind"]} for p in dest],
         "price_score": score,
         "price_impact": level,
+        "school_days_missed": school_missed,
+        "muslim_conflict": muslim_conflict,
         "reasons": reasons,
         "warnings": warnings,
     }
 
 
+def school_days_txt(n: int, lang: str) -> str:
+    return f"{n} 天"
+
+
 def find_windows(cal, peaks, country, frm: date, to: date, leave: int | None, days: int | None,
-                 top: int, lang: str, min_days: int = 3, max_days: int = 16):
+                 top: int, lang: str, min_days: int = 3, max_days: int = 16,
+                 muslim: bool = False, family: bool = False, allow_overlap: bool = False):
     cands = []
     starts = list(daterange(frm, to))
     for s in starts:
@@ -240,16 +283,22 @@ def find_windows(cal, peaks, country, frm: date, to: date, leave: int | None, da
         return []
     scored = []
     for s, e, n, need in cands:
-        a = analyse(cal, peaks, country, s, e, lang)
+        a = analyse(cal, peaks, country, s, e, lang, muslim=muslim, family=family)
         scored.append({**a, "efficiency": round(n / max(need, 1), 2)})
+
+    def penalty(w):
+        return w["muslim_conflict"] * 2 + w["school_days_missed"]
+
     if days:
-        scored.sort(key=lambda w: (w["leave_needed"], w["price_score"], w["start"]))
+        scored.sort(key=lambda w: (w["leave_needed"] + penalty(w), w["price_score"], w["start"]))
     else:
-        scored.sort(key=lambda w: (-w["total_days"], w["leave_needed"], w["price_score"], w["start"]))
+        scored.sort(key=lambda w: (-w["total_days"], w["leave_needed"] + penalty(w), w["price_score"], w["start"]))
     chosen = []
     for w in scored:
         ws, we = d(w["start"]), d(w["end"])
-        if any(ws <= d(c["end"]) and d(c["start"]) <= we for c in chosen):
+        if not allow_overlap and any(ws <= d(c["end"]) and d(c["start"]) <= we for c in chosen):
+            continue
+        if allow_overlap and any(c["start"] == w["start"] and c["end"] == w["end"] for c in chosen):
             continue
         chosen.append(w)
         if len(chosen) >= top:
@@ -275,25 +324,31 @@ def alt_note(w: dict, lang: str) -> str:
     ev = [e["name"] for e in w["destination_events"]]
     if ev:
         bits.append(ev[0])
+    if w.get("school_days_missed"):
+        bits.append({"zh": f"小孩缺课 {w['school_days_missed']} 天", "en": f"kids miss {w['school_days_missed']} school day(s)",
+                     "ms": f"anak terlepas {w['school_days_missed']} hari sekolah"}[lang])
     if not w["school_holidays"] and not w["public_holidays"]:
         bits.append({"zh": "不撞大马假期", "en": "no Malaysian holiday clash", "ms": "tiada pertembungan cuti"}[lang])
     return " · ".join(bits)
 
 
-def alternatives_for(cal, peaks, country, a: date, b: date, lang: str, n: int, base_leave: int):
+def alternatives_for(cal, peaks, country, a: date, b: date, lang: str, n: int, base_leave: int,
+                     muslim: bool = False, family: bool = False):
     days = (b - a).days + 1
     frm, to = a - timedelta(days=45), b + timedelta(days=45)
     if cal.coverage:
         frm, to = max(frm, cal.coverage[0]), min(to, cal.coverage[1])
-    cands = find_windows(cal, peaks, country, frm, to, base_leave + 2, days, 40, lang)
+    cands = find_windows(cal, peaks, country, frm, to, base_leave + 2, days, 40, lang, muslim=muslim, family=family)
     cands = [w for w in cands if not (d(w["start"]) <= b and a <= d(w["end"]))]
-    cands.sort(key=lambda w: (w["price_score"], w["leave_needed"], abs((d(w["start"]) - a).days)))
+    cands.sort(key=lambda w: (w["price_score"] + w["muslim_conflict"] * 2 + w["school_days_missed"],
+                              w["leave_needed"], abs((d(w["start"]) - a).days)))
     return cands[:n]
 
 
 def to_trip_block(res: dict, alts: list, lang: str) -> dict:
     """Convert analyse() output into trip.json's holiday_analysis schema."""
-    return {
+    out = {
+        "state": res["state"],
         "summary": summary_line(res, lang),
         "price_impact": res["price_impact"],
         "leave_needed": res["leave_needed"],
@@ -307,6 +362,9 @@ def to_trip_block(res: dict, alts: list, lang: str) -> dict:
         "alternatives": [{"start": w["start"], "end": w["end"], "leave_needed": w["leave_needed"],
                           "price_impact": w["price_impact"], "note": alt_note(w, lang)} for w in alts],
     }
+    if res.get("school_days_missed"):
+        out["school_days_missed"] = res["school_days_missed"]
+    return out
 
 
 def leave_hacks(hdata, peaks, states: list[str], year: int, max_leave: int, lang: str):
@@ -404,6 +462,8 @@ def main(argv=None):
         sp.add_argument("--country", help="Destination ISO code: JP KR TH TW VN CN")
         sp.add_argument("--lang", default="zh", choices=["zh", "en", "ms"])
         sp.add_argument("--json", action="store_true", help="Machine-readable output")
+        sp.add_argument("--muslim", action="store_true", help="Flag Ramadan days and Hari Raya day 1 abroad")
+        sp.add_argument("--family", action="store_true", help="Children in school: count school days missed")
 
     c = sub.add_parser("check")
     common_args(c)
@@ -422,6 +482,7 @@ def main(argv=None):
     w.add_argument("--min-days", type=int, default=3)
     w.add_argument("--max-days", type=int, default=16)
     w.add_argument("--top", type=int, default=8)
+    w.add_argument("--allow-overlap", action="store_true", help="Show overlapping variants (different start days)")
 
     hk = sub.add_parser("hacks", help="Best leave-bridging windows for a whole year")
     hk.add_argument("--year", type=int, required=True)
@@ -465,10 +526,10 @@ def main(argv=None):
         a, b = d(args.start), d(args.end)
         if b < a:
             sys.exit("--end is before --start")
-        res = analyse(cal, peaks, country, a, b, args.lang)
+        res = analyse(cal, peaks, country, a, b, args.lang, muslim=args.muslim, family=args.family)
         if args.trip_json:
             alts = alternatives_for(cal, peaks, country, a, b, args.lang, args.alternatives,
-                                    res["leave_needed"]) if args.alternatives else []
+                                    res["leave_needed"], args.muslim, args.family) if args.alternatives else []
             print(json.dumps({"holiday_analysis": to_trip_block(res, alts, args.lang)}, ensure_ascii=False, indent=2))
         elif args.json:
             print(json.dumps(res, ensure_ascii=False, indent=2))
@@ -480,7 +541,16 @@ def main(argv=None):
         frm = d(args.frm) if args.frm else max(date.today(), cal.coverage[0])
         to = d(args.to) if args.to else cal.coverage[1]
         res = find_windows(cal, peaks, country, frm, to, args.leave, args.days, args.top, args.lang,
-                           args.min_days, args.max_days)
+                           args.min_days, args.max_days, args.muslim, args.family, args.allow_overlap)
+        if len(res) < args.top:
+            note = f"Only {len(res)} window(s) found"
+            if args.days:
+                floor = find_windows(cal, peaks, country, frm, to, None, args.days, 1, args.lang)
+                if floor:
+                    note += f"; a {args.days}-day trip in this range needs at least {floor[0]['leave_needed']} leave day(s)"
+            if not args.allow_overlap:
+                note += ". Overlapping variants are hidden; add --allow-overlap to see them"
+            print(note + ".", file=sys.stderr)
         if args.json:
             print(json.dumps(res, ensure_ascii=False, indent=2))
         else:

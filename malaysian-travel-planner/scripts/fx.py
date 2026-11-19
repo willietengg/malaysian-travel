@@ -53,13 +53,15 @@ def main(argv=None):
     p.add_argument("currency", help="ISO code, e.g. JPY KRW THB TWD VND CNY")
     p.add_argument("--amount", type=float, help="Amount in the foreign currency to convert to RM")
     p.add_argument("--rate", type=float, help="Manual rate: RM for 1 unit of the currency")
+    p.add_argument("--source", help="With --rate: where the rate came from (site name or URL)")
+    p.add_argument("--date", help="With --rate: the date of that quote (YYYY-MM-DD)")
     p.add_argument("--buffer", type=float, default=2.0, help="Percent added for card/changer spread (default 2)")
     p.add_argument("--json", action="store_true")
     a = p.parse_args(argv)
     cur = a.currency.upper()
 
     if a.rate:
-        rate, source = a.rate, "manual (web search)"
+        rate, source = a.rate, a.source or "manual (web search)"
     else:
         rate, source = fetch_rate(cur)
         if rate is None:
@@ -78,7 +80,7 @@ def main(argv=None):
         "units_per_myr": round(1 / rate, 4),
         "realistic_rate_myr_per_unit": round(realistic, 6),
         "buffer_percent": a.buffer,
-        "rate_date": date.today().isoformat(),
+        "rate_date": a.date if (a.rate and a.date) else date.today().isoformat(),
         "source": source,
     }
     if a.amount is not None:

@@ -4,18 +4,34 @@
     "title": "Seoul 6D5N Family Halal Trip (sample)",
     "destination_country": "KR",
     "destination_name": "South Korea",
-    "cities": ["Seoul", "Gapyeong (Nami Island)"],
+    "cities": [
+      "Seoul",
+      "Gapyeong (Nami Island)"
+    ],
     "start_date": "2027-03-11",
     "end_date": "2027-03-16",
-    "travelers": {"adults": 2, "children": 1, "seniors": 0},
+    "travelers": {
+      "adults": 2,
+      "children": 1,
+      "seniors": 0,
+      "children_ages": [
+        7
+      ]
+    },
     "home_state": "Penang (PNG)",
     "departure_airport": "PEN (connect via KUL)",
     "generated_on": "2026-11-19",
     "preferences": {
-      "ranking": ["attraction", "food", "shopping"],
+      "ranking": [
+        "attraction",
+        "food",
+        "shopping"
+      ],
       "diet": "halal",
-      "pace": "relaxed"
-    }
+      "pace": "relaxed",
+      "muslim": true
+    },
+    "budget_myr_pp": 4500
   },
   "fx": {
     "currency": "KRW",
@@ -24,108 +40,568 @@
     "source": "Web search (currency.me.uk, 13 Nov 2026: RM 1 = ₩326.8); fx.py live APIs unreachable"
   },
   "holiday_analysis": {
-    "summary": "Thu 11 – Tue 16 Mar 2027 uses exactly 3 days of annual leave (12, 15, 16 Mar) and keeps Raya Day 1 at home. Your child only misses 2 school days (15–16 Mar). Fares will be high: Raya + Term 1 school holiday.",
+    "state": "PNG",
+    "summary": "2027-03-11 to 2027-03-16 (6 days) needs 3 day(s) of annual leave; fare pressure: High 🟠.",
     "price_impact": "high",
     "leave_needed": 3,
-    "leave_dates": ["2027-03-12", "2027-03-15", "2027-03-16"],
-    "weekend": ["Sat", "Sun"],
+    "leave_dates": [
+      "2027-03-12",
+      "2027-03-15",
+      "2027-03-16"
+    ],
+    "weekend": [
+      "Sat",
+      "Sun"
+    ],
     "reasons": [
       "Overlaps Malaysian school holidays (families travel, fares up)",
-      "Major festival outbound rush (Hari Raya Aidilfitri)",
-      "Islamic holiday dates are provisional (moon sighting) - confirm with the gazette"
+      "Major festival outbound rush (CNY / Raya / Christmas / New Year)",
+      "Some Islamic holiday dates are provisional (moon sighting) - confirm with the gazette.",
+      "School-holiday dates are from unofficial sources - confirm with the KPM calendar.",
+      "Children miss 2 school day(s)."
     ],
     "my_holidays": [
-      {"date": "2027-03-11", "weekday": "Thu", "name": "Hari Raya Aidilfitri (Day 2) - provisional"}
+      {
+        "date": "2027-03-11",
+        "weekday": "Thu",
+        "name": "Hari Raya Aidilfitri (Day 2)"
+      }
     ],
     "school_holidays": [
-      {"start": "2027-03-06", "end": "2027-03-14", "name": "Term 1 school holiday (Group B, approx.)"}
+      {
+        "start": "2027-03-06",
+        "end": "2027-03-14",
+        "name": "Term 1 school holiday"
+      }
     ],
     "destination_events": [],
     "recommendation": "A 6-day trip outside public holidays always needs 4 leave days, so with only 3 days the Raya week is the only way to get 6 days. We fly out on the evening of Raya Day 2 so you still celebrate Raya Day 1 at home, and Ramadan is already over. Book 3-4 months ahead (by Nov-Dec 2026) because fares are high. Seoul is still cold in mid-March (about 0-11°C) and the cherry blossoms have not started yet.",
     "alternatives": [
-      {"start": "2027-03-06", "end": "2027-03-11", "leave_needed": 2, "price_impact": "high", "note": "Needs only 2 leave days and your child misses no school, but you would spend the last days of Ramadan and Raya Day 1 abroad."},
-      {"start": "2027-04-14", "end": "2027-04-18", "leave_needed": 3, "price_impact": "low", "note": "5 days instead of 6. Cheap fares and spring weather (about 7-19°C), but your child misses 3 school days."},
-      {"start": "2027-04-13", "end": "2027-04-18", "leave_needed": 4, "price_impact": "low", "note": "The full 6 days in spring after the cherry-blossom peak. Needs 4 leave days, one more than you have."}
-    ]
+      {
+        "start": "2027-03-17",
+        "end": "2027-03-22",
+        "leave_needed": 4,
+        "price_impact": "low",
+        "note": "4 leave day(s) · kids miss 4 school day(s) · no Malaysian holiday clash"
+      },
+      {
+        "start": "2027-04-13",
+        "end": "2027-04-18",
+        "leave_needed": 4,
+        "price_impact": "low",
+        "note": "4 leave day(s) · kids miss 4 school day(s) · no Malaysian holiday clash"
+      },
+      {
+        "start": "2027-04-20",
+        "end": "2027-04-25",
+        "leave_needed": 4,
+        "price_impact": "low",
+        "note": "4 leave day(s) · kids miss 4 school day(s) · no Malaysian holiday clash"
+      }
+    ],
+    "school_days_missed": 2
   },
   "flights_note": "Fares are ballpark estimates from web searches on 2026-11-19 (aggregator snapshots), not live quotes. There is no confirmed non-stop PEN-ICN flight, so every option connects via KUL. Check Google Flights / airline sites for 11-16 Mar 2027.",
   "flights": [
-    {"airline": "Malaysia Airlines (MH)", "type": "FSC", "route": "PEN → KUL → ICN (MH66) / ICN → KUL (MH67) → PEN", "schedule": "Out Thu ~19:00 PEN, KUL 23:15→06:30(+1) / Back Tue ICN 11:00→KUL ~16:35, PEN ~20:00", "duration": "≈6.5h + 1h domestic", "fare_myr": 2200, "baggage": "Usually 30kg incl. on through-fare (depends on fare family)", "addons_myr": 0, "notes": "Best fit for 'comfort': through-ticket protects the connection, meals included, and the 11:00 return gets you home the same evening. Halal meals on board. Winter timings (from 25 Oct 2026). Child fare is usually ~75% of adult (estimate).", "recommended": true},
-    {"airline": "Korean Air (KE)", "type": "FSC", "route": "PEN → KUL (MH/AK) + KUL ⇄ ICN (KE672/KE671)", "schedule": "KUL 23:15→06:55(+1) / ICN afternoon departure (check)", "duration": "≈6.5h + domestic", "fare_myr": 2500, "baggage": "23kg", "addons_myr": 150, "notes": "Korean Air pages show KUL-ICN from about RM 2,314 for Apr 2027. Separate PEN-KUL ticket adds cost and connection risk. Ask for a Muslim meal (MOML) when booking."},
-    {"airline": "AirAsia X (D7) + AirAsia (AK)", "type": "LCC", "route": "PEN → KUL (AK) + KUL ⇄ ICN (D7)", "schedule": "Daytime and night departures vary by season (check)", "duration": "≈6.5h + 1h", "fare_myr": 1300, "baggage": "7kg cabin only", "addons_myr": 420, "notes": "Add 20kg bag both ways, halal meals (Santan) and family seats together (estimate). Cheapest headline fare but long KUL waits and no meals by default. Not ideal for 'comfort' with a 7-year-old."},
-    {"airline": "Batik Air (OD)", "type": "Hybrid", "route": "PEN → KUL → ICN (737 MAX 8)", "schedule": "Frequencies were cut in Apr-May 2026, so check if it still runs in Mar 2027", "duration": "≈6.5h + 1h", "fare_myr": 1600, "baggage": "Often 20kg included (depends on fare)", "addons_myr": 60, "notes": "Narrow-body for 6.5h. Service cuts reported on this route in 2026."}
+    {
+      "airline": "Malaysia Airlines (MH)",
+      "type": "FSC",
+      "route": "PEN → KUL → ICN (MH66) / ICN → KUL (MH67) → PEN",
+      "schedule": "Out Thu ~19:00 PEN, KUL 23:15→06:30(+1) / Back Tue ICN 11:00→KUL ~16:35, PEN ~20:00",
+      "duration": "≈6.5h + 1h domestic",
+      "fare_myr": 2200,
+      "baggage": "Usually 30kg incl. on through-fare (depends on fare family)",
+      "addons_myr": 0,
+      "notes": "Best fit for 'comfort': through-ticket protects the connection, meals included, and the 11:00 return gets you home the same evening. Halal meals on board. Winter timings (from 25 Oct 2026). Child fare is usually ~75% of adult (estimate).",
+      "recommended": true
+    },
+    {
+      "airline": "Korean Air (KE)",
+      "type": "FSC",
+      "route": "PEN → KUL (MH/AK) + KUL ⇄ ICN (KE672/KE671)",
+      "schedule": "KUL 23:15→06:55(+1) / ICN afternoon departure (check)",
+      "duration": "≈6.5h + domestic",
+      "fare_myr": 2500,
+      "baggage": "23kg",
+      "addons_myr": 150,
+      "notes": "Korean Air pages show KUL-ICN from about RM 2,314 for Apr 2027. Separate PEN-KUL ticket adds cost and connection risk. Ask for a Muslim meal (MOML) when booking."
+    },
+    {
+      "airline": "AirAsia X (D7) + AirAsia (AK)",
+      "type": "LCC",
+      "route": "PEN → KUL (AK) + KUL ⇄ ICN (D7)",
+      "schedule": "Daytime and night departures vary by season (check)",
+      "duration": "≈6.5h + 1h",
+      "fare_myr": 1300,
+      "baggage": "7kg cabin only",
+      "addons_myr": 420,
+      "notes": "Add 20kg bag both ways, halal meals (Santan) and family seats together (estimate). Cheapest headline fare but long KUL waits and no meals by default. Not ideal for 'comfort' with a 7-year-old."
+    },
+    {
+      "airline": "Batik Air (OD)",
+      "type": "Hybrid",
+      "route": "PEN → KUL → ICN (737 MAX 8)",
+      "schedule": "Frequencies were cut in Apr-May 2026, so check if it still runs in Mar 2027",
+      "duration": "≈6.5h + 1h",
+      "fare_myr": 1600,
+      "baggage": "Often 20kg included (depends on fare)",
+      "addons_myr": 60,
+      "notes": "Narrow-body for 6.5h. Service cuts reported on this route in 2026."
+    }
   ],
   "itinerary": [
-    {"day": 1, "date": "2027-03-11", "city": "Penang → KUL", "theme": "Raya Day 2, evening departure", "items": [
-      {"time": "18:00", "name": "Penang Airport (PEN), check in through to ICN", "category": "flight", "notes": "Check bags through to Incheon on one MH ticket"},
-      {"time": "23:15", "name": "MH66 KUL → ICN (overnight)", "category": "flight", "notes": "Get your child to sleep on board, because Day 2 starts at 06:30"}
-    ]},
-    {"day": 2, "date": "2027-03-12", "city": "Seoul", "theme": "Arrive + Gyeongbokgung", "items": [
-      {"time": "06:30", "name": "Arrive ICN, AREX to Seoul Station, taxi to Myeongdong hotel", "category": "transport", "cost_local": 12000, "notes": "Buy T-money / WOWPASS at the airport. Drop the bags at the hotel."},
-      {"time": "10:00", "name": "Gyeongbokgung Palace + guard-changing ceremony", "category": "attraction", "open_hours": "Mar–May 09:00–18:00 (last entry 17:00)", "closed": "Tuesday", "open_ok": true, "cost_local": 3000, "notes": "Friday is open. Wearing hanbok gets free entry. Kids' age rules for free entry: check on site."},
-      {"time": "13:00", "name": "Lunch: Busan Jib (KMF halal Korean BBQ), Myeongdong", "category": "food", "open_hours": "11:00–22:00 (one source)", "open_ok": "check", "cost_local": 25000, "notes": "Halal beef bulgogi / chicken dakgalbi. Prayer room on 3F. Sources disagree on address (11-4 vs 11-6 Myeongdong 8-gil)"},
-      {"time": "15:00", "name": "Hotel check-in + nap", "category": "hotel", "notes": "You arrived on a red-eye, so rest"},
-      {"time": "18:30", "name": "Myeongdong evening walk + street food (choose halal-labelled stalls only)", "category": "shopping", "open_hours": "Stalls ~16:00–23:00", "open_ok": true, "cost_local": 10000, "notes": "Most stalls are NOT halal-certified. Stick to hotteok (sweet pancake), fruit and egg bread, and avoid meat skewers and fish-cake broth"}
-    ]},
-    {"day": 3, "date": "2027-03-13", "city": "Gapyeong (Nami Island)", "theme": "Nami Island day trip", "items": [
-      {"time": "08:30", "name": "Shuttle bus / ITX to Gapyeong → Nami ferry", "category": "transport", "cost_local": 15000, "notes": "Book a tourist shuttle (about 1.5h) so your child doesn't have to change trains"},
-      {"time": "10:30", "name": "Nami Island (ferry + admission)", "category": "attraction", "open_hours": "~08:00–21:00 (check)", "open_ok": true, "cost_local": 19000, "notes": "₩19,000 regular incl. ferry (2026 guide). Preschoolers are free; your 7-year-old may get the discount rate (check). Prayer room at Baplex 2F with wudhu area."},
-      {"time": "12:30", "name": "Lunch: Asian Family Restaurant Dongmoon (KMF halal), Nami Island", "category": "food", "open_ok": "check", "cost_local": 15000, "notes": "Reported as the only fully KMF-certified restaurant on the island. Certification date unconfirmed, so check the certificate on the wall."},
-      {"time": "17:30", "name": "Back to Seoul, light dinner at Busan Jib or packed halal snacks", "category": "food", "open_ok": "check", "cost_local": 15000}
-    ]},
-    {"day": 4, "date": "2027-03-14", "city": "Seoul", "theme": "Itaewon mosque + Namsan Tower", "items": [
-      {"time": "10:30", "name": "Seoul Central Mosque, Itaewon", "category": "attraction", "open_hours": "Daily (prayer times)", "open_ok": true, "cost_local": 0, "notes": "Modest dress. Usadan-ro 10-gil below has the densest halal food cluster in Korea."},
-      {"time": "12:00", "name": "Lunch: EID Halal Korean Food, 67 Usadan-ro 10-gil", "category": "food", "open_hours": "11:30–21:00", "closed": "Monday (most sources; one says Sunday)", "open_ok": "check", "cost_local": 20000, "notes": "Sources disagree on the closed day. Call 070-8899-8210 before Sunday."},
-      {"time": "15:00", "name": "Namsan cable car + N Seoul Tower observatory", "category": "attraction", "open_hours": "Weekend ~10:00–23:00", "open_ok": true, "cost_local": 36000, "notes": "Observatory ₩21,000 adult / ₩16,000 child (3–12) + cable car round trip about ₩15,000 (check). Sunset views."},
-      {"time": "19:00", "name": "Myeongdong: Olive Young flagship + Daiso", "category": "shopping", "open_hours": "Olive Young ~10:00–22:30", "open_ok": true, "notes": "Olive Young Myeongdong has no restroom, so use the subway station's"}
-    ]},
-    {"day": 5, "date": "2027-03-15", "city": "Seoul (Jamsil)", "theme": "Lotte World + Seoul Sky (Changdeokgung closed today)", "items": [
-      {"time": "10:00", "name": "Lotte World Adventure (indoor theme park)", "category": "attraction", "open_hours": "~10:00–21:00", "closed": "Some facilities restricted for renovation Nov 2026 – Nov 2027", "open_ok": "check", "cost_local": 50000, "notes": "Indoors, so it suits cold March weather. Prayer room near Jungle Adventure (3F, per directory). Check which rides are closed for renovation before you buy tickets."},
-      {"time": "13:00", "name": "Lunch: halal options are very limited in Jamsil, so bring halal snacks / packed lunch", "category": "food", "open_ok": "check", "cost_local": 10000, "notes": "No halal restaurant confirmed inside Lotte World"},
-      {"time": "16:30", "name": "Seoul Sky observatory (Lotte World Tower)", "category": "attraction", "open_hours": "~10:30–22:00 (check)", "open_ok": "check", "cost_local": 31000, "notes": "Optional if your child is tired. Changdeokgung and most museums close on Monday, so we go to Jamsil today."},
-      {"time": "19:00", "name": "Dinner: Itaewon halal (e.g. Kervan Turkish, 190 Itaewon-ro)", "category": "food", "open_ok": "check", "cost_local": 25000, "notes": "EID is closed on Monday, so go to Kervan instead"}
-    ]},
-    {"day": 6, "date": "2027-03-16", "city": "Seoul → Penang", "theme": "Fly home", "items": [
-      {"time": "07:30", "name": "Check out, AREX to ICN", "category": "transport", "cost_local": 12000, "notes": "Claim your tax refund at the airport kiosks if you didn't get it instantly in-store"},
-      {"time": "11:00", "name": "MH67 ICN → KUL, connect to PEN", "category": "flight", "notes": "Home around 20:00. Gyeongbokgung is closed on Tuesday anyway"}
-    ]}
+    {
+      "day": 1,
+      "date": "2027-03-11",
+      "city": "Penang → KUL",
+      "theme": "Raya Day 2, evening departure",
+      "items": [
+        {
+          "time": "18:00",
+          "name": "Penang Airport (PEN), check in through to ICN",
+          "category": "flight",
+          "notes": "Check bags through to Incheon on one MH ticket"
+        },
+        {
+          "time": "23:15",
+          "name": "MH66 KUL → ICN (overnight)",
+          "category": "flight",
+          "notes": "Get your child to sleep on board, because Day 2 starts at 06:30"
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "date": "2027-03-12",
+      "city": "Seoul",
+      "theme": "Arrive · Friday prayer in Itaewon · Myeongdong evening",
+      "items": [
+        {
+          "time": "06:30",
+          "name": "Arrive ICN, AREX to Seoul Station, taxi to Myeongdong hotel",
+          "category": "transport",
+          "cost_local": 12000,
+          "notes": "Buy T-money / WOWPASS at the airport. Drop the bags at the hotel."
+        },
+        {
+          "time": "12:30",
+          "name": "Jumu'ah (Friday prayer) at Seoul Central Mosque, Itaewon",
+          "category": "prayer",
+          "open_hours": "Daily (prayer times)",
+          "open_ok": true,
+          "notes": "Friday prayer around 13:00 (check the mosque's current time). Wudu area on site; dress modestly."
+        },
+        {
+          "time": "13:45",
+          "name": "Lunch: EID Halal Korean Food, 67 Usadan-ro 10-gil",
+          "category": "food",
+          "open_hours": "11:30–21:00",
+          "open_ok": "check",
+          "cost_local": 20000,
+          "notes": "Sources disagree on the closed day. Call 070-8899-8210 before Sunday. Friday: open (closed Monday per most sources).",
+          "closed": "Monday (most sources; one says Sunday)"
+        },
+        {
+          "time": "15:00",
+          "name": "Hotel check-in + nap",
+          "category": "hotel",
+          "notes": "You arrived on a red-eye, so rest"
+        },
+        {
+          "time": "18:30",
+          "name": "Myeongdong evening walk + street food (choose halal-labelled stalls only)",
+          "category": "shopping",
+          "open_hours": "Stalls ~16:00–23:00",
+          "open_ok": true,
+          "cost_local": 10000,
+          "notes": "Most stalls are NOT halal-certified. Stick to hotteok (sweet pancake), fruit and egg bread, and avoid meat skewers and fish-cake broth"
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "date": "2027-03-13",
+      "city": "Gapyeong (Nami Island)",
+      "theme": "Nami Island day trip",
+      "items": [
+        {
+          "time": "08:30",
+          "name": "Shuttle bus / ITX to Gapyeong → Nami ferry",
+          "category": "transport",
+          "cost_local": 15000,
+          "notes": "Book a tourist shuttle (about 1.5h) so your child doesn't have to change trains"
+        },
+        {
+          "time": "10:30",
+          "name": "Nami Island (ferry + admission)",
+          "category": "attraction",
+          "open_hours": "~08:00–21:00 (check)",
+          "open_ok": true,
+          "cost_local": 19000,
+          "notes": "₩19,000 regular incl. ferry (2026 guide). Preschoolers are free; your 7-year-old may get the discount rate (check). Prayer room at Baplex 2F with wudhu area."
+        },
+        {
+          "time": "12:30",
+          "name": "Lunch: Asian Family Restaurant Dongmoon (KMF halal), Nami Island",
+          "category": "food",
+          "open_ok": "check",
+          "cost_local": 15000,
+          "notes": "Reported as the only fully KMF-certified restaurant on the island. Certification date unconfirmed, so check the certificate on the wall."
+        },
+        {
+          "time": "17:30",
+          "name": "Back to Seoul, light dinner at Busan Jib or packed halal snacks",
+          "category": "food",
+          "open_ok": "check",
+          "cost_local": 15000
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "date": "2027-03-14",
+      "city": "Seoul",
+      "theme": "Palace morning · Namsan · Myeongdong shopping",
+      "items": [
+        {
+          "time": "09:30",
+          "name": "Gyeongbokgung Palace + guard-changing ceremony",
+          "category": "attraction",
+          "open_hours": "Mar–May 09:00–18:00 (last entry 17:00)",
+          "closed": "Tuesday",
+          "open_ok": true,
+          "cost_local": 3000,
+          "notes": "Friday is open. Wearing hanbok gets free entry. Kids' age rules for free entry: check on site."
+        },
+        {
+          "time": "12:30",
+          "name": "Lunch: Busan Jib (KMF halal Korean BBQ), Myeongdong",
+          "category": "food",
+          "open_hours": "11:00–22:00 (one source)",
+          "open_ok": "check",
+          "cost_local": 25000,
+          "notes": "Halal beef bulgogi / chicken dakgalbi. Prayer room on 3F. Sources disagree on address (11-4 vs 11-6 Myeongdong 8-gil)"
+        },
+        {
+          "time": "15:00",
+          "name": "Namsan cable car + N Seoul Tower observatory",
+          "category": "attraction",
+          "open_hours": "Weekend ~10:00–23:00",
+          "open_ok": true,
+          "cost_local": 36000,
+          "notes": "Observatory ₩21,000 adult / ₩16,000 child (3–12) + cable car round trip about ₩15,000 (check). Sunset views."
+        },
+        {
+          "time": "19:00",
+          "name": "Myeongdong: Olive Young flagship + Daiso",
+          "category": "shopping",
+          "open_hours": "Olive Young ~10:00–22:30",
+          "open_ok": true,
+          "notes": "Olive Young Myeongdong has no restroom, so use the subway station's"
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "date": "2027-03-15",
+      "city": "Seoul (Jamsil)",
+      "theme": "Lotte World + Seoul Sky (Changdeokgung closed today)",
+      "items": [
+        {
+          "time": "10:00",
+          "name": "Lotte World Adventure (indoor theme park)",
+          "category": "attraction",
+          "open_hours": "~10:00–21:00",
+          "closed": "Some facilities restricted for renovation Nov 2026 – Nov 2027",
+          "open_ok": "check",
+          "cost_local": 50000,
+          "notes": "Indoors, so it suits cold March weather. Prayer room near Jungle Adventure (3F, per directory). Check which rides are closed for renovation before you buy tickets."
+        },
+        {
+          "time": "13:00",
+          "name": "Lunch: halal options are very limited in Jamsil, so bring halal snacks / packed lunch",
+          "category": "food",
+          "open_ok": "check",
+          "cost_local": 10000,
+          "notes": "No halal restaurant confirmed inside Lotte World"
+        },
+        {
+          "time": "16:30",
+          "name": "Seoul Sky observatory (Lotte World Tower)",
+          "category": "attraction",
+          "open_hours": "~10:30–22:00 (check)",
+          "open_ok": "check",
+          "cost_local": 31000,
+          "notes": "Optional if your child is tired. Changdeokgung and most museums close on Monday, so we go to Jamsil today."
+        },
+        {
+          "time": "19:00",
+          "name": "Dinner: Itaewon halal (e.g. Kervan Turkish, 190 Itaewon-ro)",
+          "category": "food",
+          "open_ok": "check",
+          "cost_local": 25000,
+          "notes": "EID is closed on Monday, so go to Kervan instead"
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "date": "2027-03-16",
+      "city": "Seoul → Penang",
+      "theme": "Fly home",
+      "items": [
+        {
+          "time": "07:30",
+          "name": "Check out, AREX to ICN",
+          "category": "transport",
+          "cost_local": 12000,
+          "notes": "Claim your tax refund at the airport kiosks if you didn't get it instantly in-store"
+        },
+        {
+          "time": "11:00",
+          "name": "MH67 ICN → KUL, connect to PEN",
+          "category": "flight",
+          "notes": "Home around 20:00. Gyeongbokgung is closed on Tuesday anyway"
+        }
+      ]
+    }
   ],
   "food": [
-    {"name": "Halal Korean BBQ (bulgogi, dakgalbi)", "local_name": "불고기 / 닭갈비", "where": "Busan Jib, Myeongdong 8-gil", "price_local": 25000, "halal": "halal", "in_malaysia": "partial", "worth_it": "must", "notes": "KMF-certified according to halal travel guides (2026). Check the certificate QR on site."},
-    {"name": "Halal Korean set meals", "local_name": "한식", "where": "EID Halal Korean Food, Itaewon", "price_local": 20000, "halal": "halal", "in_malaysia": "no", "worth_it": "must", "notes": "Long-running Muslim-owned Korean restaurant. Closed Monday (most sources)."},
-    {"name": "Turkish / kebab", "local_name": "케밥", "where": "Kervan, Itaewon-ro 190", "price_local": 25000, "halal": "muslim-friendly", "in_malaysia": "yes", "worth_it": "maybe", "notes": "A backup halal meal. Turkish food is easy to find in Malaysia."},
-    {"name": "Hotteok (sweet filled pancake)", "local_name": "호떡", "where": "Myeongdong / Namdaemun stalls", "price_local": 2000, "halal": "unknown", "in_malaysia": "partial", "worth_it": "worth", "notes": "No meat, but the oil and dough are not certified. Your call."},
-    {"name": "Korean fried chicken (street / chain)", "local_name": "치킨", "where": "Kyochon, BBQ etc. in Korea", "price_local": 22000, "halal": "unknown", "in_malaysia": "yes", "worth_it": "skip", "notes": "Kyochon is JAKIM-certified in Malaysia, but its Korean outlets are NOT certified halal. Eat it back home."},
-    {"name": "Tteokbokki / odeng", "local_name": "떡볶이 / 어묵", "where": "Street stalls", "price_local": 5000, "halal": "unknown", "in_malaysia": "yes", "worth_it": "skip", "notes": "The broth often has non-halal stock. Halal tteokbokki is easy to get in Malaysia."}
+    {
+      "name": "Halal Korean BBQ (bulgogi, dakgalbi)",
+      "local_name": "불고기 / 닭갈비",
+      "where": "Busan Jib, Myeongdong 8-gil",
+      "price_local": 25000,
+      "halal": "halal",
+      "in_malaysia": "partial",
+      "worth_it": "must",
+      "notes": "KMF-certified according to halal travel guides (2026). Check the certificate QR on site.",
+      "halal_source": "KMF certificate (check QR on site) · seoulstart.com/guides/halal-food-korea-guide"
+    },
+    {
+      "name": "Halal Korean set meals",
+      "local_name": "한식",
+      "where": "EID Halal Korean Food, Itaewon",
+      "price_local": 20000,
+      "halal": "halal",
+      "in_malaysia": "no",
+      "worth_it": "must",
+      "notes": "Long-running Muslim-owned Korean restaurant. Closed Monday (most sources).",
+      "halal_source": "KMF certificate (check QR on site) · seoulstart.com/guides/halal-food-korea-guide"
+    },
+    {
+      "name": "Turkish / kebab",
+      "local_name": "케밥",
+      "where": "Kervan, Itaewon-ro 190",
+      "price_local": 25000,
+      "halal": "muslim-friendly",
+      "in_malaysia": "yes",
+      "worth_it": "maybe",
+      "notes": "A backup halal meal. Turkish food is easy to find in Malaysia.",
+      "halal_source": "KTO Muslim-friendly listing (self-declared)"
+    },
+    {
+      "name": "Hotteok (sweet filled pancake)",
+      "local_name": "호떡",
+      "where": "Myeongdong / Namdaemun stalls",
+      "price_local": 2000,
+      "halal": "unknown",
+      "in_malaysia": "partial",
+      "worth_it": "worth",
+      "notes": "No meat, but the oil and dough are not certified. Your call."
+    },
+    {
+      "name": "Korean fried chicken (street / chain)",
+      "local_name": "치킨",
+      "where": "Kyochon, BBQ etc. in Korea",
+      "price_local": 22000,
+      "halal": "unknown",
+      "in_malaysia": "yes",
+      "worth_it": "skip",
+      "notes": "Kyochon is JAKIM-certified in Malaysia, but its Korean outlets are NOT certified halal. Eat it back home."
+    },
+    {
+      "name": "Tteokbokki / odeng",
+      "local_name": "떡볶이 / 어묵",
+      "where": "Street stalls",
+      "price_local": 5000,
+      "halal": "unknown",
+      "in_malaysia": "yes",
+      "worth_it": "skip",
+      "notes": "The broth often has non-halal stock. Halal tteokbokki is easy to get in Malaysia."
+    }
   ],
   "shopping": [
-    {"name": "Olive Young (Myeongdong flagship)", "type": "Beauty / drugstore", "in_malaysia": "partial", "price_diff": "Much bigger range; instant tax refund (estimate)", "worth_it": "must", "notes": "In Malaysia it is only a 'K-Beauty Edit' corner inside Sephora (e.g. Fahrenheit88, from Sep 2026) plus Shopee"},
-    {"name": "Daiso Korea", "type": "Household / stationery / beauty", "in_malaysia": "no", "price_diff": "Most items ₩1,000–5,000 (RM 3–15)", "worth_it": "worth", "notes": "A different company from the Japanese Daiso in Malaysia. Good for kids' stationery."},
-    {"name": "LINE Friends / Kakao Friends stores", "type": "Character goods", "in_malaysia": "no", "price_diff": "-", "worth_it": "worth", "notes": "Malaysia only gets pop-ups (e.g. a Play Nation pop-up at TRX until Mar 2027). Good for kids."},
-    {"name": "Musinsa Standard", "type": "Basics fashion", "in_malaysia": "no", "price_diff": "Korea is cheaper (estimate)", "worth_it": "maybe", "notes": "Malaysia distribution deal with MAP announced Aug 2026, but no store has opened yet (Malay Mail, Nov 2026)"},
-    {"name": "Gentle Monster", "type": "Eyewear", "in_malaysia": "yes", "price_diff": "Small gap", "worth_it": "skip", "notes": "Malaysia has stores at The Exchange TRX and Suria KLCC (since May 2026)"},
-    {"name": "Tamburins", "type": "Perfume / hand cream", "in_malaysia": "unknown", "price_diff": "-", "worth_it": "maybe", "notes": "First Malaysian boutique at Suria KLCC reported as coming soon (Nov 2026)"}
+    {
+      "name": "Olive Young (Myeongdong flagship)",
+      "type": "Beauty / drugstore",
+      "in_malaysia": "partial",
+      "price_diff": "Much bigger range; instant tax refund (estimate)",
+      "worth_it": "must",
+      "notes": "In Malaysia it is only a 'K-Beauty Edit' corner inside Sephora (e.g. Fahrenheit88, from Sep 2026) plus Shopee"
+    },
+    {
+      "name": "Daiso Korea",
+      "type": "Household / stationery / beauty",
+      "in_malaysia": "no",
+      "price_diff": "Most items ₩1,000–5,000 (RM 3–15)",
+      "worth_it": "worth",
+      "notes": "A different company from the Japanese Daiso in Malaysia. Good for kids' stationery."
+    },
+    {
+      "name": "LINE Friends / Kakao Friends stores",
+      "type": "Character goods",
+      "in_malaysia": "no",
+      "price_diff": "-",
+      "worth_it": "worth",
+      "notes": "Malaysia only gets pop-ups (e.g. a Play Nation pop-up at TRX until Mar 2027). Good for kids."
+    },
+    {
+      "name": "Musinsa Standard",
+      "type": "Basics fashion",
+      "in_malaysia": "no",
+      "price_diff": "Korea is cheaper (estimate)",
+      "worth_it": "maybe",
+      "notes": "Malaysia distribution deal with MAP announced Aug 2026, but no store has opened yet (Malay Mail, Nov 2026)"
+    },
+    {
+      "name": "Gentle Monster",
+      "type": "Eyewear",
+      "in_malaysia": "yes",
+      "price_diff": "Small gap",
+      "worth_it": "skip",
+      "notes": "Malaysia has stores at The Exchange TRX and Suria KLCC (since May 2026)"
+    },
+    {
+      "name": "Tamburins",
+      "type": "Perfume / hand cream",
+      "in_malaysia": "unknown",
+      "price_diff": "-",
+      "worth_it": "maybe",
+      "notes": "First Malaysian boutique at Suria KLCC reported as coming soon (Nov 2026)"
+    }
   ],
   "budget": [
-    {"category": "flight", "item": "MH return PEN-KUL-ICN, 2 adults", "amount": 2200, "currency": "MYR", "qty": 2, "per": "group", "notes": "Estimate. Fares are high in Raya week."},
-    {"category": "flight", "item": "MH return, child (~75% of adult)", "amount": 1650, "currency": "MYR", "qty": 1, "per": "group", "notes": "Estimate. Child fare rules depend on the fare type."},
-    {"category": "hotel", "item": "3★ Myeongdong family/triple room", "amount": 180000, "currency": "local", "qty": 4, "per": "group", "notes": "₩180,000 a night × 4 nights (estimate, 3★ triples ~US$60-100 in 2026 listings)"},
-    {"category": "transport", "item": "AREX, subway, taxis, Nami shuttle", "amount": 70000, "currency": "local", "qty": 1, "per": "person", "notes": "The child pays less on the subway (estimate)"},
-    {"category": "attraction", "item": "Palace, Nami, N Seoul Tower, Lotte World, Seoul Sky", "amount": 140000, "currency": "local", "qty": 1, "per": "person", "notes": "Sum of the per-person tickets above. The child pays less at most places."},
-    {"category": "food", "item": "Halal meals + snacks", "amount": 60000, "currency": "local", "qty": 5, "per": "person", "notes": "₩60,000 a day × 5 days. Halal restaurants cost more than average."},
-    {"category": "other", "item": "K-ETA (adults only; 17 and under exempt)", "amount": 10000, "currency": "local", "qty": 2, "per": "group", "notes": "Your child still needs the e-Arrival Card"},
-    {"category": "other", "item": "eSIM / data (5 days)", "amount": 35, "currency": "MYR", "qty": 2, "per": "group", "notes": "One for each adult"},
-    {"category": "other", "item": "Travel insurance (family plan)", "amount": 250, "currency": "MYR", "qty": 1, "per": "group", "notes": "Estimate"},
-    {"category": "shopping", "item": "Shopping allowance (moderate)", "amount": 1500, "currency": "MYR", "qty": 1, "per": "group", "notes": "Olive Young, Daiso, character goods"}
+    {
+      "category": "flight",
+      "item": "MH return PEN-KUL-ICN (adult)",
+      "amount": 2200,
+      "currency": "MYR",
+      "qty": 1,
+      "per": "adult",
+      "notes": "Estimate. Fares are high in Raya week."
+    },
+    {
+      "category": "flight",
+      "item": "MH return PEN-KUL-ICN (child, ~75% of adult)",
+      "amount": 1650,
+      "currency": "MYR",
+      "qty": 1,
+      "per": "child",
+      "notes": "Estimate. Child fare rules depend on the fare type."
+    },
+    {
+      "category": "hotel",
+      "item": "3★ Myeongdong family/triple room",
+      "amount": 180000,
+      "currency": "local",
+      "qty": 4,
+      "per": "group",
+      "notes": "₩180,000 a night × 4 nights (estimate, 3★ triples ~US$60-100 in 2026 listings)"
+    },
+    {
+      "category": "transport",
+      "item": "AREX, subway, taxis, Nami shuttle",
+      "amount": 70000,
+      "currency": "local",
+      "qty": 1,
+      "per": "person",
+      "notes": "The child pays less on the subway (estimate)"
+    },
+    {
+      "category": "attraction",
+      "item": "Palace, Nami, N Seoul Tower, Lotte World, Seoul Sky",
+      "amount": 140000,
+      "currency": "local",
+      "qty": 1,
+      "per": "person",
+      "notes": "Sum of the per-person tickets above. The child pays less at most places."
+    },
+    {
+      "category": "food",
+      "item": "Halal meals + snacks",
+      "amount": 60000,
+      "currency": "local",
+      "qty": 5,
+      "per": "person",
+      "notes": "₩60,000 a day × 5 days. Halal restaurants cost more than average."
+    },
+    {
+      "category": "other",
+      "item": "K-ETA (adults only; 17 and under exempt)",
+      "amount": 10000,
+      "currency": "local",
+      "qty": 1,
+      "per": "adult",
+      "notes": "Your child still needs the e-Arrival Card"
+    },
+    {
+      "category": "other",
+      "item": "eSIM / data (5 days)",
+      "amount": 35,
+      "currency": "MYR",
+      "qty": 1,
+      "per": "adult",
+      "notes": "One for each adult"
+    },
+    {
+      "category": "other",
+      "item": "Travel insurance (family plan)",
+      "amount": 250,
+      "currency": "MYR",
+      "qty": 1,
+      "per": "group",
+      "notes": "Estimate"
+    },
+    {
+      "category": "shopping",
+      "item": "Shopping allowance (moderate)",
+      "amount": 1500,
+      "currency": "MYR",
+      "qty": 1,
+      "per": "group",
+      "notes": "Olive Young, Daiso, character goods"
+    }
   ],
   "checklist": [
-    {"item": "Passports valid 6+ months (child too)", "notes": "Each child needs their own passport"},
-    {"item": "K-ETA for both adults (apply ≥72h before, only at k-eta.go.kr)", "notes": "Malaysia is NOT on the 2026 exemption list; no 2027 extension announced yet"},
-    {"item": "e-Arrival Card for the child (e-arrivalcard.go.kr, within 3 days of arrival)", "notes": "Children 17 and under don't need a K-ETA but do need the arrival card"},
-    {"item": "Pre-order Muslim meals (MOML) for all 3 on every flight sector", "notes": "MH is halal by default; KE and D7 need it requested"},
-    {"item": "Winter clothes: down jacket, heat-tech, gloves for your child", "notes": "Mid-March Seoul is about 0-11°C"},
-    {"item": "Apps: Naver Map, Papago, Kakao T, a halal finder app", "notes": ""},
-    {"item": "Type C/F plug adapter", "notes": ""}
+    {
+      "item": "Passports valid 6+ months (child too)",
+      "notes": "Each child needs their own passport"
+    },
+    {
+      "item": "K-ETA for both adults (apply ≥72h before, only at k-eta.go.kr)",
+      "notes": "Malaysia is NOT on the 2026 exemption list; no 2027 extension announced yet"
+    },
+    {
+      "item": "e-Arrival Card for the child (e-arrivalcard.go.kr, within 3 days of arrival)",
+      "notes": "Children 17 and under don't need a K-ETA but do need the arrival card"
+    },
+    {
+      "item": "Pre-order Muslim meals (MOML) for all 3 on every flight sector",
+      "notes": "MH is halal by default; KE and D7 need it requested"
+    },
+    {
+      "item": "Winter clothes: down jacket, heat-tech, gloves for your child",
+      "notes": "Mid-March Seoul is about 0-11°C"
+    },
+    {
+      "item": "Apps: Naver Map, Papago, Kakao T, a halal finder app",
+      "notes": ""
+    },
+    {
+      "item": "Type C/F plug adapter",
+      "notes": ""
+    }
   ],
   "tips": [
     "Base yourselves in Myeongdong. Busan Jib (halal) is walking distance away and Itaewon's halal street is about 15 minutes by taxi.",
@@ -136,25 +612,105 @@
     "Changdeokgung, Changgyeonggung and most museums close on Monday; Gyeongbokgung closes on Tuesday. The plan avoids both."
   ],
   "sources": [
-    {"title": "KRW/MYR rate (1 MYR = 326.82 KRW, to 13 Nov 2026)", "url": "https://www.currency.me.uk/convert/myr/krw?amount=1", "checked": "2026-11-19"},
-    {"title": "K-ETA exemption to 31 Dec 2026 (EY alert)", "url": "https://www.ey.com/en_gl/technical/tax-alerts/korea-extends-temporary-electronic-travel-authorization-exemption-until-31-december-2026", "checked": "2026-11-19"},
-    {"title": "Malaysians still need K-ETA (Zafigo correction)", "url": "https://zafigo.com/?p=85908", "checked": "2026-11-19"},
-    {"title": "K-ETA age exemption 17 and under / 65+ (Wise MY)", "url": "https://wise.com/my/blog/travel-to-korea-from-malaysia", "checked": "2026-11-19"},
-    {"title": "e-Arrival Card mandatory from 1 Jan 2026 (Wego)", "url": "https://blog.wego.com/south-korea-travel-rules-k-eta-waiver-2026/", "checked": "2026-11-19"},
-    {"title": "School holidays 2027 (ecentral.my)", "url": "https://ecentral.my/cuti-sekolah-2027/", "checked": "2026-11-19"},
-    {"title": "MH66 KUL-ICN schedule (flightmapper)", "url": "https://info.flightmapper.net/flight/Malaysia_Airlines_MH_66", "checked": "2026-11-19"},
-    {"title": "Korean Air KUL-ICN fares", "url": "https://www.koreanair.com/flights/en/flights-from-kuala-lumpur-to-seoul", "checked": "2026-11-19"},
-    {"title": "Batik Air KUL-ICN May 2026 cuts (AeroRoutes)", "url": "https://www.aeroroutes.com/eng/260421-odmay26icn", "checked": "2026-11-19"},
-    {"title": "No non-stop PEN-ICN (FlightConnections)", "url": "https://www.flightconnections.com/flights-from-pen-to-icn", "checked": "2026-11-19"},
-    {"title": "Seoul palaces closed days", "url": "https://thesoulofseoul.net/a-quick-guide-to-the-five-palaces-of-seoul/", "checked": "2026-11-19"},
-    {"title": "Halal food in Myeongdong (Busan Jib)", "url": "https://halalspy.com/halal-food-guide/asia/myeongdong/", "checked": "2026-11-19"},
-    {"title": "EID Halal Korean Food (Trazy)", "url": "https://www.trazy.com/spot/2886/eid-이드-halal-korean-food-restaurant-cafe", "checked": "2026-11-19"},
-    {"title": "Nami Island halal & prayer room", "url": "https://www.thejakartapost.com/travel/2017/03/21/muslim-friendly-spots-for-holidaymakers-on-nami-island.html", "checked": "2026-11-19"},
-    {"title": "Lotte World renovation Nov 2026-Nov 2027 (Lotte Hotel)", "url": "https://app.lottehotel.com/world-hotel/en/offers/packages/260101/activity_world", "checked": "2026-11-19"},
-    {"title": "N Seoul Tower prices (WOWPASS guide)", "url": "https://wowpass-event.oopy.io/adceab42-13fa-41a3-903b-9c0f57d52173", "checked": "2026-11-19"},
-    {"title": "Olive Young K-Beauty Edit at Sephora MY", "url": "https://thesmartlocal.my/olive-young-sephora-malaysia/", "checked": "2026-11-19"},
-    {"title": "Gentle Monster Suria KLCC", "url": "https://couturetroopers.com/2026/05/18/gentle-monster-klcc-flagship-veggie-collection-2026/", "checked": "2026-11-19"},
-    {"title": "Musinsa / Tamburins in Malaysia (Malay Mail)", "url": "https://malaymail.com/news/life/2026/11/09/seoul-much-style-from-musinsa-standard-to-tamburins-cool-korean-labels-take-over-malaysian-malls/242567", "checked": "2026-11-19"},
-    {"title": "Kyochon Malaysia JAKIM halal", "url": "https://kyochon.com.my/halal/", "checked": "2026-11-19"}
+    {
+      "title": "KRW/MYR rate (1 MYR = 326.82 KRW, to 13 Nov 2026)",
+      "url": "https://www.currency.me.uk/convert/myr/krw?amount=1",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "K-ETA exemption to 31 Dec 2026 (EY alert)",
+      "url": "https://www.ey.com/en_gl/technical/tax-alerts/korea-extends-temporary-electronic-travel-authorization-exemption-until-31-december-2026",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Malaysians still need K-ETA (Zafigo correction)",
+      "url": "https://zafigo.com/?p=85908",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "K-ETA age exemption 17 and under / 65+ (Wise MY)",
+      "url": "https://wise.com/my/blog/travel-to-korea-from-malaysia",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "e-Arrival Card mandatory from 1 Jan 2026 (Wego)",
+      "url": "https://blog.wego.com/south-korea-travel-rules-k-eta-waiver-2026/",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "School holidays 2027 (ecentral.my)",
+      "url": "https://ecentral.my/cuti-sekolah-2027/",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "MH66 KUL-ICN schedule (flightmapper)",
+      "url": "https://info.flightmapper.net/flight/Malaysia_Airlines_MH_66",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Korean Air KUL-ICN fares",
+      "url": "https://www.koreanair.com/flights/en/flights-from-kuala-lumpur-to-seoul",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Batik Air KUL-ICN May 2026 cuts (AeroRoutes)",
+      "url": "https://www.aeroroutes.com/eng/260421-odmay26icn",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "No non-stop PEN-ICN (FlightConnections)",
+      "url": "https://www.flightconnections.com/flights-from-pen-to-icn",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Seoul palaces closed days",
+      "url": "https://thesoulofseoul.net/a-quick-guide-to-the-five-palaces-of-seoul/",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Halal food in Myeongdong (Busan Jib)",
+      "url": "https://halalspy.com/halal-food-guide/asia/myeongdong/",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "EID Halal Korean Food (Trazy)",
+      "url": "https://www.trazy.com/spot/2886/eid-이드-halal-korean-food-restaurant-cafe",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Nami Island halal & prayer room",
+      "url": "https://www.thejakartapost.com/travel/2017/03/21/muslim-friendly-spots-for-holidaymakers-on-nami-island.html",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Lotte World renovation Nov 2026-Nov 2027 (Lotte Hotel)",
+      "url": "https://app.lottehotel.com/world-hotel/en/offers/packages/260101/activity_world",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "N Seoul Tower prices (WOWPASS guide)",
+      "url": "https://wowpass-event.oopy.io/adceab42-13fa-41a3-903b-9c0f57d52173",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Olive Young K-Beauty Edit at Sephora MY",
+      "url": "https://thesmartlocal.my/olive-young-sephora-malaysia/",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Gentle Monster Suria KLCC",
+      "url": "https://couturetroopers.com/2026/05/18/gentle-monster-klcc-flagship-veggie-collection-2026/",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Musinsa / Tamburins in Malaysia (Malay Mail)",
+      "url": "https://malaymail.com/news/life/2026/11/09/seoul-much-style-from-musinsa-standard-to-tamburins-cool-korean-labels-take-over-malaysian-malls/242567",
+      "checked": "2026-11-19"
+    },
+    {
+      "title": "Kyochon Malaysia JAKIM halal",
+      "url": "https://kyochon.com.my/halal/",
+      "checked": "2026-11-19"
+    }
   ]
 }

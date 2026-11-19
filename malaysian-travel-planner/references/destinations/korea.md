@@ -4,15 +4,17 @@
 
 ## Entry for Malaysian passport holders
 - Visa-free short stay (generally up to 90 days).
-- **K-ETA is required for Malaysians.** Malaysia is not on Korea's temporary K-ETA exemption list, which was extended to 31 Dec 2026 (verify on eta.go.kr). Fee is about ₩10,000. Apply at least 72h before departure, and only via the official site or app.
-- An e-Arrival Card is also in use. Travellers with an approved K-ETA may be exempt (verify).
+- **K-ETA is required for Malaysians** aged 18–64. Malaysia was never on Korea's temporary exemption list, and that list itself expires 31 Dec 2026 with no 2027 extension announced (verify on eta.go.kr). Fee about ₩10,000; apply at least 72h before departure, official site or app only.
+- **Age exemption:** travellers **17 and under or 65 and over** don't need K-ETA, but they **must** fill in the **e-Arrival Card** (mandatory since 1 Jan 2026, submit within 3 days before arrival). Holders of an approved K-ETA are exempt from the e-Arrival Card.
 
 ## Getting there
 | Airport | Time from KUL | Typical carriers (verify) |
 |---|---|---|
-| Seoul ICN | ~6.5h | Malaysia Airlines, AirAsia X / AirAsia (route moving to AK), Korean Air, others |
+| Seoul ICN | ~6.5h | Malaysia Airlines (MH66 KUL 23:15 → ICN 06:30 in winter 2026/27), AirAsia X / AirAsia (route moving to AK), Batik Air (reduced frequency), Korean Air |
 | Busan PUS | ~6h | Check (fewer direct flights) |
 | Jeju CJU | ~6h | Check |
+
+No non-stop from Penang or Kota Kinabalu (Batik's BKI–ICN was cancelled in 2026). Connect via KUL on one through-ticket so bags are checked through.
 
 ## Money
 - Cards work almost everywhere, including taxis and convenience stores. Keep some cash for markets.
@@ -48,7 +50,17 @@ Type C/F (two round pins), 220V. Malaysian devices are fine, but you need an ada
 | Bibimbap, naengmyeon, samgyetang | Samgyetang is chicken (not halal unless certified) |
 | Myeongdong street food | Mixed |
 
-Halal: the **Itaewon** mosque area has many halal restaurants. The Korea Tourism Organization classifies Muslim-friendly restaurants.
+Halal:
+- The KTO classifies restaurants in four tiers: **halal certified** (KMF certificate, verify by QR), **self-certified**, **Muslim-friendly** and **pork-free**. Use the tier as `halal`, the certificate in `halal_source`.
+- **Itaewon** (Seoul Central Mosque area) has the most halal restaurants, e.g. EID Halal Korean Food (closed Monday per most sources; one says Sunday, so verify). **Myeongdong** has Busan Jib and others.
+- **Nami Island**: Dongmoon (halal) plus a prayer room on Baplex 2F. **Busan**: halal food around Al-Fatah mosque.
+- Kyochon is JAKIM-halal **in Malaysia only**; Korean outlets are not certified.
+- Friday prayer: Seoul Central Mosque (Itaewon), Busan Al-Fatah mosque.
+
+## Families
+- Lotte World Adventure (indoor theme park): some attractions closed for renovation **1 Nov 2026 – 30 Nov 2027** (verify which).
+- Kids ≤17 skip K-ETA but still need the e-Arrival Card and their own passport.
+- Indoor backups for cold days: COEX Aquarium, National Museum of Korea (free), Lotte World.
 
 ## Malaysian-specific tips
 - Olive Young in MY is only a small Sephora corner plus Shopee, so the Korean flagship stores are `must` for beauty fans.

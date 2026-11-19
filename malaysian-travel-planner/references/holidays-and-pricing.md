@@ -33,6 +33,12 @@ This is a **heuristic, not a fare quote**. Explain it in plain words: "撞到学
   - `--leave N`: the longest trips using at most N leave days (only "maximal" windows, which can't be extended for free)
   - `--days N`: the N-day windows with the least leave, then the lowest pressure
 
+## Families and Muslim travellers
+
+- `--family`: counts **school days missed** (the state's working days that aren't public or school holidays) and ranks windows with fewer missed days first. For families, school holidays are the *wanted* window even though fares are higher, so say that out loud.
+- `--muslim`: warns about **Ramadan** days (sahur/iftar planning; some halal restaurants close by day) and **Hari Raya day 1 abroad**, and ranks those windows lower. Many Muslim families prefer to fly out on Raya day 2 or 3 after celebrating at home.
+- Ramadan dates live in `data/my_holidays.json` → `observances` (provisional).
+
 ## Bridging tips to mention when relevant
 
 - Holiday on a Thursday → take Friday off → 4-day weekend for 1 leave day.

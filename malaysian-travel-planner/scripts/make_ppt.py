@@ -15,7 +15,7 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Emu, Inches, Pt
 
-from common import (WEEKDAYS_SHORT, calendar_model, BUDGET_CAT_LABELS, CATEGORY_LABELS, NO_HOURS_CATEGORIES, balanced_chunks, DIET_LABELS, HALAL_LABELS, IMPACT_LABELS, IN_MY_LABELS, PACE_LABELS,
+from common import (ITEM_CATEGORY_LABELS, fmt_rate, per_multiplier, WEEKDAYS_SHORT, calendar_model, BUDGET_CAT_LABELS, CATEGORY_LABELS, NO_HOURS_CATEGORIES, balanced_chunks, DIET_LABELS, HALAL_LABELS, IMPACT_LABELS, IN_MY_LABELS, PACE_LABELS,
                     WEEKDAYS, WORTH_LABELS, L, fmt_money, load_trip, travelers_count, travelers_text)
 
 NAVY = RGBColor(0x14, 0x21, 0x3D)
@@ -186,9 +186,11 @@ class Deck:
             (L("total_pp", lang), fmt_money(total_group / pax) if total_group else "-"),
             (L("price_impact", lang), L(ha.get("price_impact", "low"), lang, IMPACT_LABELS)),
         ]
+        over = self.over_budget()
         for i, (lab, val) in enumerate(cards):
             self.card(s, MARGIN + i * (cw + gap), y, cw, ch, lab, val,
-                      value_color=RED if i == 2 else NAVY, value_size=24)
+                      value_color=RED if (i == 2 and over) else NAVY, value_size=24,
+                      accent=RED if (i == 2 and over) else GOLD)
         prefs = m.get("preferences", {})
         ranking = prefs.get("ranking", [])
         medals = ["🥇", "🥈", "🥉"]
@@ -201,7 +203,7 @@ class Deck:
         fx = t["fx"]
         rate = float(fx["rate_myr_per_unit"])
         right = [
-            f"💱 1 {fx['currency']} = RM {rate:.4f}  ·  RM 1 = {1 / rate:,.2f} {fx['currency']}",
+            f"💱 {fmt_rate(rate, fx['currency'])}",
             f"    ({fx.get('rate_date', '')}, {fx.get('source', '')})",
             "",
         ]
@@ -239,6 +241,9 @@ class Deck:
         for a in alts[:3]:
             rows.append(["💡", f"{a.get('start')} → {a.get('end')}",
                          f"{L('alternatives', lang)}: {a.get('note', '')} ({L(a.get('price_impact', 'low'), lang, IMPACT_LABELS)})"])
+        if len(rows) > 10:
+            extra = len(rows) - 9
+            rows = rows[:9] + [["…", "", L("more_in_excel", lang, n=extra)]]
         if rows:
             x0 = MARGIN + left_w + Inches(0.3)
             # table helper spans full width; build a narrower one manually
@@ -384,7 +389,7 @@ class Deck:
                     if it.get("category") in NO_HOURS_CATEGORIES and "open_ok" not in it:
                         mark = "—"
                     rows.append([it.get("time", ""), it.get("name", ""),
-                                 L(it.get("category", "other"), lang, CATEGORY_LABELS),
+                                 L(it.get("category", "other"), lang, ITEM_CATEGORY_LABELS),
                                  " / ".join(x for x in [it.get("open_hours", ""),
                                                          (L("closed", lang) + ": " + it["closed"]) if it.get("closed") else ""] if x),
                                  mark, it.get("notes", "")])
@@ -394,17 +399,17 @@ class Deck:
                     self.rect(s, MARGIN, H - Inches(1.15), W - 2 * MARGIN, Inches(0.55), WHITE)
                     self.rect(s, MARGIN, H - Inches(1.15), Inches(0.08), Inches(0.55), GOLD)
                     self.text(s, MARGIN + Inches(0.25), H - Inches(1.1), W - 2 * MARGIN - Inches(0.4), Inches(0.45),
-                              f"💰 {L('day_cost', lang)}: {day_local:,.0f} {cur} ≈ {fmt_money(day_local * rate)} / "
-                              f"{L('per_person', lang)}", size=14, bold=True, color=NAVY, anchor=MSO_ANCHOR.MIDDLE)
+                              f"💰 {L('day_cost', lang)}: {day_local:,.0f} {cur} ≈ {fmt_money(day_local * rate, decimals=0)} "
+                              f"({L('per_person', lang)})", size=14, bold=True, color=NAVY, anchor=MSO_ANCHOR.MIDDLE)
 
-    def paged_table(self, title_key, heads, rows, widths, fills=None, subtitle=""):
-        chunks = balanced_chunks(list(range(len(rows))), ROWS_PER_SLIDE)
+    def paged_table(self, title_key, heads, rows, widths, fills=None, subtitle="", rows_per=ROWS_PER_SLIDE, font=12):
+        chunks = balanced_chunks(list(range(len(rows))), rows_per)
         for pi, idx in enumerate(chunks):
             title = L(title_key, self.lang)
             if len(chunks) > 1:
                 title += f" ({pi + 1}/{len(chunks)})"
             s = self.new_slide(title, subtitle)
-            self.table(s, heads, [rows[i] for i in idx], widths, font=12,
+            self.table(s, heads, [rows[i] for i in idx], widths, font=font,
                        row_fills=[fills[i] for i in idx] if fills else None)
 
     def food(self):
@@ -436,17 +441,21 @@ class Deck:
 
     def budget_rows(self):
         rate = float(self.trip["fx"]["rate_myr_per_unit"])
-        pax = travelers_count(self.meta)
         out = []
         for b in self.trip.get("budget", []):
             amt = float(b.get("amount") or 0)
             myr = amt if b.get("currency") == "MYR" else amt * rate
-            mult = pax if b.get("per", "person") == "person" else 1
+            mult = per_multiplier(b.get("per", "person"), self.meta)
             out.append((b, myr * float(b.get("qty", 1)) * mult))
         return out
 
     def budget_total(self):
         return sum(v for _, v in self.budget_rows())
+
+    def over_budget(self) -> bool:
+        target = self.meta.get("budget_myr_pp")
+        total = self.budget_total()
+        return isinstance(target, (int, float)) and total / travelers_count(self.meta) > target
 
     def budget(self):
         rows_raw = self.budget_rows()
@@ -459,19 +468,28 @@ class Deck:
         for b, v in rows_raw:
             cats[b.get("category", "other")] = cats.get(b.get("category", "other"), 0) + v
         total = sum(cats.values())
-        s = self.new_slide(L("budget", lang), f"1 {cur} = RM {float(self.trip['fx']['rate_myr_per_unit']):.4f}")
-        self.card(s, MARGIN, Inches(1.8), Inches(3.6), Inches(1.4), L("total_pp", lang), fmt_money(total / pax),
-                  accent=RED, value_color=RED, value_size=30)
+        s = self.new_slide(L("budget", lang), fmt_rate(float(self.trip["fx"]["rate_myr_per_unit"]), cur))
+        over = self.over_budget()
+        target = self.meta.get("budget_myr_pp")
+        label = L("total_pp", lang)
+        if isinstance(target, (int, float)):
+            label += f"  ·  {L('budget_target', lang)} {fmt_money(target)}"
+        self.card(s, MARGIN, Inches(1.8), Inches(3.6), Inches(1.4), label, fmt_money(total / pax),
+                  accent=RED if over else GOLD, value_color=RED if over else NAVY, value_size=30)
+        if isinstance(target, (int, float)):
+            self.text(s, MARGIN, Inches(4.95), Inches(3.6), Inches(0.4),
+                      ("⚠️ " + L("over_budget", lang)) if over else ("✅ " + L("within_budget", lang)),
+                      size=13, bold=True, color=RED if over else RGBColor(0x2A, 0x9D, 0x8F))
         self.card(s, MARGIN, Inches(3.4), Inches(3.6), Inches(1.4), L("total_group", lang), fmt_money(total),
                   value_size=26)
         # category bars
-        x0, y0, bar_w = Inches(4.7), Inches(1.85), Inches(5.2)
+        x0, y0, bar_w = Inches(4.7), Inches(1.85), Inches(4.2)
         top = max(cats.values()) if cats else 1
         for i, (k, v) in enumerate(sorted(cats.items(), key=lambda kv: -kv[1])):
             y = y0 + i * Inches(0.62)
             self.text(s, x0, y, Inches(1.8), Inches(0.45), L(k, lang, BUDGET_CAT_LABELS), size=13, bold=True)
             self.rect(s, x0 + Inches(1.9), y + Inches(0.08), int(bar_w * (v / top)) or 1, Inches(0.3), GOLD)
-            self.text(s, x0 + Inches(1.95) + int(bar_w * (v / top)), y, Inches(2.0), Inches(0.45),
+            self.text(s, x0 + Inches(1.95) + int(bar_w * (v / top)), y + Inches(0.02), Inches(2.0), Inches(0.4),
                       f"{fmt_money(v)} ({v / total:.0%})", size=12, color=MUTED)
         # detail table on next slide(s)
         heads = [L("category", lang), L("item", lang), L("amount", lang), L("qty", lang), L("per", lang),
@@ -481,9 +499,9 @@ class Deck:
             amt = b.get("amount")
             amt_s = fmt_money(amt) if b.get("currency") == "MYR" else f"{float(amt or 0):,.0f} {cur}"
             rows.append([L(b.get("category", "other"), lang, BUDGET_CAT_LABELS), b.get("item", ""), amt_s,
-                         b.get("qty", 1), L("per_person", lang) if b.get("per", "person") == "person" else L("per_group", lang),
+                         b.get("qty", 1), L("per_" + b.get("per", "person").replace("group", "group"), lang),
                          fmt_money(v), b.get("notes", "")])
-        self.paged_table("budget", heads, rows, [1.4, 2.6, 1.6, 0.6, 0.9, 1.4, 3.6])
+        self.paged_table("budget", heads, rows, [1.4, 2.6, 1.6, 0.6, 1.1, 1.4, 3.4], rows_per=11, font=11)
 
     def checklist(self):
         t, lang = self.trip, self.lang
@@ -491,24 +509,38 @@ class Deck:
         tips = t.get("tips", [])
         if not items and not tips:
             return
-        s = self.new_slide(L("checklist", lang) + " & " + L("tips", lang))
-        lines = [("☐ " + (i.get("item", "") if isinstance(i, dict) else i)) for i in items]
+        lines = []
+        for i in items:
+            if isinstance(i, dict):
+                lines.append("☐ " + i.get("item", "") + (f"  — {i['notes']}" if i.get("notes") else ""))
+            else:
+                lines.append("☐ " + i)
+        item_pages = balanced_chunks(lines, 11) or [[]]
+        tip_pages = balanced_chunks(["• " + x for x in tips], 7) or [[]]
+        n = max(len(item_pages), len(tip_pages))
         half = Inches(5.9)
-        self.text(s, MARGIN, Inches(1.6), half, Inches(5.2), lines[:14], size=13)
-        if tips:
-            self.rect(s, MARGIN + half + Inches(0.3), Inches(1.6), W - 2 * MARGIN - half - Inches(0.3), Inches(5.2), WHITE)
-            self.text(s, MARGIN + half + Inches(0.5), Inches(1.7), W - 2 * MARGIN - half - Inches(0.6), Inches(0.4),
-                      "💡 " + L("tips", lang), size=16, bold=True, color=NAVY)
-            self.text(s, MARGIN + half + Inches(0.5), Inches(2.2), W - 2 * MARGIN - half - Inches(0.6), Inches(4.5),
-                      ["• " + x for x in tips[:8]], size=12)
+        for pi in range(n):
+            title = L("checklist", lang) + " & " + L("tips", lang) + (f" ({pi + 1}/{n})" if n > 1 else "")
+            s = self.new_slide(title)
+            if pi < len(item_pages):
+                self.text(s, MARGIN, Inches(1.6), half, Inches(5.2), item_pages[pi], size=12)
+            if pi < len(tip_pages) and tip_pages[pi]:
+                self.rect(s, MARGIN + half + Inches(0.3), Inches(1.6), W - 2 * MARGIN - half - Inches(0.3), Inches(5.2), WHITE)
+                self.text(s, MARGIN + half + Inches(0.5), Inches(1.7), W - 2 * MARGIN - half - Inches(0.6), Inches(0.4),
+                          "💡 " + L("tips", lang), size=16, bold=True, color=NAVY)
+                self.text(s, MARGIN + half + Inches(0.5), Inches(2.2), W - 2 * MARGIN - half - Inches(0.6), Inches(4.5),
+                          tip_pages[pi], size=12)
 
     def sources(self):
         src = self.trip.get("sources", [])
         if not src:
             return
-        s = self.new_slide(L("sources", self.lang), L("disclaimer", self.lang))
-        lines = [f"• {x.get('title', '')} — {x.get('url', '')} ({x.get('checked', '')})" for x in src[:16]]
-        self.text(s, MARGIN, Inches(1.8), W - 2 * MARGIN, Inches(5), lines, size=11, color=MUTED)
+        lines = [f"• {x.get('title', '')} — {x.get('url', '')} ({x.get('checked', '')})" for x in src]
+        pages = balanced_chunks(lines, 14)
+        for pi, chunk in enumerate(pages):
+            title = L("sources", self.lang) + (f" ({pi + 1}/{len(pages)})" if len(pages) > 1 else "")
+            s = self.new_slide(title, L("disclaimer", self.lang))
+            self.text(s, MARGIN, Inches(1.8), W - 2 * MARGIN, Inches(5), chunk, size=11, color=MUTED)
 
     def build(self, out):
         self.cover()

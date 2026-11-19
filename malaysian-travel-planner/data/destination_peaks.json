@@ -1,60 +1,1438 @@
 {
   "_about": "Destination-side peak seasons, local holidays and weather windows that move flight/hotel prices or close shops. Level: medium | high | very_high. kind: price (crowds/prices up), closure (many shops/restaurants shut), weather (risk, usually cheaper). Dates are approximate; nature seasons (sakura, autumn leaves) shift every year - verify forecasts.",
-  "_last_updated": "2026-11-16",
+  "_last_updated": "2026-11-19",
   "countries": {
-    "JP": {"en": "Japan", "zh": "日本", "ms": "Jepun", "currency": "JPY"},
-    "KR": {"en": "South Korea", "zh": "韩国", "ms": "Korea Selatan", "currency": "KRW"},
-    "TH": {"en": "Thailand", "zh": "泰国", "ms": "Thailand", "currency": "THB"},
-    "TW": {"en": "Taiwan", "zh": "台湾", "ms": "Taiwan", "currency": "TWD"},
-    "VN": {"en": "Vietnam", "zh": "越南", "ms": "Vietnam", "currency": "VND"},
-    "CN": {"en": "China", "zh": "中国", "ms": "China", "currency": "CNY"}
+    "JP": {
+      "en": "Japan",
+      "zh": "日本",
+      "ms": "Jepun",
+      "currency": "JPY"
+    },
+    "KR": {
+      "en": "South Korea",
+      "zh": "韩国",
+      "ms": "Korea Selatan",
+      "currency": "KRW"
+    },
+    "TH": {
+      "en": "Thailand",
+      "zh": "泰国",
+      "ms": "Thailand",
+      "currency": "THB"
+    },
+    "TW": {
+      "en": "Taiwan",
+      "zh": "台湾",
+      "ms": "Taiwan",
+      "currency": "TWD"
+    },
+    "VN": {
+      "en": "Vietnam",
+      "zh": "越南",
+      "ms": "Vietnam",
+      "currency": "VND"
+    },
+    "CN": {
+      "en": "China",
+      "zh": "中国",
+      "ms": "China",
+      "currency": "CNY"
+    },
+    "FI": {
+      "en": "Finland",
+      "zh": "芬兰",
+      "ms": "Finland",
+      "currency": "EUR"
+    },
+    "NO": {
+      "en": "Norway",
+      "zh": "挪威",
+      "ms": "Norway",
+      "currency": "NOK"
+    },
+    "SE": {
+      "en": "Sweden",
+      "zh": "瑞典",
+      "ms": "Sweden",
+      "currency": "SEK"
+    },
+    "DK": {
+      "en": "Denmark",
+      "zh": "丹麦",
+      "ms": "Denmark",
+      "currency": "DKK"
+    },
+    "IS": {
+      "en": "Iceland",
+      "zh": "冰岛",
+      "ms": "Iceland",
+      "currency": "ISK"
+    },
+    "AU": {
+      "en": "Australia",
+      "zh": "澳大利亚",
+      "ms": "Australia",
+      "currency": "AUD"
+    },
+    "SG": {
+      "en": "Singapore",
+      "zh": "新加坡",
+      "ms": "Singapura",
+      "currency": "SGD"
+    },
+    "ID": {
+      "en": "Indonesia",
+      "zh": "印度尼西亚",
+      "ms": "Indonesia",
+      "currency": "IDR"
+    },
+    "HK": {
+      "en": "Hong Kong & Macau",
+      "zh": "香港 & 澳门",
+      "ms": "Hong Kong & Macau",
+      "currency": "HKD"
+    }
   },
   "periods": [
-    {"country": "JP", "start": "2026-11-10", "end": "2026-12-05", "level": "high", "kind": "price", "en": "Autumn leaves peak (esp. Kyoto)", "zh": "红叶季高峰（京都最挤）", "ms": "Musim daun luruh (Kyoto)"},
-    {"country": "JP", "start": "2026-12-28", "end": "2027-01-04", "level": "high", "kind": "closure", "en": "Year-end holidays: many museums/shops closed 29 Dec-3 Jan", "zh": "年末年始：12/29-1/3 很多景点、店铺休息", "ms": "Cuti akhir tahun Jepun: banyak tempat tutup"},
-    {"country": "JP", "start": "2027-03-20", "end": "2027-04-10", "level": "high", "kind": "price", "en": "Cherry blossom season", "zh": "樱花季", "ms": "Musim sakura"},
-    {"country": "JP", "start": "2027-04-29", "end": "2027-05-05", "level": "very_high", "kind": "price", "en": "Golden Week", "zh": "黄金周", "ms": "Golden Week"},
-    {"country": "JP", "start": "2027-06-05", "end": "2027-07-15", "level": "medium", "kind": "weather", "en": "Rainy season (tsuyu) - cheaper but wet", "zh": "梅雨季（便宜但多雨）", "ms": "Musim hujan (tsuyu)"},
-    {"country": "JP", "start": "2027-08-13", "end": "2027-08-16", "level": "high", "kind": "price", "en": "Obon holidays", "zh": "盂兰盆节", "ms": "Cuti Obon"},
-    {"country": "JP", "start": "2027-08-01", "end": "2027-09-30", "level": "medium", "kind": "weather", "en": "Typhoon season + very hot summer", "zh": "台风季 + 酷暑", "ms": "Musim taufan + panas"},
-    {"country": "JP", "start": "2027-11-10", "end": "2027-12-05", "level": "high", "kind": "price", "en": "Autumn leaves peak (esp. Kyoto)", "zh": "红叶季高峰（京都最挤）", "ms": "Musim daun luruh (Kyoto)"},
-    {"country": "JP", "start": "2027-12-28", "end": "2028-01-04", "level": "high", "kind": "closure", "en": "Year-end holidays: many museums/shops closed 29 Dec-3 Jan", "zh": "年末年始：12/29-1/3 很多景点、店铺休息", "ms": "Cuti akhir tahun Jepun: banyak tempat tutup"},
-
-    {"country": "KR", "start": "2026-12-20", "end": "2027-01-01", "level": "medium", "kind": "price", "en": "Christmas & New Year", "zh": "圣诞跨年", "ms": "Krismas & Tahun Baharu"},
-    {"country": "KR", "start": "2026-12-01", "end": "2027-02-28", "level": "medium", "kind": "weather", "en": "Winter: often below 0°C, pack heat-tech", "zh": "冬季常低于 0°C，需要发热衣", "ms": "Musim sejuk bawah 0°C"},
-    {"country": "KR", "start": "2027-02-05", "end": "2027-02-09", "level": "high", "kind": "closure", "en": "Seollal (Lunar New Year): some shops/markets closed", "zh": "春节（설날）：部分商店、市场休息", "ms": "Seollal: sesetengah kedai tutup"},
-    {"country": "KR", "start": "2027-03-28", "end": "2027-04-10", "level": "high", "kind": "price", "en": "Cherry blossom season", "zh": "樱花季", "ms": "Musim sakura"},
-    {"country": "KR", "start": "2027-09-14", "end": "2027-09-16", "level": "high", "kind": "closure", "en": "Chuseok: many shops/restaurants closed, transport packed", "zh": "中秋（추석）：很多店休息，交通爆满", "ms": "Chuseok: banyak kedai tutup"},
-    {"country": "KR", "start": "2027-10-20", "end": "2027-11-10", "level": "high", "kind": "price", "en": "Autumn foliage", "zh": "枫叶季", "ms": "Musim daun luruh"},
-
-    {"country": "TH", "start": "2026-11-15", "end": "2027-02-28", "level": "high", "kind": "price", "en": "Cool & dry high season", "zh": "凉季旺季", "ms": "Musim puncak (sejuk & kering)"},
-    {"country": "TH", "start": "2027-02-05", "end": "2027-02-12", "level": "high", "kind": "price", "en": "Chinese New Year crowds", "zh": "农历新年人潮", "ms": "Orang ramai Tahun Baharu Cina"},
-    {"country": "TH", "start": "2027-04-12", "end": "2027-04-16", "level": "very_high", "kind": "price", "en": "Songkran water festival", "zh": "泼水节", "ms": "Pesta Songkran"},
-    {"country": "TH", "start": "2027-03-15", "end": "2027-05-31", "level": "medium", "kind": "weather", "en": "Hot season (35-40°C)", "zh": "热季（35-40°C）", "ms": "Musim panas (35-40°C)"},
-    {"country": "TH", "start": "2027-06-01", "end": "2027-10-31", "level": "medium", "kind": "weather", "en": "Rainy 'green' season - cheapest", "zh": "雨季（最便宜）", "ms": "Musim hujan - paling murah"},
-    {"country": "TH", "start": "2027-11-15", "end": "2028-02-28", "level": "high", "kind": "price", "en": "Cool & dry high season", "zh": "凉季旺季", "ms": "Musim puncak (sejuk & kering)"},
-
-    {"country": "TW", "start": "2026-12-31", "end": "2027-01-01", "level": "high", "kind": "price", "en": "New Year's Eve (Taipei 101 fireworks)", "zh": "跨年（101 烟火）", "ms": "Malam Tahun Baharu"},
-    {"country": "TW", "start": "2027-02-04", "end": "2027-02-11", "level": "very_high", "kind": "closure", "en": "Lunar New Year: many family-run shops closed first days", "zh": "春节：很多老店前几天休息", "ms": "Tahun Baharu Cina: banyak kedai tutup"},
-    {"country": "TW", "start": "2027-04-02", "end": "2027-04-05", "level": "medium", "kind": "price", "en": "Tomb-Sweeping long weekend", "zh": "清明连假", "ms": "Cuti Qingming"},
-    {"country": "TW", "start": "2027-06-09", "end": "2027-06-09", "level": "medium", "kind": "price", "en": "Dragon Boat Festival", "zh": "端午节", "ms": "Pesta Perahu Naga"},
-    {"country": "TW", "start": "2027-07-01", "end": "2027-09-30", "level": "medium", "kind": "weather", "en": "Typhoon season", "zh": "台风季", "ms": "Musim taufan"},
-    {"country": "TW", "start": "2027-09-15", "end": "2027-09-15", "level": "medium", "kind": "price", "en": "Mid-Autumn Festival", "zh": "中秋节", "ms": "Pesta Pertengahan Musim Luruh"},
-    {"country": "TW", "start": "2027-10-09", "end": "2027-10-11", "level": "medium", "kind": "price", "en": "National Day long weekend", "zh": "双十连假", "ms": "Cuti Hari Kebangsaan"},
-
-    {"country": "VN", "start": "2027-02-01", "end": "2027-02-14", "level": "very_high", "kind": "closure", "en": "Tet (Lunar New Year): many shops closed ~5 days, transport packed", "zh": "越南新年 Tet：很多店休息约 5 天，交通爆满", "ms": "Tet: banyak kedai tutup"},
-    {"country": "VN", "start": "2027-04-30", "end": "2027-05-03", "level": "high", "kind": "price", "en": "Reunification Day + Labour Day", "zh": "统一节 + 劳动节连假", "ms": "Hari Penyatuan + Hari Pekerja"},
-    {"country": "VN", "start": "2027-06-01", "end": "2027-08-31", "level": "medium", "kind": "price", "en": "Domestic summer travel", "zh": "暑假国内游高峰", "ms": "Musim cuti musim panas"},
-    {"country": "VN", "start": "2027-08-31", "end": "2027-09-02", "level": "medium", "kind": "price", "en": "National Day", "zh": "国庆", "ms": "Hari Kebangsaan"},
-    {"country": "VN", "start": "2027-09-01", "end": "2027-12-15", "level": "medium", "kind": "weather", "en": "Central Vietnam (Da Nang/Hoi An) rainy & typhoon season", "zh": "中部（岘港/会安）雨季台风季", "ms": "Musim hujan Vietnam Tengah"},
-    {"country": "VN", "start": "2026-12-01", "end": "2027-02-28", "level": "medium", "kind": "weather", "en": "North (Hanoi/Sapa) cold 10-18°C", "zh": "北部（河内/沙巴）冷 10-18°C", "ms": "Utara sejuk 10-18°C"},
-
-    {"country": "CN", "start": "2027-01-23", "end": "2027-03-03", "level": "high", "kind": "price", "en": "Chunyun: Spring Festival travel rush (trains sell out)", "zh": "春运（火车票难买）", "ms": "Chunyun: musim perjalanan Tahun Baharu"},
-    {"country": "CN", "start": "2027-02-05", "end": "2027-02-13", "level": "very_high", "kind": "closure", "en": "Spring Festival holiday: many shops closed", "zh": "春节假期：很多店休息", "ms": "Cuti Tahun Baharu: banyak kedai tutup"},
-    {"country": "CN", "start": "2027-04-03", "end": "2027-04-05", "level": "medium", "kind": "price", "en": "Qingming holiday", "zh": "清明假期", "ms": "Cuti Qingming"},
-    {"country": "CN", "start": "2027-05-01", "end": "2027-05-05", "level": "very_high", "kind": "price", "en": "Labour Day Golden Week", "zh": "五一黄金周", "ms": "Golden Week Hari Pekerja"},
-    {"country": "CN", "start": "2027-06-09", "end": "2027-06-11", "level": "medium", "kind": "price", "en": "Dragon Boat holiday", "zh": "端午假期", "ms": "Cuti Pesta Perahu Naga"},
-    {"country": "CN", "start": "2027-07-05", "end": "2027-08-31", "level": "high", "kind": "price", "en": "Summer school holidays (domestic crowds)", "zh": "暑假（国内游客多）", "ms": "Cuti musim panas"},
-    {"country": "CN", "start": "2027-10-01", "end": "2027-10-07", "level": "very_high", "kind": "price", "en": "National Day Golden Week - avoid", "zh": "十一黄金周（尽量避开）", "ms": "Golden Week Hari Kebangsaan - elakkan"}
+    {
+      "country": "JP",
+      "start": "2026-11-10",
+      "end": "2026-12-05",
+      "level": "high",
+      "kind": "price",
+      "en": "Autumn leaves peak (esp. Kyoto)",
+      "zh": "红叶季高峰（京都最挤）",
+      "ms": "Musim daun luruh (Kyoto)"
+    },
+    {
+      "country": "JP",
+      "start": "2026-12-28",
+      "end": "2027-01-04",
+      "level": "high",
+      "kind": "closure",
+      "en": "Year-end holidays: many museums/shops closed 29 Dec-3 Jan",
+      "zh": "年末年始：12/29-1/3 很多景点、店铺休息",
+      "ms": "Cuti akhir tahun Jepun: banyak tempat tutup"
+    },
+    {
+      "country": "JP",
+      "start": "2027-03-20",
+      "end": "2027-04-10",
+      "level": "high",
+      "kind": "price",
+      "en": "Cherry blossom season",
+      "zh": "樱花季",
+      "ms": "Musim sakura"
+    },
+    {
+      "country": "JP",
+      "start": "2027-04-29",
+      "end": "2027-05-05",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Golden Week",
+      "zh": "黄金周",
+      "ms": "Golden Week"
+    },
+    {
+      "country": "JP",
+      "start": "2027-06-05",
+      "end": "2027-07-15",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Rainy season (tsuyu) - cheaper but wet",
+      "zh": "梅雨季（便宜但多雨）",
+      "ms": "Musim hujan (tsuyu)"
+    },
+    {
+      "country": "JP",
+      "start": "2027-08-13",
+      "end": "2027-08-16",
+      "level": "high",
+      "kind": "price",
+      "en": "Obon holidays",
+      "zh": "盂兰盆节",
+      "ms": "Cuti Obon"
+    },
+    {
+      "country": "JP",
+      "start": "2027-08-01",
+      "end": "2027-09-30",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Typhoon season + very hot summer",
+      "zh": "台风季 + 酷暑",
+      "ms": "Musim taufan + panas"
+    },
+    {
+      "country": "JP",
+      "start": "2027-11-10",
+      "end": "2027-12-05",
+      "level": "high",
+      "kind": "price",
+      "en": "Autumn leaves peak (esp. Kyoto)",
+      "zh": "红叶季高峰（京都最挤）",
+      "ms": "Musim daun luruh (Kyoto)"
+    },
+    {
+      "country": "JP",
+      "start": "2027-12-28",
+      "end": "2028-01-04",
+      "level": "high",
+      "kind": "closure",
+      "en": "Year-end holidays: many museums/shops closed 29 Dec-3 Jan",
+      "zh": "年末年始：12/29-1/3 很多景点、店铺休息",
+      "ms": "Cuti akhir tahun Jepun: banyak tempat tutup"
+    },
+    {
+      "country": "KR",
+      "start": "2026-12-20",
+      "end": "2027-01-01",
+      "level": "medium",
+      "kind": "price",
+      "en": "Christmas & New Year",
+      "zh": "圣诞跨年",
+      "ms": "Krismas & Tahun Baharu"
+    },
+    {
+      "country": "KR",
+      "start": "2026-12-01",
+      "end": "2027-02-28",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Winter: often below 0°C, pack heat-tech",
+      "zh": "冬季常低于 0°C，需要发热衣",
+      "ms": "Musim sejuk bawah 0°C"
+    },
+    {
+      "country": "KR",
+      "start": "2027-02-05",
+      "end": "2027-02-09",
+      "level": "high",
+      "kind": "closure",
+      "en": "Seollal (Lunar New Year): some shops/markets closed",
+      "zh": "春节（설날）：部分商店、市场休息",
+      "ms": "Seollal: sesetengah kedai tutup"
+    },
+    {
+      "country": "KR",
+      "start": "2027-03-28",
+      "end": "2027-04-10",
+      "level": "high",
+      "kind": "price",
+      "en": "Cherry blossom season",
+      "zh": "樱花季",
+      "ms": "Musim sakura"
+    },
+    {
+      "country": "KR",
+      "start": "2027-09-14",
+      "end": "2027-09-16",
+      "level": "high",
+      "kind": "closure",
+      "en": "Chuseok: many shops/restaurants closed, transport packed",
+      "zh": "中秋（추석）：很多店休息，交通爆满",
+      "ms": "Chuseok: banyak kedai tutup"
+    },
+    {
+      "country": "KR",
+      "start": "2027-10-20",
+      "end": "2027-11-10",
+      "level": "high",
+      "kind": "price",
+      "en": "Autumn foliage",
+      "zh": "枫叶季",
+      "ms": "Musim daun luruh"
+    },
+    {
+      "country": "TH",
+      "start": "2026-11-15",
+      "end": "2027-02-28",
+      "level": "high",
+      "kind": "price",
+      "en": "Cool & dry high season",
+      "zh": "凉季旺季",
+      "ms": "Musim puncak (sejuk & kering)"
+    },
+    {
+      "country": "TH",
+      "start": "2027-02-05",
+      "end": "2027-02-12",
+      "level": "high",
+      "kind": "price",
+      "en": "Chinese New Year crowds",
+      "zh": "农历新年人潮",
+      "ms": "Orang ramai Tahun Baharu Cina"
+    },
+    {
+      "country": "TH",
+      "start": "2027-04-12",
+      "end": "2027-04-16",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Songkran water festival",
+      "zh": "泼水节",
+      "ms": "Pesta Songkran"
+    },
+    {
+      "country": "TH",
+      "start": "2027-03-15",
+      "end": "2027-05-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Hot season (35-40°C)",
+      "zh": "热季（35-40°C）",
+      "ms": "Musim panas (35-40°C)"
+    },
+    {
+      "country": "TH",
+      "start": "2027-06-01",
+      "end": "2027-10-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Rainy 'green' season - cheapest",
+      "zh": "雨季（最便宜）",
+      "ms": "Musim hujan - paling murah"
+    },
+    {
+      "country": "TH",
+      "start": "2027-11-15",
+      "end": "2028-02-28",
+      "level": "high",
+      "kind": "price",
+      "en": "Cool & dry high season",
+      "zh": "凉季旺季",
+      "ms": "Musim puncak (sejuk & kering)"
+    },
+    {
+      "country": "TW",
+      "start": "2026-12-31",
+      "end": "2027-01-01",
+      "level": "high",
+      "kind": "price",
+      "en": "New Year's Eve (Taipei 101 fireworks)",
+      "zh": "跨年（101 烟火）",
+      "ms": "Malam Tahun Baharu"
+    },
+    {
+      "country": "TW",
+      "start": "2027-02-04",
+      "end": "2027-02-11",
+      "level": "very_high",
+      "kind": "closure",
+      "en": "Lunar New Year: many family-run shops closed first days",
+      "zh": "春节：很多老店前几天休息",
+      "ms": "Tahun Baharu Cina: banyak kedai tutup"
+    },
+    {
+      "country": "TW",
+      "start": "2027-04-02",
+      "end": "2027-04-05",
+      "level": "medium",
+      "kind": "price",
+      "en": "Tomb-Sweeping long weekend",
+      "zh": "清明连假",
+      "ms": "Cuti Qingming"
+    },
+    {
+      "country": "TW",
+      "start": "2027-06-09",
+      "end": "2027-06-09",
+      "level": "medium",
+      "kind": "price",
+      "en": "Dragon Boat Festival",
+      "zh": "端午节",
+      "ms": "Pesta Perahu Naga"
+    },
+    {
+      "country": "TW",
+      "start": "2027-07-01",
+      "end": "2027-09-30",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Typhoon season",
+      "zh": "台风季",
+      "ms": "Musim taufan"
+    },
+    {
+      "country": "TW",
+      "start": "2027-09-15",
+      "end": "2027-09-15",
+      "level": "medium",
+      "kind": "price",
+      "en": "Mid-Autumn Festival",
+      "zh": "中秋节",
+      "ms": "Pesta Pertengahan Musim Luruh"
+    },
+    {
+      "country": "TW",
+      "start": "2027-10-09",
+      "end": "2027-10-11",
+      "level": "medium",
+      "kind": "price",
+      "en": "National Day long weekend",
+      "zh": "双十连假",
+      "ms": "Cuti Hari Kebangsaan"
+    },
+    {
+      "country": "VN",
+      "start": "2027-02-01",
+      "end": "2027-02-14",
+      "level": "very_high",
+      "kind": "closure",
+      "en": "Tet (Lunar New Year): many shops closed ~5 days, transport packed",
+      "zh": "越南新年 Tet：很多店休息约 5 天，交通爆满",
+      "ms": "Tet: banyak kedai tutup"
+    },
+    {
+      "country": "VN",
+      "start": "2027-04-30",
+      "end": "2027-05-03",
+      "level": "high",
+      "kind": "price",
+      "en": "Reunification Day + Labour Day",
+      "zh": "统一节 + 劳动节连假",
+      "ms": "Hari Penyatuan + Hari Pekerja"
+    },
+    {
+      "country": "VN",
+      "start": "2027-06-01",
+      "end": "2027-08-31",
+      "level": "medium",
+      "kind": "price",
+      "en": "Domestic summer travel",
+      "zh": "暑假国内游高峰",
+      "ms": "Musim cuti musim panas"
+    },
+    {
+      "country": "VN",
+      "start": "2027-08-31",
+      "end": "2027-09-02",
+      "level": "medium",
+      "kind": "price",
+      "en": "National Day",
+      "zh": "国庆",
+      "ms": "Hari Kebangsaan"
+    },
+    {
+      "country": "VN",
+      "start": "2027-09-01",
+      "end": "2027-12-15",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Central Vietnam (Da Nang/Hoi An) rainy & typhoon season",
+      "zh": "中部（岘港/会安）雨季台风季",
+      "ms": "Musim hujan Vietnam Tengah"
+    },
+    {
+      "country": "VN",
+      "start": "2026-12-01",
+      "end": "2027-02-28",
+      "level": "medium",
+      "kind": "weather",
+      "en": "North (Hanoi/Sapa) cold 10-18°C",
+      "zh": "北部（河内/沙巴）冷 10-18°C",
+      "ms": "Utara sejuk 10-18°C"
+    },
+    {
+      "country": "CN",
+      "start": "2027-01-23",
+      "end": "2027-03-03",
+      "level": "high",
+      "kind": "price",
+      "en": "Chunyun: Spring Festival travel rush (trains sell out)",
+      "zh": "春运（火车票难买）",
+      "ms": "Chunyun: musim perjalanan Tahun Baharu"
+    },
+    {
+      "country": "CN",
+      "start": "2027-02-05",
+      "end": "2027-02-13",
+      "level": "very_high",
+      "kind": "closure",
+      "en": "Spring Festival holiday: many shops closed",
+      "zh": "春节假期：很多店休息",
+      "ms": "Cuti Tahun Baharu: banyak kedai tutup"
+    },
+    {
+      "country": "CN",
+      "start": "2027-04-03",
+      "end": "2027-04-05",
+      "level": "medium",
+      "kind": "price",
+      "en": "Qingming holiday",
+      "zh": "清明假期",
+      "ms": "Cuti Qingming"
+    },
+    {
+      "country": "CN",
+      "start": "2027-05-01",
+      "end": "2027-05-05",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Labour Day Golden Week",
+      "zh": "五一黄金周",
+      "ms": "Golden Week Hari Pekerja"
+    },
+    {
+      "country": "CN",
+      "start": "2027-06-09",
+      "end": "2027-06-11",
+      "level": "medium",
+      "kind": "price",
+      "en": "Dragon Boat holiday",
+      "zh": "端午假期",
+      "ms": "Cuti Pesta Perahu Naga"
+    },
+    {
+      "country": "CN",
+      "start": "2027-07-05",
+      "end": "2027-08-31",
+      "level": "high",
+      "kind": "price",
+      "en": "Summer school holidays (domestic crowds)",
+      "zh": "暑假（国内游客多）",
+      "ms": "Cuti musim panas"
+    },
+    {
+      "country": "CN",
+      "start": "2027-10-01",
+      "end": "2027-10-07",
+      "level": "very_high",
+      "kind": "price",
+      "en": "National Day Golden Week - avoid",
+      "zh": "十一黄金周（尽量避开）",
+      "ms": "Golden Week Hari Kebangsaan - elakkan"
+    },
+    {
+      "country": "FI",
+      "start": "2026-11-01",
+      "end": "2027-03-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Lapland deep winter: often -15 to -30°C, very short days",
+      "zh": "拉普兰严冬：常见 -15 至 -30°C，白天很短",
+      "ms": "Musim sejuk Lapland: -15 hingga -30°C, siang pendek"
+    },
+    {
+      "country": "FI",
+      "start": "2026-12-01",
+      "end": "2027-01-06",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Lapland Christmas peak (Rovaniemi hotels sell out, book ~1 year ahead)",
+      "zh": "拉普兰圣诞高峰（罗瓦涅米酒店爆满，需提前约一年订）",
+      "ms": "Puncak Krismas Lapland (hotel Rovaniemi penuh)"
+    },
+    {
+      "country": "FI",
+      "start": "2026-12-06",
+      "end": "2026-12-06",
+      "level": "medium",
+      "kind": "closure",
+      "en": "Independence Day: many shops/museums closed",
+      "zh": "独立日：很多商店、博物馆休息",
+      "ms": "Hari Kemerdekaan Finland: banyak kedai tutup"
+    },
+    {
+      "country": "FI",
+      "start": "2026-12-24",
+      "end": "2026-12-26",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas: shops close early on 24 Dec, most closed 25-26 Dec",
+      "zh": "圣诞：12/24 商店提早关门，12/25-26 多数休息",
+      "ms": "Krismas: kedai tutup awal 24 Dis, kebanyakan tutup 25-26 Dis"
+    },
+    {
+      "country": "FI",
+      "start": "2027-01-07",
+      "end": "2027-03-31",
+      "level": "high",
+      "kind": "price",
+      "en": "Aurora & snow season in Lapland (Feb-Mar European ski holidays)",
+      "zh": "拉普兰极光雪季（2-3月欧洲滑雪假期）",
+      "ms": "Musim aurora & salji Lapland"
+    },
+    {
+      "country": "FI",
+      "start": "2027-03-26",
+      "end": "2027-03-29",
+      "level": "medium",
+      "kind": "closure",
+      "en": "Easter (Good Friday-Easter Monday): reduced opening",
+      "zh": "复活节（耶稣受难日至复活节星期一）：营业时间缩短",
+      "ms": "Easter: waktu operasi singkat"
+    },
+    {
+      "country": "FI",
+      "start": "2027-06-25",
+      "end": "2027-06-27",
+      "level": "high",
+      "kind": "closure",
+      "en": "Midsummer (Juhannus): many shops/restaurants closed, cities empty",
+      "zh": "仲夏节：很多店休息，城市空荡",
+      "ms": "Midsummer (Juhannus): banyak kedai tutup"
+    },
+    {
+      "country": "FI",
+      "start": "2027-07-01",
+      "end": "2027-07-31",
+      "level": "medium",
+      "kind": "price",
+      "en": "Summer holiday month: midnight sun peak, some city restaurants closed",
+      "zh": "夏季假期月：午夜太阳旺季，部分城市餐厅休息",
+      "ms": "Bulan cuti musim panas: sesetengah restoran tutup"
+    },
+    {
+      "country": "FI",
+      "start": "2027-11-01",
+      "end": "2028-03-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Lapland deep winter: often -15 to -30°C, very short days",
+      "zh": "拉普兰严冬：常见 -15 至 -30°C，白天很短",
+      "ms": "Musim sejuk Lapland: -15 hingga -30°C, siang pendek"
+    },
+    {
+      "country": "FI",
+      "start": "2027-12-01",
+      "end": "2028-01-06",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Lapland Christmas peak (Rovaniemi hotels sell out, book ~1 year ahead)",
+      "zh": "拉普兰圣诞高峰（罗瓦涅米酒店爆满，需提前约一年订）",
+      "ms": "Puncak Krismas Lapland (hotel Rovaniemi penuh)"
+    },
+    {
+      "country": "FI",
+      "start": "2027-12-06",
+      "end": "2027-12-06",
+      "level": "medium",
+      "kind": "closure",
+      "en": "Independence Day: many shops/museums closed",
+      "zh": "独立日：很多商店、博物馆休息",
+      "ms": "Hari Kemerdekaan Finland: banyak kedai tutup"
+    },
+    {
+      "country": "FI",
+      "start": "2027-12-24",
+      "end": "2027-12-26",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas: shops close early on 24 Dec, most closed 25-26 Dec",
+      "zh": "圣诞：12/24 商店提早关门，12/25-26 多数休息",
+      "ms": "Krismas: kedai tutup awal 24 Dis, kebanyakan tutup 25-26 Dis"
+    },
+    {
+      "country": "NO",
+      "start": "2026-11-20",
+      "end": "2027-03-31",
+      "level": "high",
+      "kind": "price",
+      "en": "Aurora season peak in Tromsø (tours & hotels fill up)",
+      "zh": "特罗姆瑟极光旺季（团和酒店易满）",
+      "ms": "Musim aurora Tromsø"
+    },
+    {
+      "country": "NO",
+      "start": "2026-11-27",
+      "end": "2027-01-15",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Polar night in Tromsø: no sunrise, only midday twilight",
+      "zh": "特罗姆瑟极夜：无日出，仅中午有蓝色微光",
+      "ms": "Malam kutub Tromsø: tiada matahari terbit"
+    },
+    {
+      "country": "NO",
+      "start": "2026-12-24",
+      "end": "2027-01-01",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas-New Year: shops close by 16:00 on 24 Dec, closed 25-26 Dec & 1 Jan",
+      "zh": "圣诞至新年：12/24 下午4点前关门，12/25-26 及 1/1 休息",
+      "ms": "Krismas-Tahun Baharu: kedai tutup 25-26 Dis & 1 Jan"
+    },
+    {
+      "country": "NO",
+      "start": "2027-03-25",
+      "end": "2027-03-29",
+      "level": "high",
+      "kind": "closure",
+      "en": "Easter (påske): shops closed Thu-Mon except Sat",
+      "zh": "复活节：周四至周一商店休息（周六除外）",
+      "ms": "Easter: kedai tutup Khamis-Isnin kecuali Sabtu"
+    },
+    {
+      "country": "NO",
+      "start": "2027-05-17",
+      "end": "2027-05-17",
+      "level": "high",
+      "kind": "closure",
+      "en": "Constitution Day + Whit Monday: parades, shops closed",
+      "zh": "国庆日 + 圣灵降临节星期一：游行，商店休息",
+      "ms": "Hari Perlembagaan: kedai tutup"
+    },
+    {
+      "country": "NO",
+      "start": "2027-06-15",
+      "end": "2027-08-15",
+      "level": "high",
+      "kind": "price",
+      "en": "Summer fjord & cruise peak, midnight sun in the north",
+      "zh": "夏季峡湾与邮轮旺季，北部午夜太阳",
+      "ms": "Puncak musim panas fjord"
+    },
+    {
+      "country": "NO",
+      "start": "2027-11-20",
+      "end": "2028-03-31",
+      "level": "high",
+      "kind": "price",
+      "en": "Aurora season peak in Tromsø (tours & hotels fill up)",
+      "zh": "特罗姆瑟极光旺季（团和酒店易满）",
+      "ms": "Musim aurora Tromsø"
+    },
+    {
+      "country": "NO",
+      "start": "2027-11-27",
+      "end": "2028-01-15",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Polar night in Tromsø: no sunrise, only midday twilight",
+      "zh": "特罗姆瑟极夜：无日出，仅中午有蓝色微光",
+      "ms": "Malam kutub Tromsø: tiada matahari terbit"
+    },
+    {
+      "country": "NO",
+      "start": "2027-12-24",
+      "end": "2028-01-01",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas-New Year: shops close by 16:00 on 24 Dec, closed 25-26 Dec & 1 Jan",
+      "zh": "圣诞至新年：12/24 下午4点前关门，12/25-26 及 1/1 休息",
+      "ms": "Krismas-Tahun Baharu: kedai tutup 25-26 Dis & 1 Jan"
+    },
+    {
+      "country": "SE",
+      "start": "2026-12-01",
+      "end": "2027-03-31",
+      "level": "high",
+      "kind": "price",
+      "en": "Swedish Lapland aurora season (Kiruna/Abisko)",
+      "zh": "瑞典拉普兰极光季（基律纳/阿比斯库）",
+      "ms": "Musim aurora Lapland Sweden"
+    },
+    {
+      "country": "SE",
+      "start": "2026-12-01",
+      "end": "2027-02-28",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Dark, cold winter: ~6h daylight in Stockholm, sub-zero in the north",
+      "zh": "冬季又暗又冷：斯德哥尔摩约6小时日照，北部零下",
+      "ms": "Musim sejuk gelap & sejuk"
+    },
+    {
+      "country": "SE",
+      "start": "2026-12-24",
+      "end": "2026-12-26",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas (julafton 24 Dec): most shops closed/short hours",
+      "zh": "圣诞（12/24 平安夜为主日）：多数商店休息或缩短营业",
+      "ms": "Krismas: kebanyakan kedai tutup"
+    },
+    {
+      "country": "SE",
+      "start": "2027-03-26",
+      "end": "2027-03-29",
+      "level": "medium",
+      "kind": "closure",
+      "en": "Easter (Good Friday-Easter Monday): reduced opening",
+      "zh": "复活节：营业时间缩短",
+      "ms": "Easter: waktu operasi singkat"
+    },
+    {
+      "country": "SE",
+      "start": "2027-06-25",
+      "end": "2027-06-27",
+      "level": "high",
+      "kind": "closure",
+      "en": "Midsummer Eve weekend: many shops/restaurants closed",
+      "zh": "仲夏节周末：很多店休息",
+      "ms": "Midsummer: banyak kedai tutup"
+    },
+    {
+      "country": "SE",
+      "start": "2027-07-01",
+      "end": "2027-08-08",
+      "level": "medium",
+      "kind": "price",
+      "en": "Swedish summer holidays: some city restaurants closed, coast busy",
+      "zh": "瑞典暑假：部分城市餐厅休息，海边人多",
+      "ms": "Cuti musim panas Sweden"
+    },
+    {
+      "country": "SE",
+      "start": "2027-12-01",
+      "end": "2028-03-31",
+      "level": "high",
+      "kind": "price",
+      "en": "Swedish Lapland aurora season (Kiruna/Abisko)",
+      "zh": "瑞典拉普兰极光季（基律纳/阿比斯库）",
+      "ms": "Musim aurora Lapland Sweden"
+    },
+    {
+      "country": "SE",
+      "start": "2027-12-24",
+      "end": "2027-12-26",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas (julafton 24 Dec): most shops closed/short hours",
+      "zh": "圣诞（12/24 平安夜为主日）：多数商店休息或缩短营业",
+      "ms": "Krismas: kebanyakan kedai tutup"
+    },
+    {
+      "country": "DK",
+      "start": "2026-11-01",
+      "end": "2027-02-28",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Dark, wet, windy winter (cheaper, except Christmas)",
+      "zh": "冬季阴暗多雨多风（除圣诞外较便宜）",
+      "ms": "Musim sejuk gelap & berangin"
+    },
+    {
+      "country": "DK",
+      "start": "2026-12-24",
+      "end": "2027-01-01",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas-New Year: shops close at noon on 24 Dec, closed 25-26 Dec & 1 Jan",
+      "zh": "圣诞至新年：12/24 中午关门，12/25-26 及 1/1 休息",
+      "ms": "Krismas-Tahun Baharu: kedai tutup"
+    },
+    {
+      "country": "DK",
+      "start": "2027-03-25",
+      "end": "2027-03-29",
+      "level": "high",
+      "kind": "closure",
+      "en": "Easter: Maundy Thursday, Good Friday, Easter Monday are holidays",
+      "zh": "复活节：濯足节、耶稣受难日、复活节星期一均为假日",
+      "ms": "Easter: cuti umum Khamis-Isnin"
+    },
+    {
+      "country": "DK",
+      "start": "2027-06-05",
+      "end": "2027-06-05",
+      "level": "medium",
+      "kind": "closure",
+      "en": "Constitution Day: many shops closed",
+      "zh": "宪法日：很多商店休息",
+      "ms": "Hari Perlembagaan Denmark: banyak kedai tutup"
+    },
+    {
+      "country": "DK",
+      "start": "2027-06-26",
+      "end": "2027-08-08",
+      "level": "high",
+      "kind": "price",
+      "en": "Summer peak in Copenhagen (some restaurants close for July holidays)",
+      "zh": "哥本哈根夏季旺季（部分餐厅7月放假）",
+      "ms": "Puncak musim panas Copenhagen"
+    },
+    {
+      "country": "DK",
+      "start": "2027-11-01",
+      "end": "2028-02-29",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Dark, wet, windy winter (cheaper, except Christmas)",
+      "zh": "冬季阴暗多雨多风（除圣诞外较便宜）",
+      "ms": "Musim sejuk gelap & berangin"
+    },
+    {
+      "country": "DK",
+      "start": "2027-12-24",
+      "end": "2028-01-01",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas-New Year: shops close at noon on 24 Dec, closed 25-26 Dec & 1 Jan",
+      "zh": "圣诞至新年：12/24 中午关门，12/25-26 及 1/1 休息",
+      "ms": "Krismas-Tahun Baharu: kedai tutup"
+    },
+    {
+      "country": "IS",
+      "start": "2026-11-01",
+      "end": "2027-03-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Winter storms & road closures (check road.is); aurora season",
+      "zh": "冬季风暴与封路（查 road.is）；极光季",
+      "ms": "Ribut musim sejuk & jalan ditutup; musim aurora"
+    },
+    {
+      "country": "IS",
+      "start": "2026-12-24",
+      "end": "2027-01-01",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas-New Year: most shops/restaurants close from 24 Dec afternoon; 31 Dec-1 Jan limited",
+      "zh": "圣诞至新年：12/24 下午起多数店休息；12/31-1/1 营业有限",
+      "ms": "Krismas-Tahun Baharu: kebanyakan kedai tutup"
+    },
+    {
+      "country": "IS",
+      "start": "2027-03-25",
+      "end": "2027-03-29",
+      "level": "medium",
+      "kind": "closure",
+      "en": "Easter (Thu-Mon): reduced opening",
+      "zh": "复活节（周四至周一）：营业时间缩短",
+      "ms": "Easter: waktu operasi singkat"
+    },
+    {
+      "country": "IS",
+      "start": "2027-06-01",
+      "end": "2027-08-31",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Summer peak: car rentals & Ring Road hotels sell out",
+      "zh": "夏季旺季：租车和环岛酒店爆满",
+      "ms": "Puncak musim panas: kereta sewa & hotel penuh"
+    },
+    {
+      "country": "IS",
+      "start": "2027-07-30",
+      "end": "2027-08-02",
+      "level": "medium",
+      "kind": "price",
+      "en": "Merchants' long weekend (Verslunarmannahelgi): festivals, campsites full",
+      "zh": "商人节长周末：各地节庆，营地爆满",
+      "ms": "Cuti hujung minggu panjang Iceland"
+    },
+    {
+      "country": "IS",
+      "start": "2027-11-01",
+      "end": "2028-03-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Winter storms & road closures (check road.is); aurora season",
+      "zh": "冬季风暴与封路（查 road.is）；极光季",
+      "ms": "Ribut musim sejuk & jalan ditutup; musim aurora"
+    },
+    {
+      "country": "IS",
+      "start": "2027-12-24",
+      "end": "2028-01-01",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas-New Year: most shops/restaurants close from 24 Dec afternoon; 31 Dec-1 Jan limited",
+      "zh": "圣诞至新年：12/24 下午起多数店休息；12/31-1/1 营业有限",
+      "ms": "Krismas-Tahun Baharu: kebanyakan kedai tutup"
+    },
+    {
+      "country": "AU",
+      "start": "2026-11-01",
+      "end": "2027-04-30",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Tropical north wet/cyclone season (Cairns, Darwin)",
+      "zh": "北部热带雨季/气旋季（凯恩斯、达尔文）",
+      "ms": "Musim hujan/siklon utara (Cairns, Darwin)"
+    },
+    {
+      "country": "AU",
+      "start": "2026-12-01",
+      "end": "2027-02-28",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Summer heat & bushfire risk; check park closures",
+      "zh": "夏季酷热与山火风险；留意国家公园封闭",
+      "ms": "Musim panas & risiko kebakaran hutan"
+    },
+    {
+      "country": "AU",
+      "start": "2026-12-18",
+      "end": "2027-01-27",
+      "level": "high",
+      "kind": "price",
+      "en": "Summer school holidays + Christmas",
+      "zh": "暑假 + 圣诞",
+      "ms": "Cuti sekolah musim panas + Krismas"
+    },
+    {
+      "country": "AU",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas Day: most shops closed (Boxing Day sales 26 Dec)",
+      "zh": "圣诞节：多数商店休息（12/26 节礼日大减价）",
+      "ms": "Hari Krismas: kebanyakan kedai tutup"
+    },
+    {
+      "country": "AU",
+      "start": "2026-12-27",
+      "end": "2027-01-01",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Sydney New Year's Eve fireworks: hotels very expensive",
+      "zh": "悉尼跨年烟花：酒店极贵",
+      "ms": "Bunga api Tahun Baharu Sydney: hotel sangat mahal"
+    },
+    {
+      "country": "AU",
+      "start": "2027-01-11",
+      "end": "2027-01-31",
+      "level": "high",
+      "kind": "price",
+      "en": "Australian Open (Melbourne)",
+      "zh": "澳网（墨尔本）",
+      "ms": "Australian Open (Melbourne)"
+    },
+    {
+      "country": "AU",
+      "start": "2027-03-26",
+      "end": "2027-03-29",
+      "level": "high",
+      "kind": "closure",
+      "en": "Easter: Good Friday most shops closed; long weekend",
+      "zh": "复活节：耶稣受难日多数商店休息；长周末",
+      "ms": "Easter: Good Friday kebanyakan kedai tutup"
+    },
+    {
+      "country": "AU",
+      "start": "2027-03-26",
+      "end": "2027-04-28",
+      "level": "medium",
+      "kind": "price",
+      "en": "Autumn school holidays (VIC/NSW, staggered)",
+      "zh": "秋季学校假期（维州/新州错开）",
+      "ms": "Cuti sekolah musim luruh"
+    },
+    {
+      "country": "AU",
+      "start": "2027-04-25",
+      "end": "2027-04-25",
+      "level": "medium",
+      "kind": "closure",
+      "en": "Anzac Day: shops closed or open late in many states",
+      "zh": "澳新军团日：多州商店休息或晚开",
+      "ms": "Hari Anzac: kedai tutup/buka lewat"
+    },
+    {
+      "country": "AU",
+      "start": "2027-05-28",
+      "end": "2027-06-19",
+      "level": "high",
+      "kind": "price",
+      "en": "Vivid Sydney light festival",
+      "zh": "悉尼灯光节 Vivid",
+      "ms": "Festival cahaya Vivid Sydney"
+    },
+    {
+      "country": "AU",
+      "start": "2027-06-01",
+      "end": "2027-08-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Winter: Melbourne/Canberra cold, snow in the Alps",
+      "zh": "冬季：墨尔本/堪培拉寒冷，高山区下雪",
+      "ms": "Musim sejuk: Melbourne/Canberra sejuk"
+    },
+    {
+      "country": "AU",
+      "start": "2027-06-26",
+      "end": "2027-07-18",
+      "level": "medium",
+      "kind": "price",
+      "en": "Winter school holidays (staggered by state)",
+      "zh": "冬季学校假期（各州错开）",
+      "ms": "Cuti sekolah musim sejuk"
+    },
+    {
+      "country": "AU",
+      "start": "2027-09-18",
+      "end": "2027-10-10",
+      "level": "medium",
+      "kind": "price",
+      "en": "Spring school holidays (staggered by state)",
+      "zh": "春季学校假期（各州错开）",
+      "ms": "Cuti sekolah musim bunga"
+    },
+    {
+      "country": "AU",
+      "start": "2027-11-01",
+      "end": "2028-04-30",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Tropical north wet/cyclone season (Cairns, Darwin)",
+      "zh": "北部热带雨季/气旋季（凯恩斯、达尔文）",
+      "ms": "Musim hujan/siklon utara (Cairns, Darwin)"
+    },
+    {
+      "country": "AU",
+      "start": "2027-11-02",
+      "end": "2027-11-02",
+      "level": "medium",
+      "kind": "price",
+      "en": "Melbourne Cup Day (Melbourne public holiday)",
+      "zh": "墨尔本杯赛马日（墨尔本公众假期）",
+      "ms": "Hari Melbourne Cup"
+    },
+    {
+      "country": "AU",
+      "start": "2027-12-17",
+      "end": "2028-01-27",
+      "level": "high",
+      "kind": "price",
+      "en": "Summer school holidays + Christmas",
+      "zh": "暑假 + 圣诞",
+      "ms": "Cuti sekolah musim panas + Krismas"
+    },
+    {
+      "country": "AU",
+      "start": "2027-12-25",
+      "end": "2027-12-25",
+      "level": "high",
+      "kind": "closure",
+      "en": "Christmas Day: most shops closed (Boxing Day sales 26 Dec)",
+      "zh": "圣诞节：多数商店休息（12/26 节礼日大减价）",
+      "ms": "Hari Krismas: kebanyakan kedai tutup"
+    },
+    {
+      "country": "AU",
+      "start": "2027-12-27",
+      "end": "2028-01-01",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Sydney New Year's Eve fireworks: hotels very expensive",
+      "zh": "悉尼跨年烟花：酒店极贵",
+      "ms": "Bunga api Tahun Baharu Sydney: hotel sangat mahal"
+    },
+    {
+      "country": "SG",
+      "start": "2026-11-21",
+      "end": "2027-01-03",
+      "level": "high",
+      "kind": "price",
+      "en": "Year-end school holidays + Christmas (Orchard light-up); Causeway jams",
+      "zh": "年底学校假期 + 圣诞（乌节路灯饰）；新柔长堤大塞车",
+      "ms": "Cuti sekolah akhir tahun + Krismas; Tambak Johor sesak"
+    },
+    {
+      "country": "SG",
+      "start": "2026-12-01",
+      "end": "2027-01-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Northeast monsoon: heavy afternoon showers",
+      "zh": "东北季风：午后大雨多",
+      "ms": "Monsun timur laut: hujan lebat petang"
+    },
+    {
+      "country": "SG",
+      "start": "2027-02-05",
+      "end": "2027-02-08",
+      "level": "high",
+      "kind": "closure",
+      "en": "Chinese New Year: many hawker stalls/shops closed 2-3 days",
+      "zh": "农历新年：很多小贩摊位和商店休息 2-3 天",
+      "ms": "Tahun Baharu Cina: banyak gerai penjaja & kedai tutup"
+    },
+    {
+      "country": "SG",
+      "start": "2027-03-09",
+      "end": "2027-03-14",
+      "level": "high",
+      "kind": "price",
+      "en": "Hari Raya Puasa + MY Raya exodus: Causeway jams",
+      "zh": "开斋节 + 大马返乡潮：长堤大塞车",
+      "ms": "Hari Raya Puasa: Tambak Johor sesak"
+    },
+    {
+      "country": "SG",
+      "start": "2027-03-13",
+      "end": "2027-03-21",
+      "level": "medium",
+      "kind": "price",
+      "en": "SG March school holidays",
+      "zh": "新加坡三月学校假期",
+      "ms": "Cuti sekolah Mac Singapura"
+    },
+    {
+      "country": "SG",
+      "start": "2027-03-26",
+      "end": "2027-03-28",
+      "level": "medium",
+      "kind": "price",
+      "en": "Good Friday long weekend (Causeway jams)",
+      "zh": "耶稣受难日长周末（长堤塞车）",
+      "ms": "Cuti panjang Good Friday (Tambak sesak)"
+    },
+    {
+      "country": "SG",
+      "start": "2027-05-29",
+      "end": "2027-06-27",
+      "level": "medium",
+      "kind": "price",
+      "en": "SG June school holidays (dates to verify)",
+      "zh": "新加坡六月学校假期（日期待确认）",
+      "ms": "Cuti sekolah Jun Singapura (sahkan tarikh)"
+    },
+    {
+      "country": "SG",
+      "start": "2027-08-07",
+      "end": "2027-08-09",
+      "level": "medium",
+      "kind": "price",
+      "en": "National Day long weekend",
+      "zh": "国庆长周末",
+      "ms": "Cuti panjang Hari Kebangsaan"
+    },
+    {
+      "country": "SG",
+      "start": "2027-10-08",
+      "end": "2027-10-10",
+      "level": "very_high",
+      "kind": "price",
+      "en": "F1 Singapore Grand Prix: hotel prices spike, Marina Bay roads closed",
+      "zh": "F1 新加坡大奖赛：酒店暴涨，滨海湾封路",
+      "ms": "F1 Grand Prix Singapura: harga hotel melambung"
+    },
+    {
+      "country": "SG",
+      "start": "2027-11-20",
+      "end": "2028-01-02",
+      "level": "high",
+      "kind": "price",
+      "en": "Year-end school holidays + Christmas; Causeway jams",
+      "zh": "年底学校假期 + 圣诞；长堤塞车",
+      "ms": "Cuti sekolah akhir tahun + Krismas; Tambak sesak"
+    },
+    {
+      "country": "SG",
+      "start": "2027-12-01",
+      "end": "2028-01-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Northeast monsoon: heavy afternoon showers",
+      "zh": "东北季风：午后大雨多",
+      "ms": "Monsun timur laut: hujan lebat petang"
+    },
+    {
+      "country": "ID",
+      "start": "2026-11-19",
+      "end": "2027-03-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Rainy season (Bali/Java) - cheaper but wet; Jakarta flood risk Jan-Feb",
+      "zh": "雨季（巴厘岛/爪哇）便宜但多雨；雅加达 1-2 月易淹水",
+      "ms": "Musim hujan - lebih murah; risiko banjir Jakarta Jan-Feb"
+    },
+    {
+      "country": "ID",
+      "start": "2026-12-19",
+      "end": "2027-01-03",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Christmas & New Year: Bali peak",
+      "zh": "圣诞跨年：巴厘岛最高峰",
+      "ms": "Krismas & Tahun Baharu: puncak Bali"
+    },
+    {
+      "country": "ID",
+      "start": "2027-02-09",
+      "end": "2027-03-09",
+      "level": "medium",
+      "kind": "closure",
+      "en": "Ramadan (approx.): fewer daytime eateries in Java; Bali mostly normal",
+      "zh": "斋月（约）：爪哇白天餐馆较少；巴厘岛基本正常",
+      "ms": "Ramadan (anggaran): kurang kedai makan siang di Jawa"
+    },
+    {
+      "country": "ID",
+      "start": "2027-03-07",
+      "end": "2027-03-09",
+      "level": "very_high",
+      "kind": "closure",
+      "en": "Nyepi (8 Mar): Bali airport & whole island shut ~06:00 8 Mar-06:00 9 Mar",
+      "zh": "静居日 Nyepi（3/8）：巴厘岛机场及全岛关闭约 24 小时",
+      "ms": "Nyepi (8 Mac): lapangan terbang & seluruh Bali tutup 24 jam"
+    },
+    {
+      "country": "ID",
+      "start": "2027-03-04",
+      "end": "2027-03-18",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Lebaran (Idul Fitri 10-11 Mar) mudik: flights, trains, tolls packed",
+      "zh": "开斋节返乡潮（3/10-11）：机票、火车、高速爆满",
+      "ms": "Mudik Lebaran: penerbangan, kereta api & tol sesak"
+    },
+    {
+      "country": "ID",
+      "start": "2027-03-09",
+      "end": "2027-03-15",
+      "level": "high",
+      "kind": "closure",
+      "en": "Lebaran holidays: many Java warungs & shops closed",
+      "zh": "开斋节假期：爪哇很多小吃店、商店休息",
+      "ms": "Cuti Lebaran: banyak warung & kedai di Jawa tutup"
+    },
+    {
+      "country": "ID",
+      "start": "2027-05-15",
+      "end": "2027-05-23",
+      "level": "medium",
+      "kind": "price",
+      "en": "Idul Adha + Waisak (20 May) long weekend; Borobudur very busy",
+      "zh": "哈芝节 + 卫塞节（5/20）连假；婆罗浮屠人潮",
+      "ms": "Aidiladha + Waisak; Borobudur sesak"
+    },
+    {
+      "country": "ID",
+      "start": "2027-06-20",
+      "end": "2027-07-15",
+      "level": "high",
+      "kind": "price",
+      "en": "Indonesian school holidays (dates vary by province)",
+      "zh": "印尼学校假期（各省不同）",
+      "ms": "Cuti sekolah Indonesia (ikut wilayah)"
+    },
+    {
+      "country": "ID",
+      "start": "2027-07-01",
+      "end": "2027-08-31",
+      "level": "high",
+      "kind": "price",
+      "en": "Bali dry-season peak (Australian/European holidays)",
+      "zh": "巴厘岛旱季旺季（澳洲、欧洲假期）",
+      "ms": "Musim puncak kemarau Bali"
+    },
+    {
+      "country": "ID",
+      "start": "2027-08-14",
+      "end": "2027-08-17",
+      "level": "medium",
+      "kind": "price",
+      "en": "Independence Day (17 Aug) long weekend",
+      "zh": "独立日（8/17）长周末",
+      "ms": "Hari Kemerdekaan (17 Ogos)"
+    },
+    {
+      "country": "ID",
+      "start": "2027-11-01",
+      "end": "2028-03-31",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Rainy season (Bali/Java) - cheaper but wet",
+      "zh": "雨季（巴厘岛/爪哇）便宜但多雨",
+      "ms": "Musim hujan - lebih murah"
+    },
+    {
+      "country": "ID",
+      "start": "2027-12-18",
+      "end": "2028-01-03",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Christmas & New Year: Bali peak",
+      "zh": "圣诞跨年：巴厘岛最高峰",
+      "ms": "Krismas & Tahun Baharu: puncak Bali"
+    },
+    {
+      "country": "HK",
+      "start": "2026-11-19",
+      "end": "2026-11-22",
+      "level": "high",
+      "kind": "price",
+      "en": "Macau Grand Prix: Macau hotels spike, roads closed",
+      "zh": "澳门格兰披治大赛车：澳门酒店暴涨、封路",
+      "ms": "Grand Prix Macau: harga hotel Macau naik"
+    },
+    {
+      "country": "HK",
+      "start": "2026-12-20",
+      "end": "2027-01-01",
+      "level": "high",
+      "kind": "price",
+      "en": "Christmas & New Year's Eve (harbour fireworks)",
+      "zh": "圣诞跨年（维港烟花）",
+      "ms": "Krismas & Malam Tahun Baharu"
+    },
+    {
+      "country": "HK",
+      "start": "2027-02-06",
+      "end": "2027-02-09",
+      "level": "high",
+      "kind": "closure",
+      "en": "Lunar New Year: many family-run shops/restaurants closed first days",
+      "zh": "农历新年：很多老店、小餐馆前几天休息",
+      "ms": "Tahun Baharu Cina: banyak kedai tutup"
+    },
+    {
+      "country": "HK",
+      "start": "2027-03-26",
+      "end": "2027-04-05",
+      "level": "medium",
+      "kind": "price",
+      "en": "Easter + Ching Ming holidays",
+      "zh": "复活节 + 清明假期",
+      "ms": "Cuti Easter + Qingming"
+    },
+    {
+      "country": "HK",
+      "start": "2027-05-01",
+      "end": "2027-05-05",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Mainland Labour Day Golden Week: HK & Macau mobbed",
+      "zh": "内地五一黄金周：港澳人山人海",
+      "ms": "Golden Week Hari Pekerja: HK & Macau sesak"
+    },
+    {
+      "country": "HK",
+      "start": "2027-06-01",
+      "end": "2027-09-30",
+      "level": "medium",
+      "kind": "weather",
+      "en": "Typhoon & rainstorm season: Signal 8 shuts ferries/attractions",
+      "zh": "台风暴雨季：八号风球时渡轮、景点停开",
+      "ms": "Musim taufan: isyarat No. 8 tutup feri & tarikan"
+    },
+    {
+      "country": "HK",
+      "start": "2027-07-10",
+      "end": "2027-08-31",
+      "level": "medium",
+      "kind": "price",
+      "en": "Summer holidays: Disneyland/Ocean Park crowds",
+      "zh": "暑假：迪士尼、海洋公园人多",
+      "ms": "Cuti musim panas: Disneyland sesak"
+    },
+    {
+      "country": "HK",
+      "start": "2027-10-01",
+      "end": "2027-10-07",
+      "level": "very_high",
+      "kind": "price",
+      "en": "Mainland National Day Golden Week - avoid",
+      "zh": "内地十一黄金周（尽量避开）",
+      "ms": "Golden Week Hari Kebangsaan China - elakkan"
+    },
+    {
+      "country": "HK",
+      "start": "2027-12-20",
+      "end": "2028-01-01",
+      "level": "high",
+      "kind": "price",
+      "en": "Christmas & New Year's Eve (harbour fireworks)",
+      "zh": "圣诞跨年（维港烟花）",
+      "ms": "Krismas & Malam Tahun Baharu"
+    }
   ]
 }

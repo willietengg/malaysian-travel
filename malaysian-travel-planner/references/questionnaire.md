@@ -23,6 +23,8 @@ Ask in short rounds. Skip what the user has already told you. Use a clickable-op
 3. **Length / 天数 / Tempoh:** A. 3–4 days B. 5–6 days C. 7–9 days D. 10+ days
 
 4. **Travellers / 人数 / Pelancong:** adults, children (ages), seniors. Mention that children and seniors change the pace and hotel choice.
+   - Children in school? "OK to miss school days, or only during school holidays?" → use `holidays.py --family`.
+   - Ages matter: child fares and tickets, and age-based entry rules (e.g. Korea K-ETA exempts ≤17 and ≥65).
 
 5. **Malaysian state / 州属 / Negeri**
    Needed for state holidays, the weekend pattern (Kedah, Kelantan and Terengganu rest Fri–Sat) and the school-holiday group.
@@ -45,6 +47,7 @@ Ask in short rounds. Skip what the user has already told you. Use a clickable-op
 
 10. **Diet / 饮食 / Pemakanan:** A. Halal only B. Muslim-friendly OK C. No pork D. Vegetarian E. No restriction
     → `halal | muslim-friendly | no-pork | vegetarian | none`
+    - If A or B: "Do you want Friday prayer and prayer times in the plan?" and "Would you rather be home for Hari Raya?" → set `meta.preferences.muslim: true`, use `holidays.py --muslim`.
 
 11. **Pace / 节奏 / Rentak:** A. Relaxed (3–4 stops a day) B. Balanced (5–6) C. Packed (7+)
 

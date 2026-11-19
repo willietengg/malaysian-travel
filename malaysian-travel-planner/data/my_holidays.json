@@ -770,5 +770,16 @@
       "ms": "Cuti Akhir Tahun",
       "status": "approx"
     }
+  ],
+  "observances": [
+    {
+      "kind": "ramadan",
+      "start": "2027-02-08",
+      "end": "2027-03-09",
+      "en": "Ramadan (fasting month)",
+      "zh": "斋戒月",
+      "ms": "Bulan Ramadan",
+      "status": "provisional"
+    }
   ]
 }

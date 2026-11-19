@@ -1,6 +1,6 @@
 ---
 name: malaysian-travel-planner
-description: Plans overseas holidays for travellers based in Malaysia and delivers a detailed itinerary as Excel (.xlsx) and PowerPoint (.pptx). Asks the traveller questions first (destination, dates, Malaysian state, leave days, budget in RM, diet such as halal or no-pork, and how they rank sightseeing vs shopping+chill vs food hunting), then converts every cost to Ringgit, compares Malaysia Airlines, AirAsia, Batik Air and the destination's own airlines by true total cost, checks Malaysian public and school holidays for fare impact and leave-saving windows, checks opening hours, recommends local food, and says whether a shop or brand already exists in Malaysia and is worth visiting. Deep coverage for Japan, Korea, Thailand, Taiwan, Vietnam, China; other countries via web search. Use whenever someone in Malaysia plans or asks about an overseas trip, flights from KUL/PEN/BKI/KCH/JHB, cuti/leave planning for travel, or says things like 去日本玩, 帮我规划旅行, 出国攻略, plan my trip, itinerary, melancong, cuti ke luar negara.
+description: Plans overseas holidays for travellers based in Malaysia and delivers a detailed itinerary as Excel (.xlsx) and PowerPoint (.pptx). Asks the traveller questions first (destination, dates, Malaysian state, leave days, budget in RM, diet such as halal or no-pork, and how they rank sightseeing vs shopping+chill vs food hunting), then converts every cost to Ringgit, compares Malaysia Airlines, AirAsia, Batik Air and the destination's own airlines by true total cost, checks Malaysian public and school holidays for fare impact and leave-saving windows, checks opening hours, recommends local food, and says whether a shop or brand already exists in Malaysia and is worth visiting. Deep coverage: JP, KR, TH, TW, VN, CN, SG, ID, HK, Nordics, AU; others via web search. Use whenever someone in Malaysia plans or asks about an overseas trip, flights from KUL/PEN/BKI/KCH/JHB, cuti/leave planning for travel, or says things like 去日本玩, 帮我规划旅行, 出国攻略, plan my trip, itinerary, melancong, cuti ke luar negara.
 ---
 
 # Malaysian Travel Planner
@@ -26,8 +26,8 @@ If a question/option tool is available (for example `AskUserQuestion` in Claude 
 The full question bank, with options in 3 languages, is in [references/questionnaire.md](references/questionnaire.md). Minimum you must know:
 
 - **Round 0:** language (中文 / English / Bahasa Melayu)
-- **Round 1 (logistics):** destination (country + cities, or "help me choose"); dates, or "flexible, month X"; trip length; travellers (adults / kids / seniors); Malaysian **state** (holidays and weekends differ by state); departure airport; annual-leave days available; budget per person in RM
-- **Round 2 (style):** **rank** the three styles: 景点 Sightseeing / 城市购物+chill Shopping+chill / 美食hunt Food hunt; diet (halal only / Muslim-friendly OK / no pork / vegetarian / none); pace (relaxed / balanced / packed); airline preference (cheapest / comfort / no preference) and luggage plan (a shopping trip needs checked baggage); hotel level
+- **Round 1 (logistics):** destination (country + cities, or "help me choose"); dates, or "flexible, month X"; trip length; travellers (adults / kids **with ages** / seniors; if kids are in school, is missing school OK?); Malaysian **state** (holidays and weekends differ by state); departure airport; annual-leave days available; budget per person in RM
+- **Round 2 (style):** **rank** the three styles: 景点 Sightseeing / 城市购物+chill Shopping+chill / 美食hunt Food hunt; diet (halal only / Muslim-friendly OK / no pork / vegetarian / none). If halal or Muslim-friendly, ask whether they need **prayer times / Friday prayer** and whether they want to be **home for Hari Raya**; pace (relaxed / balanced / packed); airline preference (cheapest / comfort / no preference) and luggage plan (a shopping trip needs checked baggage); hotel level
 
 ### Step 2 — Timing & Malaysian holidays
 
@@ -44,7 +44,9 @@ python holidays.py hacks   --state SGR --year 2027 --max-leave 4 --lang zh
 ```
 
 - `check` gives: annual-leave days needed, public holidays in the window (with computed replacement days), school-holiday overlap, destination peak/closure periods, a fare-pressure level (low → very_high), and reasons. `--trip-json` formats it as the `holiday_analysis` block; you only write `recommendation` yourself.
-- If dates are flexible, or pressure is `high`/`very_high`, present the alternatives and explain the trade-off (leave days vs fare pressure).
+- Add `--muslim` for Muslim travellers (flags Ramadan days and Hari Raya day 1 abroad, and ranks those windows lower) and `--family` when children are in school (counts school days missed and prefers school-holiday windows).
+- If dates are flexible, or pressure is `high`/`very_high`, present the alternatives and explain the trade-off (leave days vs fare pressure vs school days missed).
+- `windows` hides overlapping variants. If it returns fewer results than asked, read the stderr note and try `--allow-overlap`.
 - If the user picks "help me find the best window", show the `hacks` table for their state first, then filter by destination with `windows`.
 - Kedah, Kelantan and Terengganu have a **Fri–Sat weekend**. The script handles this.
 - Islamic holiday dates are provisional. Bundled data covers late 2026–2027. For other years, web-search "cuti umum <year> <state>" and the KPM school calendar.
@@ -71,15 +73,17 @@ Rank by **true total per person** = fare + checked bag + meals + seat (+ airport
 2. **Group by area** to minimise travel time, and match the pace (relaxed ≈ 3–4 stops a day, balanced ≈ 5–6, packed ≈ 7+).
 3. **Check opening days and hours for every stop** against that day's weekday and any local holiday (web search or the official site). Set `open_ok` to `true`, `false` or `"check"`. Any `false` must be fixed by moving the stop to another day, and that reasoning goes in `notes`. Common closed-day patterns are in each destination file.
 4. Day 1 and the last day must respect the flight times.
+5. **Muslim travellers:** put **Friday prayer** (nearest mosque + time) into every Friday, note prayer rooms at big sights and malls, and keep halal meals near the route. On non-Malaysian carriers, remind them to pre-order a Muslim meal (MOML).
+6. **Families:** check child ticket prices and free-under ages, avoid long walks for small kids, add an indoor backup for cold or rainy days, and check theme-park renovations or closures.
 
 ### Step 6 — Food & "does Malaysia have it?"
 
-- Recommend local specialities (see the destination file) and filter by diet. Label each with `halal`: `halal | muslim-friendly | no-pork | contains-pork | vegetarian | unknown`. Never claim halal without a source.
+- Recommend local specialities (see the destination file) and filter by diet. Label each with `halal`: `halal | muslim-friendly | no-pork | contains-pork | vegetarian | unknown`. Never claim halal without a source: put the certifier or URL in `halal_source`. A chain that is JAKIM-halal in Malaysia (e.g. Kyochon) is **not** automatically halal abroad.
 - For each recommended restaurant, shop or brand, decide `in_malaysia`: `yes | no | partial | online | unknown`, then `worth_it`: `must | worth | maybe | skip`. Check [references/brands-in-malaysia.md](references/brands-in-malaysia.md) first, then web-search "<brand> Malaysia outlet". Decision rules are in that file.
 
 ### Step 7 — Budget in RM
 
-Fill `budget[]` with flights, hotel, local transport, tickets, food per day, eSIM, insurance, and a shopping allowance. Use `currency: "local"` or `"MYR"` and `per: "person"` or `"group"`. The Excel turns these into formulas, so the user can change the FX rate later.
+Fill `budget[]` with flights, hotel, local transport, tickets, food per day, eSIM, insurance, and a shopping allowance. Use `currency: "local"` or `"MYR"` and `per: "person" | "adult" | "child" | "group"`. Children often pay less (fares, tickets) or nothing (some entry fees), so split those lines into `adult` and `child`. The Excel turns these into formulas, so the user can change the FX rate later.
 
 ### Step 8 — Generate the files
 
@@ -111,6 +115,11 @@ Read only the file you need:
 | Taiwan 🇹🇼 | [references/destinations/taiwan.md](references/destinations/taiwan.md) |
 | Vietnam 🇻🇳 | [references/destinations/vietnam.md](references/destinations/vietnam.md) |
 | China 🇨🇳 | [references/destinations/china.md](references/destinations/china.md) |
+| Singapore 🇸🇬 | [references/destinations/singapore.md](references/destinations/singapore.md) |
+| Indonesia 🇮🇩 (Bali, Jakarta, Bandung, Yogyakarta) | [references/destinations/indonesia.md](references/destinations/indonesia.md) |
+| Hong Kong 🇭🇰 + Macau 🇲🇴 | [references/destinations/hongkong.md](references/destinations/hongkong.md) |
+| Nordics 🇫🇮🇳🇴🇸🇪🇩🇰🇮🇸 + Schengen / UK basics | [references/destinations/europe-nordic.md](references/destinations/europe-nordic.md) |
+| Australia 🇦🇺 | [references/destinations/australia.md](references/destinations/australia.md) |
 
 For **any other country**, follow the same workflow using web search, and use [references/destinations/_template.md](references/destinations/_template.md) as the checklist of what to find out (entry rules for Malaysian passports, currency, plug, peak seasons, closed days, local food, halal availability).
 

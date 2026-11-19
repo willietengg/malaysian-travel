@@ -19,7 +19,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.workbook.defined_name import DefinedName
 from openpyxl.worksheet.datavalidation import DataValidation
 
-from common import (WEEKDAYS_SHORT, calendar_model, BUDGET_CAT_LABELS, CATEGORY_LABELS, NO_HOURS_CATEGORIES, DIET_LABELS, HALAL_LABELS, IMPACT_LABELS, IN_MY_LABELS, PACE_LABELS,
+from common import (ITEM_CATEGORY_LABELS, FOOD_WORTH_LABELS, per_multiplier, WEEKDAYS_SHORT, calendar_model, BUDGET_CAT_LABELS, CATEGORY_LABELS, NO_HOURS_CATEGORIES, DIET_LABELS, HALAL_LABELS, IMPACT_LABELS, IN_MY_LABELS, PACE_LABELS,
                     WEEKDAYS, WORTH_LABELS, L, load_trip, pick, travelers_count, travelers_text)
 
 NAVY, GOLD, CREAM, RED, GREEN, GREY = "14213D", "FCA311", "FFF8E7", "C1121F", "2A9D8F", "F2F2F2"
@@ -127,7 +127,7 @@ def build(trip: dict, out: str):
         style_row(ws, r, 2)
         r += 1
     # Key cells: FX and PAX
-    fx_row, pax_row = r + 1, r + 2
+    fx_row, pax_row, adults_row, kids_row, date_row = r + 1, r + 2, r + 3, r + 4, r + 5
     ws.cell(row=fx_row, column=1, value=f"{L('fx_rate', lang)} [{cur}]").font = Font(bold=True)
     fxc = ws.cell(row=fx_row, column=2, value=float(fx["rate_myr_per_unit"]))
     fxc.number_format = "0.000000"
@@ -136,14 +136,20 @@ def build(trip: dict, out: str):
     ws.cell(row=fx_row, column=4, value="⬅ " + L("fx_hint", lang)).font = Font(italic=True, color="9C5700")
     ws.cell(row=pax_row, column=1, value=L("travelers", lang)).font = Font(bold=True)
     ws.cell(row=pax_row, column=2, value=pax)
-    ws.cell(row=pax_row + 1, column=1, value=L("fx_date", lang)).font = Font(bold=True)
-    ws.cell(row=pax_row + 1, column=2, value=f"{fx.get('rate_date', '')} · {fx.get('source', '')}")
-    for rr in (fx_row, pax_row, pax_row + 1):
+    ws.cell(row=adults_row, column=1, value=L("adults", lang) + " + " + L("seniors", lang)).font = Font(bold=True)
+    ws.cell(row=adults_row, column=2, value=per_multiplier("adult", meta))
+    ws.cell(row=kids_row, column=1, value=L("children", lang)).font = Font(bold=True)
+    ws.cell(row=kids_row, column=2, value=per_multiplier("child", meta))
+    ws.cell(row=date_row, column=1, value=L("fx_date", lang)).font = Font(bold=True)
+    ws.cell(row=date_row, column=2, value=f"{fx.get('rate_date', '')} · {fx.get('source', '')}")
+    for rr in (fx_row, pax_row, adults_row, kids_row, date_row):
         style_row(ws, rr, 2)
     sheet_ref = f"'{ws.title}'"
     wb.defined_names["FX"] = DefinedName("FX", attr_text=f"{sheet_ref}!$B${fx_row}")
     wb.defined_names["PAX"] = DefinedName("PAX", attr_text=f"{sheet_ref}!$B${pax_row}")
-    budget_total_row = pax_row + 3
+    wb.defined_names["ADULTS"] = DefinedName("ADULTS", attr_text=f"{sheet_ref}!$B${adults_row}")
+    wb.defined_names["KIDS"] = DefinedName("KIDS", attr_text=f"{sheet_ref}!$B${kids_row}")
+    budget_total_row = date_row + 2
     # filled after budget sheet exists
     overview_ws = ws
 
@@ -282,10 +288,10 @@ def build(trip: dict, out: str):
     # ---------------- Itinerary ----------------
     ws = wb.create_sheet(L("itinerary", lang)[:31])
     title_block(ws, L("itinerary", lang), "", width=13)
-    heads = [L("day", lang), L("date", lang), L("time", lang), L("place", lang), L("category", lang),
+    heads = [L("day", lang), L("date", lang), L("city", lang), L("time", lang), L("place", lang), L("category", lang),
              L("open_hours", lang), L("closed", lang), L("open_check", lang), L("cost_local", lang) + f" ({cur})",
-             L("cost_myr", lang), L("notes", lang), L("map", lang), L("city", lang)]
-    header_row(ws, 4, heads, [6, 16, 12, 30, 14, 22, 16, 10, 14, 13, 46, 10, 12])
+             L("cost_myr", lang), L("notes", lang), L("map", lang)]
+    header_row(ws, 4, heads, [6, 12, 12, 9, 30, 12, 22, 16, 10, 14, 13, 46, 10])
     r = 5
     for day in trip.get("itinerary", []):
         dt = day.get("date", "")
@@ -300,20 +306,24 @@ def build(trip: dict, out: str):
         r += 1
         for it in day["items"]:
             city = day.get("city", city_default)
-            vals = [day["day"], dt, it.get("time", ""), it.get("name", ""),
-                    L(it.get("category", "other"), lang, CATEGORY_LABELS), it.get("open_hours", ""),
-                    it.get("closed", ""), "—" if it.get("category") in NO_HOURS_CATEGORIES and "open_ok" not in it else ok_mark(it.get("open_ok")), it.get("cost_local"), None,
-                    it.get("notes", ""), None, city]
+            no_hours = it.get("category") in NO_HOURS_CATEGORIES and "open_ok" not in it
+            vals = [day["day"], dt, city, it.get("time", ""), it.get("name", ""),
+                    L(it.get("category", "other"), lang, ITEM_CATEGORY_LABELS), it.get("open_hours", ""),
+                    it.get("closed", ""), "—" if no_hours else ok_mark(it.get("open_ok")), it.get("cost_local"), None,
+                    it.get("notes", ""), None]
             for i, v in enumerate(vals, 1):
                 ws.cell(row=r, column=i, value=v)
-            ws.cell(row=r, column=9).number_format = LOCAL_FMT
-            ws.cell(row=r, column=10, value=f'=IF(I{r}="","",I{r}*FX)').number_format = RM_FMT
-            if it.get("category") not in ("transport", "flight"):
-                link = it.get("map") or map_link(it.get("name", ""), city)
-                mc = ws.cell(row=r, column=12, value="📍 Map")
+            ws.cell(row=r, column=10).number_format = LOCAL_FMT
+            ws.cell(row=r, column=11, value=f'=IF(J{r}="","",J{r}*FX)').number_format = RM_FMT
+            # Map link: explicit URL wins; "map": "" means no link; otherwise auto for real places only
+            link = it.get("map")
+            if link is None and it.get("category") in ("attraction", "shopping", "food", "prayer"):
+                link = map_link(it.get("name", ""), city)
+            if link:
+                mc = ws.cell(row=r, column=13, value="📍 Map")
                 mc.hyperlink = link
                 mc.font = Font(color="1155CC", underline="single")
-            ws.cell(row=r, column=8).alignment = CENTER
+            ws.cell(row=r, column=9).alignment = CENTER
             style_row(ws, r, len(heads), WARN_FILL if it.get("open_ok") is False else None)
             r += 1
 
@@ -321,21 +331,30 @@ def build(trip: dict, out: str):
     ws = wb.create_sheet(L("food", lang)[:31])
     title_block(ws, L("food", lang), "", width=10)
     heads = [L("name", lang), L("local_name", lang), L("where", lang), L("price", lang) + f" ({cur})",
-             L("price", lang) + " (RM)", L("halal", lang), L("in_malaysia", lang), L("worth_it", lang),
-             L("notes", lang), L("map", lang)]
-    header_row(ws, 4, heads, [22, 18, 30, 13, 13, 18, 18, 14, 46, 10])
+             L("price", lang) + " (RM)", L("halal", lang), L("halal_source", lang), L("in_malaysia", lang),
+             L("worth_it", lang), L("notes", lang), L("map", lang)]
+    header_row(ws, 4, heads, [22, 18, 30, 13, 13, 18, 22, 18, 14, 46, 10])
     r = 5
     for fd in trip.get("food", []):
         vals = [fd.get("name"), fd.get("local_name"), fd.get("where"), fd.get("price_local"), None,
-                L(fd.get("halal", "unknown"), lang, HALAL_LABELS), L(fd.get("in_malaysia", "unknown"), lang, IN_MY_LABELS),
-                L(fd.get("worth_it", "worth"), lang, WORTH_LABELS), fd.get("notes", ""), None]
+                L(fd.get("halal", "unknown"), lang, HALAL_LABELS), fd.get("halal_source", ""),
+                L(fd.get("in_malaysia", "unknown"), lang, IN_MY_LABELS),
+                L(fd.get("worth_it", "worth"), lang, FOOD_WORTH_LABELS), fd.get("notes", ""), None]
         for i, v in enumerate(vals, 1):
             ws.cell(row=r, column=i, value=v)
         ws.cell(row=r, column=4).number_format = LOCAL_FMT
         ws.cell(row=r, column=5, value=f'=IF(D{r}="","",D{r}*FX)').number_format = RM_FMT
-        mc = ws.cell(row=r, column=10, value="📍 Map")
-        mc.hyperlink = fd.get("map") or map_link(fd.get("where") or fd.get("name", ""), city_default)
-        mc.font = Font(color="1155CC", underline="single")
+        link = fd.get("map")
+        if link is None:
+            link = map_link(fd.get("where") or fd.get("name", ""), city_default)
+        if link:
+            mc = ws.cell(row=r, column=11, value="📍 Map")
+            mc.hyperlink = link
+            mc.font = Font(color="1155CC", underline="single")
+        if fd.get("halal_source", "").startswith("http"):
+            hc = ws.cell(row=r, column=7)
+            hc.hyperlink = fd["halal_source"]
+            hc.font = Font(color="1155CC", underline="single")
         style_row(ws, r, len(heads), REC_FILL if fd.get("worth_it") == "must" else None)
         r += 1
 
@@ -362,7 +381,7 @@ def build(trip: dict, out: str):
              L("per", lang), L("subtotal_myr", lang), L("notes", lang)]
     header_row(ws, 4, heads, [16, 34, 14, 10, 8, 10, 16, 44])
     dv_cur = DataValidation(type="list", formula1='"local,MYR"', allow_blank=False)
-    dv_per = DataValidation(type="list", formula1='"person,group"', allow_blank=False)
+    dv_per = DataValidation(type="list", formula1='"person,adult,child,group"', allow_blank=False)
     ws.add_data_validation(dv_cur)
     ws.add_data_validation(dv_per)
     r = 5
@@ -373,7 +392,7 @@ def build(trip: dict, out: str):
         for i, v in enumerate(vals, 1):
             ws.cell(row=r, column=i, value=v)
         ws.cell(row=r, column=3).number_format = '#,##0.00'
-        ws.cell(row=r, column=7, value=f'=IF(D{r}="MYR",C{r},C{r}*FX)*E{r}*IF(F{r}="person",PAX,1)').number_format = RM_FMT
+        ws.cell(row=r, column=7, value=f'=IF(D{r}="MYR",C{r},C{r}*FX)*E{r}*IF(F{r}="person",PAX,IF(F{r}="adult",ADULTS,IF(F{r}="child",KIDS,1)))').number_format = RM_FMT
         dv_cur.add(f"D{r}")
         dv_per.add(f"F{r}")
         style_row(ws, r, len(heads))

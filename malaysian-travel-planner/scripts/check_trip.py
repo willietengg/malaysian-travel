@@ -22,7 +22,7 @@ import re
 import sys
 from datetime import date
 
-from common import load_trip, travelers_count
+from common import load_trip, per_multiplier, travelers_count
 
 # Plausible RM-per-unit ranges (wide on purpose; only catches inverted / garbage rates).
 FX_RANGES = {
@@ -150,13 +150,29 @@ def check(trip: dict, today: date | None = None) -> tuple[list[str], list[str]]:
                         and not re.search(r"no[- ]pork|不含猪|无猪|tanpa babi|avoid|避开|不吃", it.get("notes", ""), re.I):
                     warns.append(f"Day {day.get('day')} '{it.get('name')}': mentions pork for a '{diet}' traveller")
 
+    # ---- Muslim travellers: Friday prayer ----
+    prefs = meta.get("preferences") or {}
+    if prefs.get("muslim") or diet == "halal":
+        for day in trip.get("itinerary", []):
+            if day.get("date") and date.fromisoformat(day["date"]).weekday() == 4:
+                text = " ".join(it.get("name", "") + " " + it.get("notes", "") for it in day.get("items", []))
+                if not re.search(r"mosque|masjid|清真寺|jumu|jumaat|friday prayer|solat|prayer|礼拜|祷告|mesjid|モスク|모스크", text, re.I):
+                    warns.append(f"Day {day.get('day')} is a Friday: add Friday prayer (nearest mosque + time) "
+                                 f"or note why not")
+
+    # ---- children ----
+    t = meta.get("travelers") or {}
+    if int(t.get("children", 0) or 0) and not t.get("children_ages"):
+        warns.append("children ages missing (meta.travelers.children_ages): needed for child fares, "
+                     "ticket prices and age-based entry rules")
+
     # ---- budget ----
     pax = travelers_count(meta)
     total = 0.0
     for b in trip.get("budget", []):
         amt = float(b.get("amount") or 0)
         myr = amt if b.get("currency") == "MYR" else amt * rate
-        total += myr * float(b.get("qty", 1)) * (pax if b.get("per", "person") == "person" else 1)
+        total += myr * float(b.get("qty", 1)) * per_multiplier(b.get("per", "person"), meta)
     target = meta.get("budget_myr_pp")
     if isinstance(target, (int, float)) and total:
         pp = total / pax

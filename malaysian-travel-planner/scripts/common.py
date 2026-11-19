@@ -69,7 +69,7 @@ LABELS = {
     "duration": {"zh": "飞行时间", "en": "Flight time", "ms": "Tempoh"},
     "fare": {"zh": "票价", "en": "Fare", "ms": "Tambang"},
     "baggage": {"zh": "行李额", "en": "Baggage", "ms": "Bagasi"},
-    "addons": {"zh": "加购(行李/餐/位)", "en": "Add-ons (bag/meal/seat)", "ms": "Tambahan (bagasi/makan/kerusi)"},
+    "addons": {"zh": "加购", "en": "Add-ons", "ms": "Tambahan"},
     "true_total": {"zh": "真实总价 / 人", "en": "True total / pax", "ms": "Jumlah sebenar / orang"},
     "verdict": {"zh": "结论", "en": "Verdict", "ms": "Keputusan"},
     "name": {"zh": "名称", "en": "Name", "ms": "Nama"},
@@ -104,6 +104,14 @@ LABELS = {
     "contents": {"zh": "目录", "en": "Contents", "ms": "Kandungan"},
     "trip_at_glance": {"zh": "行程一览", "en": "Trip at a glance", "ms": "Sekilas perjalanan"},
     "checked_on": {"zh": "查询日期", "en": "Checked", "ms": "Disemak"},
+    "per_adult": {"zh": "每大人", "en": "per adult", "ms": "setiap dewasa"},
+    "per_child": {"zh": "每小孩", "en": "per child", "ms": "setiap kanak-kanak"},
+    "budget_target": {"zh": "目标预算", "en": "Target", "ms": "Sasaran"},
+    "over_budget": {"zh": "超出预算", "en": "over budget", "ms": "melebihi bajet"},
+    "within_budget": {"zh": "在预算内", "en": "within budget", "ms": "dalam bajet"},
+    "more_in_excel": {"zh": "还有 {n} 项，见 Excel", "en": "+{n} more, see the Excel file", "ms": "+{n} lagi, lihat Excel"},
+    "school_days_missed": {"zh": "小孩要请的上学日", "en": "School days missed", "ms": "Hari sekolah terlepas"},
+    "halal_source": {"zh": "清真来源", "en": "Halal source", "ms": "Sumber halal"},
     "calendar": {"zh": "出行日历", "en": "Trip calendar", "ms": "Kalendar perjalanan"},
     "cal_trip": {"zh": "出行日", "en": "Trip day", "ms": "Hari perjalanan"},
     "cal_leave": {"zh": "要请假", "en": "Take leave", "ms": "Ambil cuti"},
@@ -112,6 +120,18 @@ LABELS = {
     "cal_school": {"zh": "学校假期", "en": "School holiday", "ms": "Cuti sekolah"},
     "day_cost": {"zh": "当天预计花费", "en": "Estimated spend today", "ms": "Anggaran belanja hari ini"},
     "leave_days_unit": {"zh": "天", "en": "day(s)", "ms": "hari"},
+}
+
+# Labels for itinerary items (the ranking uses CATEGORY_LABELS below)
+ITEM_CATEGORY_LABELS = {
+    "attraction": {"zh": "景点", "en": "Sightseeing", "ms": "Tarikan"},
+    "shopping": {"zh": "购物", "en": "Shopping", "ms": "Beli-belah"},
+    "food": {"zh": "美食", "en": "Food", "ms": "Makan"},
+    "transport": {"zh": "交通", "en": "Transport", "ms": "Pengangkutan"},
+    "hotel": {"zh": "住宿", "en": "Hotel", "ms": "Penginapan"},
+    "flight": {"zh": "航班", "en": "Flight", "ms": "Penerbangan"},
+    "prayer": {"zh": "祷告", "en": "Prayer", "ms": "Solat"},
+    "other": {"zh": "其他", "en": "Other", "ms": "Lain-lain"},
 }
 
 CATEGORY_LABELS = {
@@ -166,6 +186,9 @@ WORTH_LABELS = {
     "skip": {"zh": "大马买就好", "en": "Skip, buy in MY", "ms": "Beli di Malaysia sahaja"},
 }
 
+FOOD_WORTH_LABELS = {**WORTH_LABELS,
+                     "skip": {"zh": "大马吃就好", "en": "Skip, have it in MY", "ms": "Makan di Malaysia sahaja"}}
+
 IMPACT_LABELS = {
     "low": {"zh": "低 🟢", "en": "Low 🟢", "ms": "Rendah 🟢"},
     "medium": {"zh": "中 🟡", "en": "Medium 🟡", "ms": "Sederhana 🟡"},
@@ -204,6 +227,19 @@ def calendar_model(trip: dict) -> list[dict]:
     start, end = _date.fromisoformat(meta["start_date"]), _date.fromisoformat(meta["end_date"])
     leave = set(ha.get("leave_dates", []))
     hols = {h["date"]: h.get("name", "") for h in ha.get("my_holidays", [])}
+    # With the state code (holidays.py --trip-json adds it) also mark holidays outside the trip window
+    if ha.get("state"):
+        try:
+            data = load_json(DATA_DIR / "my_holidays.json")
+            st = ha["state"]
+            lang = meta.get("language", "en")
+            for h in data["holidays"]:
+                applies = (h["states"] == "ALL" and st not in h.get("except", [])) or \
+                          (h["states"] != "ALL" and st in h["states"])
+                if applies and h["date"] not in hols:
+                    hols[h["date"]] = h.get(lang) or h["en"]
+        except (OSError, KeyError, ValueError):
+            pass
     dows = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     weekend = {dows.index(x) for x in ha.get("weekend", ["Sat", "Sun"])}
     school = set()
@@ -281,9 +317,34 @@ def load_trip(path: str | Path) -> dict:
     for b in trip.get("budget", []):
         if b.get("currency", "local") not in ("local", "MYR"):
             errors.append(f"budget.currency must be 'local' or 'MYR': {b.get('item')}")
+        if b.get("per", "person") not in PER_VALUES:
+            errors.append(f"budget.per must be one of {PER_VALUES}: {b.get('item')}")
     if errors:
         sys.exit("trip.json is invalid:\n  - " + "\n  - ".join(errors))
+    normalize_trip(trip)
     return trip
+
+
+PER_VALUES = ("person", "adult", "child", "group")
+KNOWN_KEYS = {"meta", "fx", "holiday_analysis", "flights_note", "flights", "itinerary", "food", "shopping",
+              "budget", "checklist", "tips", "sources"}
+
+
+def normalize_trip(trip: dict) -> None:
+    """Accept common aliases so nothing silently disappears from the outputs."""
+    ha = trip.get("holiday_analysis")
+    if isinstance(ha, dict):
+        if "public_holidays" in ha and "my_holidays" not in ha:
+            ha["my_holidays"] = ha.pop("public_holidays")
+            print("note: holiday_analysis.public_holidays renamed to my_holidays", file=sys.stderr)
+        if "warnings" in ha:
+            ha["reasons"] = list(ha.get("reasons", [])) + [w for w in ha.pop("warnings") if w not in ha.get("reasons", [])]
+    prefs = trip["meta"].setdefault("preferences", {})
+    if prefs.get("pace") == "balanced":
+        prefs["pace"] = "normal"
+    unknown = set(trip) - KNOWN_KEYS
+    if unknown:
+        print(f"note: unknown top-level keys ignored: {sorted(unknown)}", file=sys.stderr)
 
 
 def travelers_count(meta: dict) -> int:
@@ -292,13 +353,43 @@ def travelers_count(meta: dict) -> int:
     return max(n, 1)
 
 
+def per_multiplier(per: str, meta: dict) -> int:
+    """How many people a budget line applies to. adult = adults + seniors."""
+    t = meta.get("travelers") or {}
+    if per == "group":
+        return 1
+    if per == "adult":
+        return int(t.get("adults", 0)) + int(t.get("seniors", 0))
+    if per == "child":
+        return int(t.get("children", 0))
+    return travelers_count(meta)
+
+
+SINGULAR_EN = {"adults": "adult", "children": "child", "seniors": "senior"}
+
+
 def travelers_text(meta: dict, lang: str) -> str:
     t = meta.get("travelers") or {}
     parts = []
     for k in ("adults", "children", "seniors"):
-        if t.get(k):
-            parts.append(f"{t[k]} {L(k, lang)}")
+        n = t.get(k)
+        if not n:
+            continue
+        word = SINGULAR_EN[k] if (lang == "en" and int(n) == 1) else L(k, lang)
+        text = f"{n} {word}"
+        if k == "children" and t.get("children_ages"):
+            text += f" ({', '.join(str(a) for a in t['children_ages'])})"
+        parts.append(text)
     return ", ".join(parts) or "1"
+
+
+def fmt_rate(rate: float, cur: str) -> str:
+    """'1 KRW = RM 0.00306 · RM 1 = 326.80 KRW' with sensible precision for any currency."""
+    from math import floor, log10
+    digits = max(2, 3 - int(floor(log10(abs(rate)))) - 1) if rate else 2
+    inv = 1 / rate if rate else 0
+    inv_s = f"{inv:,.0f}" if inv >= 1000 else f"{inv:,.2f}"
+    return f"1 {cur} = RM {rate:.{digits}f}  ·  RM 1 = {inv_s} {cur}"
 
 
 NO_HOURS_CATEGORIES = ("transport", "hotel", "flight")
