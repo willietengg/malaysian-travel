@@ -19,10 +19,14 @@
 | 🛍️ | 告诉你这家店 **大马有没有、值不值得** 特地去 | “**Does Malaysia already have it? Worth it?**” for shops and food chains |
 | ⚖️ | 按你的喜好排序分配时间：🏛️ 景点 / 🛍️ 城市购物+chill / 🍜 美食 hunt | Allocates time by your ranking of sightseeing / shopping+chill / food hunt |
 | 📊 | 输出 **Excel 攻略**（总览、假期分析、机票、每日行程、美食、购物、RM 预算、清单） | **Excel** guide |
-| 📽️ | 输出 **PPT 攻略**（封面、一览、假期、机票、每日一页、美食、购物、预算、清单） | **PowerPoint** guide |
+| 📽️ | 输出 **PPT 攻略**（封面、一览、假期、出行日历、机票、每日一页、美食、购物、预算、清单） | **PowerPoint** guide |
+| 🗓️ | **出行日历**：一眼看到哪天请假、哪天公共假期、哪天学校假期 | Trip calendar: leave, public & school holidays at a glance |
+| ✅ | 出文件前**自动检查**：汇率有没有倒过来、有没有排到休息日、清真用户有没有被推荐猪肉、有没有超预算 | Pre-flight checker catches inverted FX, closed-day clashes, diet conflicts, over-budget |
 
 深度支持：🇯🇵 日本 · 🇰🇷 韩国 · 🇹🇭 泰国 · 🇹🇼 台湾 · 🇻🇳 越南 · 🇨🇳 中国。其他国家会用上网搜索的方式处理。
 语言：中文 / English / Bahasa Melayu（由用户选择）。
+
+📅 **2027 请假攻略（16 个州/直辖区）**：[中文](docs/2027-leave-hacks.zh.md) · [English](docs/2027-leave-hacks.en.md)，例如雪兰莪请 3 天假可以放 9 天。
 
 👉 示例输出 / Sample output：[`examples/`](examples/)（大阪 + 京都 5 天 4 夜）
 
@@ -74,7 +78,8 @@ malaysian-travel-planner/          ← 这个文件夹就是 Skill
 │   ├── my_holidays.json           ← 大马公共假期 + 学校假期（各州）
 │   └── destination_peaks.json     ← 各国旺季 / 节日 / 休息期
 ├── scripts/
-│   ├── holidays.py                ← 假期分析、请假时段搜索
+│   ├── holidays.py                ← 假期分析、请假时段搜索、全年请假攻略
+│   ├── check_trip.py              ← 出文件前的自动检查
 │   ├── fx.py                      ← RM 汇率
 │   ├── make_excel.py              ← 生成 Excel
 │   └── make_ppt.py                ← 生成 PPT
@@ -92,6 +97,12 @@ python holidays.py check --state SGR --country JP --start 2027-03-10 --end 2027-
 ```
 ```bash
 python holidays.py windows --state PNG --leave 3 --country KR
+```
+```bash
+python holidays.py hacks --state SGR --year 2027
+```
+```bash
+python check_trip.py ../examples/osaka-kyoto-5d.json
 ```
 ```bash
 python make_excel.py ../examples/osaka-kyoto-5d.json osaka.xlsx && python make_ppt.py ../examples/osaka-kyoto-5d.json osaka.pptx
