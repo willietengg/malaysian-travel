@@ -45,7 +45,8 @@ WEEKDAY_PATTERNS = [
     (5, r"星期六|周六|週六|礼拜六|禮拜六|\bsat(urday)?s?\b|\bsabtu\b|土曜"),
     (6, r"星期日|星期天|周日|週日|礼拜天|禮拜天|\bsun(day)?s?\b|\bahad\b|日曜"),
 ]
-PARTIAL_HINT = re.compile(r"部分|some|sesetengah|irregular|不定|不少|many|kadang", re.I)
+# Partial closures or conflicting sources -> warning instead of error
+PARTIAL_HINT = re.compile(r"部分|some|sesetengah|irregular|不定|不少|many|kadang|sources?|one says|有的说|有些|verify|check|待确认", re.I)
 
 DIET_CONFLICTS = {
     "halal": {"error": {"contains-pork"}, "warn": {"no-pork", "unknown"}},
@@ -114,7 +115,9 @@ def check(trip: dict, today: date | None = None) -> tuple[list[str], list[str]]:
                 if hit and ok is not False:
                     msg = (f"{label} ({d:%a}) '{name}': its 'closed' note says '{it['closed']}' "
                            f"but it is scheduled on that weekday")
-                    (warns if PARTIAL_HINT.search(it.get("closed", "")) else errors).append(msg)
+                    uncertain = PARTIAL_HINT.search(it.get("closed", "")) or len(closed_weekdays(it.get("closed", ""))) > 1 \
+                        and re.search(r"\bor\b|或|atau|/", it.get("closed", ""), re.I)
+                    (warns if uncertain else errors).append(msg + (" (sources unsure; verify)" if uncertain else ""))
     days_in_trip = (end - start).days + 1
     if trip.get("itinerary") and len(trip["itinerary"]) != days_in_trip:
         warns.append(f"itinerary has {len(trip['itinerary'])} days but the trip spans {days_in_trip} days")
