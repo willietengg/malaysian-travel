@@ -333,9 +333,10 @@ def alt_note(w: dict, lang: str) -> str:
 
 
 def alternatives_for(cal, peaks, country, a: date, b: date, lang: str, n: int, base_leave: int,
-                     muslim: bool = False, family: bool = False):
+                     muslim: bool = False, family: bool = False, today: date | None = None):
     days = (b - a).days + 1
     frm, to = a - timedelta(days=45), b + timedelta(days=45)
+    frm = max(frm, (today or date.today()) + timedelta(days=1))  # never suggest dates in the past
     if cal.coverage:
         frm, to = max(frm, cal.coverage[0]), min(to, cal.coverage[1])
     cands = find_windows(cal, peaks, country, frm, to, base_leave + 2, days, 40, lang, muslim=muslim, family=family)

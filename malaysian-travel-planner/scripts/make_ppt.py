@@ -374,7 +374,8 @@ class Deck:
             chunks = balanced_chunks(items, ROWS_PER_SLIDE) or [[]]
             cur = self.trip["fx"]["currency"]
             rate = float(self.trip["fx"]["rate_myr_per_unit"])
-            day_local = sum(float(it.get("cost_local") or 0) for it in items)
+            day_local = sum(float(it["cost_local"]) for it in items
+                            if isinstance(it.get("cost_local"), (int, float)))
             for ci, chunk in enumerate(chunks):
                 title = f"{L('day_n', lang, n=day['day'])} · {day.get('city', '')}"
                 if len(chunks) > 1:
@@ -443,7 +444,8 @@ class Deck:
         rate = float(self.trip["fx"]["rate_myr_per_unit"])
         out = []
         for b in self.trip.get("budget", []):
-            amt = float(b.get("amount") or 0)
+            amt = b.get("amount") or 0
+            amt = float(amt) if isinstance(amt, (int, float)) else 0.0
             myr = amt if b.get("currency") == "MYR" else amt * rate
             mult = per_multiplier(b.get("per", "person"), self.meta)
             out.append((b, myr * float(b.get("qty", 1)) * mult))
@@ -468,6 +470,8 @@ class Deck:
         for b, v in rows_raw:
             cats[b.get("category", "other")] = cats.get(b.get("category", "other"), 0) + v
         total = sum(cats.values())
+        if total <= 0:
+            return
         s = self.new_slide(L("budget", lang), fmt_rate(float(self.trip["fx"]["rate_myr_per_unit"]), cur))
         over = self.over_budget()
         target = self.meta.get("budget_myr_pp")
@@ -484,7 +488,7 @@ class Deck:
                   value_size=26)
         # category bars
         x0, y0, bar_w = Inches(4.7), Inches(1.85), Inches(4.2)
-        top = max(cats.values()) if cats else 1
+        top = max(cats.values()) or 1
         for i, (k, v) in enumerate(sorted(cats.items(), key=lambda kv: -kv[1])):
             y = y0 + i * Inches(0.62)
             self.text(s, x0, y, Inches(1.8), Inches(0.45), L(k, lang, BUDGET_CAT_LABELS), size=13, bold=True)

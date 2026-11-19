@@ -239,6 +239,93 @@ class ChildBudgetTests(unittest.TestCase):
             pass
 
 
+class ReviewRegressionTests(unittest.TestCase):
+    """One test per code-review finding."""
+
+    def setUp(self):
+        self.trip = load_json(EXAMPLE)
+
+    def check(self, trip):
+        import check_trip
+        return check_trip.check(trip, date(2026, 11, 19))
+
+    def test_definite_two_day_closure_is_error(self):
+        item = self.trip["itinerary"][0]["items"][2]  # Wed 2027-03-10
+        item.update(closed="Wed/Thu", open_ok=True)
+        errors, _ = self.check(self.trip)
+        self.assertTrue(any("Wed/Thu" in e for e in errors), errors)
+
+    def test_check_word_does_not_downgrade(self):
+        item = self.trip["itinerary"][0]["items"][2]
+        item.update(closed="Wednesday (check website)", open_ok=True)
+        errors, _ = self.check(self.trip)
+        self.assertTrue(errors)
+
+    def test_hedged_closure_is_warning(self):
+        item = self.trip["itinerary"][0]["items"][2]
+        item.update(closed="Monday (most sources; one says Wednesday)", open_ok=True)
+        errors, warns = self.check(self.trip)
+        self.assertFalse(any("one says" in e for e in errors))
+        self.assertTrue(any("one says" in w for w in warns))
+
+    def test_open_ok_check_warns(self):
+        self.trip["itinerary"][0]["items"][2]["open_ok"] = "check"
+        _, warns = self.check(self.trip)
+        self.assertTrue(any("not verified" in w for w in warns))
+
+    def test_string_cost_is_error_and_ppt_survives(self):
+        self.trip["itinerary"][0]["items"][0]["cost_local"] = "free"
+        errors, _ = self.check(self.trip)
+        self.assertTrue(any("cost_local" in e for e in errors))
+        self._build(self.trip)
+
+    def test_zero_budget_builds(self):
+        for b in self.trip["budget"]:
+            b["amount"] = 0
+        _, warns = self.check(self.trip)
+        self.assertTrue(any("RM 0" in w for w in warns))
+        self._build(self.trip)
+
+    def test_null_halal_source_builds(self):
+        self.trip["food"][0]["halal_source"] = None
+        self._build(self.trip)
+
+    def _build(self, trip):
+        with tempfile.TemporaryDirectory() as tmp:
+            j = Path(tmp) / "t.json"
+            j.write_text(json.dumps(trip, ensure_ascii=False), encoding="utf-8")
+            run("make_excel.py", str(j), str(Path(tmp) / "t.xlsx"))
+            run("make_ppt.py", str(j), str(Path(tmp) / "t.pptx"))
+
+    def test_calendar_shows_replacement_outside_trip(self):
+        from common import calendar_model
+        t = self.trip
+        t["meta"]["start_date"], t["meta"]["end_date"] = "2027-02-01", "2027-02-05"
+        t["holiday_analysis"].update(state="SGR", my_holidays=[], leave_dates=[], school_holidays=[])
+        days = {d["date"].day: d for wk in calendar_model(t)[0]["weeks"] for d in wk if d}
+        self.assertTrue(days[8]["holiday"])  # CNY replacement Mon 8 Feb
+
+    def test_alternatives_never_in_past(self):
+        hdata, peaks = holidays.load_data()
+        cal = holidays.StateCalendar(hdata, "SGR")
+        alts = holidays.alternatives_for(cal, peaks, "JP", date(2027, 3, 20), date(2027, 3, 24), "en", 3, 2,
+                                         today=date(2027, 3, 1))
+        self.assertTrue(alts)
+        self.assertTrue(all(a["start"] > "2027-03-01" for a in alts))
+
+    def test_manual_rate_has_no_fake_date(self):
+        js = json.loads(run("fx.py", "VND", "--rate", "0.0001754", "--json"))
+        self.assertEqual(js["rate_date"], "")
+        self.assertAlmostEqual(js["rate_myr_per_unit"], 0.0001754)
+
+    def test_muslim_friendly_warns_on_pork_free(self):
+        self.trip["meta"]["preferences"]["diet"] = "muslim-friendly"
+        for f in self.trip["food"]:
+            f["halal"] = "no-pork"
+        _, warns = self.check(self.trip)
+        self.assertTrue(any("'no-pork' for a 'muslim-friendly'" in w for w in warns))
+
+
 class FxTests(unittest.TestCase):
     def test_manual_rate(self):
         js = json.loads(run("fx.py", "JPY", "--rate", "0.03", "--amount", "10000", "--json"))

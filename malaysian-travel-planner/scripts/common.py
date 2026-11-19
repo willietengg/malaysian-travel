@@ -230,15 +230,13 @@ def calendar_model(trip: dict) -> list[dict]:
     # With the state code (holidays.py --trip-json adds it) also mark holidays outside the trip window
     if ha.get("state"):
         try:
-            data = load_json(DATA_DIR / "my_holidays.json")
-            st = ha["state"]
+            import holidays as _hol  # lazy: holidays.py imports this module
+            hdata = load_json(DATA_DIR / "my_holidays.json")
+            cal_ = _hol.StateCalendar(hdata, ha["state"])
             lang = meta.get("language", "en")
-            for h in data["holidays"]:
-                applies = (h["states"] == "ALL" and st not in h.get("except", [])) or \
-                          (h["states"] != "ALL" and st in h["states"])
-                if applies and h["date"] not in hols:
-                    hols[h["date"]] = h.get(lang) or h["en"]
-        except (OSError, KeyError, ValueError):
+            for dd, hs in cal_.holidays.items():
+                hols.setdefault(dd.isoformat(), hs[0].get(lang) or hs[0]["en"])
+        except (ImportError, OSError, KeyError, ValueError):
             pass
     dows = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     weekend = {dows.index(x) for x in ha.get("weekend", ["Sat", "Sun"])}

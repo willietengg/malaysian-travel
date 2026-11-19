@@ -337,7 +337,7 @@ def build(trip: dict, out: str):
     r = 5
     for fd in trip.get("food", []):
         vals = [fd.get("name"), fd.get("local_name"), fd.get("where"), fd.get("price_local"), None,
-                L(fd.get("halal", "unknown"), lang, HALAL_LABELS), fd.get("halal_source", ""),
+                L(fd.get("halal", "unknown"), lang, HALAL_LABELS), fd.get("halal_source") or "",
                 L(fd.get("in_malaysia", "unknown"), lang, IN_MY_LABELS),
                 L(fd.get("worth_it", "worth"), lang, FOOD_WORTH_LABELS), fd.get("notes", ""), None]
         for i, v in enumerate(vals, 1):
@@ -351,7 +351,7 @@ def build(trip: dict, out: str):
             mc = ws.cell(row=r, column=11, value="📍 Map")
             mc.hyperlink = link
             mc.font = Font(color="1155CC", underline="single")
-        if fd.get("halal_source", "").startswith("http"):
+        if (fd.get("halal_source") or "").startswith("http"):
             hc = ws.cell(row=r, column=7)
             hc.hyperlink = fd["halal_source"]
             hc.font = Font(color="1155CC", underline="single")

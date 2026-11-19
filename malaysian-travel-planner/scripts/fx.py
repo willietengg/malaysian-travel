@@ -73,14 +73,17 @@ def main(argv=None):
                 print(msg, file=sys.stderr)
             sys.exit(2)
 
+    if a.rate and not a.date:
+        print("note: pass --date YYYY-MM-DD (the date of that quote) so stale rates can be detected", file=sys.stderr)
     realistic = rate * (1 + a.buffer / 100)
     out = {
         "currency": cur,
-        "rate_myr_per_unit": round(rate, 6),
+        "rate_myr_per_unit": float(f"{rate:.6g}"),
         "units_per_myr": round(1 / rate, 4),
-        "realistic_rate_myr_per_unit": round(realistic, 6),
+        "realistic_rate_myr_per_unit": float(f"{realistic:.6g}"),
         "buffer_percent": a.buffer,
-        "rate_date": a.date if (a.rate and a.date) else date.today().isoformat(),
+        # A manual rate is only as fresh as its quote: leave the date empty unless --date is given
+        "rate_date": (a.date or "") if a.rate else date.today().isoformat(),
         "source": source,
     }
     if a.amount is not None:

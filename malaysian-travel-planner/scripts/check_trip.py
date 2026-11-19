@@ -46,11 +46,13 @@ WEEKDAY_PATTERNS = [
     (6, r"星期日|星期天|周日|週日|礼拜天|禮拜天|\bsun(day)?s?\b|\bahad\b|日曜"),
 ]
 # Partial closures or conflicting sources -> warning instead of error
-PARTIAL_HINT = re.compile(r"部分|some|sesetengah|irregular|不定|不少|many|kadang|sources?|one says|有的说|有些|verify|check|待确认", re.I)
+PARTIAL_HINT = re.compile(r"部分|不定|不少|有的说|有些|待确认|\bsome\b|\bmany\b|\bsesetengah\b|\birregular(ly)?\b|"
+                          r"\bkadang|\bone (source )?says\b|\bsources (differ|disagree|conflict)|\bverify\b|\bunconfirmed\b",
+                          re.I)
 
 DIET_CONFLICTS = {
     "halal": {"error": {"contains-pork"}, "warn": {"no-pork", "unknown"}},
-    "muslim-friendly": {"error": {"contains-pork"}, "warn": {"unknown"}},
+    "muslim-friendly": {"error": {"contains-pork"}, "warn": {"no-pork", "unknown"}},
     "no-pork": {"error": {"contains-pork"}, "warn": set()},
     "vegetarian": {"error": {"contains-pork"}, "warn": {"halal", "muslim-friendly", "no-pork", "unknown"}},
 }
@@ -79,7 +81,9 @@ def check(trip: dict, today: date | None = None) -> tuple[list[str], list[str]]:
         inv = 1 / rate if rate else 0
         hint = " (looks inverted: you may have used units-per-RM)" if rng[0] <= inv <= rng[1] else ""
         errors.append(f"fx.rate_myr_per_unit={rate} is outside the plausible RM range {rng} for {cur}{hint}")
-    if fx.get("rate_date"):
+    if not fx.get("rate_date"):
+        warns.append("fx.rate_date missing; record when the rate was quoted")
+    else:
         try:
             age = (today - date.fromisoformat(fx["rate_date"])).days
             if age > 14:
@@ -110,13 +114,18 @@ def check(trip: dict, today: date | None = None) -> tuple[list[str], list[str]]:
                 errors.append(f"{label} '{name}': open_ok is false (closed that day). Move it or replace it")
             if cat in HOURS_CATEGORIES and "open_ok" not in it:
                 warns.append(f"{label} '{name}': open_ok not set; check opening days/hours")
+            elif cat in HOURS_CATEGORIES and ok not in (True, False):
+                warns.append(f"{label} '{name}': opening not verified yet (open_ok={ok!r})")
+            cl = it.get("cost_local")
+            if cl not in (None, "") and not isinstance(cl, (int, float)):
+                errors.append(f"{label} '{name}': cost_local must be a number (got {cl!r}); put text in notes")
             if d is not None:
                 hit = d.weekday() in closed_weekdays(it.get("closed", ""))
                 if hit and ok is not False:
                     msg = (f"{label} ({d:%a}) '{name}': its 'closed' note says '{it['closed']}' "
                            f"but it is scheduled on that weekday")
                     uncertain = PARTIAL_HINT.search(it.get("closed", "")) or len(closed_weekdays(it.get("closed", ""))) > 1 \
-                        and re.search(r"\bor\b|或|atau|/", it.get("closed", ""), re.I)
+                        and re.search(r"\bor\b|或|atau", it.get("closed", ""), re.I)
                     (warns if uncertain else errors).append(msg + (" (sources unsure; verify)" if uncertain else ""))
     days_in_trip = (end - start).days + 1
     if trip.get("itinerary") and len(trip["itinerary"]) != days_in_trip:
@@ -170,7 +179,8 @@ def check(trip: dict, today: date | None = None) -> tuple[list[str], list[str]]:
     pax = travelers_count(meta)
     total = 0.0
     for b in trip.get("budget", []):
-        amt = float(b.get("amount") or 0)
+        amt = b.get("amount") or 0
+        amt = float(amt) if isinstance(amt, (int, float)) else 0.0
         myr = amt if b.get("currency") == "MYR" else amt * rate
         total += myr * float(b.get("qty", 1)) * per_multiplier(b.get("per", "person"), meta)
     target = meta.get("budget_myr_pp")
@@ -180,6 +190,11 @@ def check(trip: dict, today: date | None = None) -> tuple[list[str], list[str]]:
             warns.append(f"budget RM {pp:,.0f}/person is over the stated RM {target:,.0f} (+{pp / target - 1:.0%})")
     if not trip.get("budget"):
         warns.append("budget is empty")
+    elif total == 0:
+        warns.append("budget adds up to RM 0; fill in real amounts")
+    for b in trip.get("budget", []):
+        if not isinstance(b.get("amount", 0), (int, float)):
+            errors.append(f"budget '{b.get('item')}': amount must be a number (got {b.get('amount')!r})")
 
     # ---- misc ----
     if not trip.get("sources"):
