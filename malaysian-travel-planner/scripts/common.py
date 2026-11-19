@@ -104,6 +104,12 @@ LABELS = {
     "contents": {"zh": "目录", "en": "Contents", "ms": "Kandungan"},
     "trip_at_glance": {"zh": "行程一览", "en": "Trip at a glance", "ms": "Sekilas perjalanan"},
     "checked_on": {"zh": "查询日期", "en": "Checked", "ms": "Disemak"},
+    "calendar": {"zh": "出行日历", "en": "Trip calendar", "ms": "Kalendar perjalanan"},
+    "cal_trip": {"zh": "出行日", "en": "Trip day", "ms": "Hari perjalanan"},
+    "cal_leave": {"zh": "要请假", "en": "Take leave", "ms": "Ambil cuti"},
+    "cal_holiday": {"zh": "公共假期", "en": "Public holiday", "ms": "Cuti umum"},
+    "cal_weekend": {"zh": "周末", "en": "Weekend", "ms": "Hujung minggu"},
+    "cal_school": {"zh": "学校假期", "en": "School holiday", "ms": "Cuti sekolah"},
     "day_cost": {"zh": "当天预计花费", "en": "Estimated spend today", "ms": "Anggaran belanja hari ini"},
     "leave_days_unit": {"zh": "天", "en": "day(s)", "ms": "hari"},
 }
@@ -178,6 +184,50 @@ WEEKDAYS = {
     "en": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     "ms": ["Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu", "Ahad"],
 }
+
+
+WEEKDAYS_SHORT = {
+    "zh": ["一", "二", "三", "四", "五", "六", "日"],
+    "en": ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+    "ms": ["Is", "Se", "Ra", "Kh", "Ju", "Sa", "Ah"],
+}
+
+
+def calendar_model(trip: dict) -> list[dict]:
+    """Months touched by the trip, each a list of weeks of day-dicts (None = padding).
+
+    Day flags: trip, leave, holiday (name), weekend, school."""
+    import calendar as _cal
+    from datetime import date as _date, timedelta as _td
+    meta = trip["meta"]
+    ha = trip.get("holiday_analysis") or {}
+    start, end = _date.fromisoformat(meta["start_date"]), _date.fromisoformat(meta["end_date"])
+    leave = set(ha.get("leave_dates", []))
+    hols = {h["date"]: h.get("name", "") for h in ha.get("my_holidays", [])}
+    dows = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    weekend = {dows.index(x) for x in ha.get("weekend", ["Sat", "Sun"])}
+    school = set()
+    for sh in ha.get("school_holidays", []):
+        a, b = _date.fromisoformat(sh["start"]), _date.fromisoformat(sh["end"])
+        while a <= b:
+            school.add(a.isoformat())
+            a += _td(days=1)
+    months, cur = [], _date(start.year, start.month, 1)
+    while cur <= end and len(months) < 3:
+        weeks = []
+        for wk in _cal.Calendar(firstweekday=0).monthdatescalendar(cur.year, cur.month):
+            row = []
+            for dd in wk:
+                if dd.month != cur.month:
+                    row.append(None)
+                    continue
+                iso = dd.isoformat()
+                row.append({"date": dd, "trip": start <= dd <= end, "leave": iso in leave,
+                            "holiday": hols.get(iso), "weekend": dd.weekday() in weekend, "school": iso in school})
+            weeks.append(row)
+        months.append({"year": cur.year, "month": cur.month, "weeks": weeks})
+        cur = _date(cur.year + (cur.month == 12), cur.month % 12 + 1, 1)
+    return months
 
 
 def L(key: str, lang: str, table: dict | None = None, **fmt) -> str:

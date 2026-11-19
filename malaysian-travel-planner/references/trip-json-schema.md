@@ -15,6 +15,7 @@ One file drives both `make_excel.py` and `make_ppt.py`. Every text field is free
     "travelers": {"adults": 2, "children": 0, "seniors": 0},
     "home_state": "Selangor (SGR)",
     "departure_airport": "KUL",
+    "budget_myr_pp": 4000,                  // optional: user's all-in budget per person, checked by check_trip.py
     "generated_on": "2026-11-16",
     "preferences": {
       "ranking": ["food", "attraction", "shopping"],  // order = priority
@@ -28,11 +29,12 @@ One file drives both `make_excel.py` and `make_ppt.py`. Every text field is free
     "rate_date": "2026-11-16",
     "source": "open.er-api.com"
   },
-  "holiday_analysis": {                      // mostly copied from holidays.py check --json
+  "holiday_analysis": {                      // paste from: holidays.py check ... --trip-json
     "summary": "one-line conclusion",
     "price_impact": "high",                  // low | medium | high | very_high
     "leave_needed": 1,
     "leave_dates": ["2027-03-12"],
+    "weekend": ["Sat", "Sun"],               // from holidays.py; Fri-Sat for Kedah/Kelantan/Terengganu (calendar slide)
     "reasons": ["..."],
     "my_holidays": [{"date": "2027-03-10", "weekday": "星期三", "name": "开斋节"}],
     "school_holidays": [{"start": "2027-03-06", "end": "2027-03-14", "name": "..."}],

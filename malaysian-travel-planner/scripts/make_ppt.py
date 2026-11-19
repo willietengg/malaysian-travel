@@ -15,7 +15,7 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Emu, Inches, Pt
 
-from common import (BUDGET_CAT_LABELS, CATEGORY_LABELS, NO_HOURS_CATEGORIES, balanced_chunks, DIET_LABELS, HALAL_LABELS, IMPACT_LABELS, IN_MY_LABELS, PACE_LABELS,
+from common import (WEEKDAYS_SHORT, calendar_model, BUDGET_CAT_LABELS, CATEGORY_LABELS, NO_HOURS_CATEGORIES, balanced_chunks, DIET_LABELS, HALAL_LABELS, IMPACT_LABELS, IN_MY_LABELS, PACE_LABELS,
                     WEEKDAYS, WORTH_LABELS, L, fmt_money, load_trip, travelers_count, travelers_text)
 
 NAVY = RGBColor(0x14, 0x21, 0x3D)
@@ -259,6 +259,89 @@ class Deck:
                 for c, v in enumerate(row):
                     self._cell(tbl.cell(r, c), v, 11, False, INK, fill)
 
+    def calendar(self):
+        if not self.trip.get("holiday_analysis"):
+            return
+        lang = self.lang
+        months = calendar_model(self.trip)
+        if not months:
+            return
+        s = self.new_slide(L("calendar", lang))
+        n = len(months)
+        gap = Inches(0.4)
+        cal_w = min(Inches(5.8), (W - 2 * MARGIN - gap * (n - 1)) / n)
+        cell = int(cal_w / 7)
+        blue = RGBColor(0x2F, 0x6F, 0xDE)
+        hol_bg = RGBColor(0xFD, 0xE2, 0xE1)
+        trip_bg = RGBColor(0xFF, 0xF1, 0xCC)
+        pink = RGBColor(0xF4, 0x8F, 0xB1)
+        for mi, m in enumerate(months):
+            x0 = MARGIN + mi * (cal_w + gap)
+            y0 = Inches(1.45)
+            title = f"{m['year']} 年 {m['month']} 月" if lang == "zh" else f"{date(m['year'], m['month'], 1):%B %Y}"
+            self.text(s, x0, y0, cal_w, Inches(0.4), title, size=16, bold=True, color=NAVY, align=PP_ALIGN.CENTER)
+            y = y0 + Inches(0.45)
+            for i, wd in enumerate(WEEKDAYS_SHORT[lang]):
+                self.text(s, x0 + i * cell, y, cell, Inches(0.3), wd, size=11, bold=True, color=MUTED,
+                          align=PP_ALIGN.CENTER)
+            y += Inches(0.32)
+            row_h = Inches(0.62)
+            for week in m["weeks"]:
+                for i, dd in enumerate(week):
+                    if dd is None:
+                        continue
+                    cx = x0 + i * cell
+                    fill = WHITE
+                    if dd["trip"]:
+                        fill = blue if dd["leave"] else hol_bg if dd["holiday"] else trip_bg
+                    box = self.rect(s, cx + Inches(0.03), y + Inches(0.03), cell - Inches(0.06), row_h - Inches(0.06),
+                                    fill, MSO_SHAPE.ROUNDED_RECTANGLE)
+                    box.adjustments[0] = 0.12
+                    if dd["trip"]:
+                        box.line.color.rgb = GOLD
+                        box.line.width = Pt(2.25)
+                    color = WHITE if (dd["trip"] and dd["leave"]) else RED if dd["holiday"] else \
+                        MUTED if dd["weekend"] else INK
+                    self.text(s, cx, y + Inches(0.06), cell, Inches(0.35), str(dd["date"].day), size=14,
+                              bold=dd["trip"] or bool(dd["holiday"]), color=color, align=PP_ALIGN.CENTER)
+                    if dd["school"]:
+                        self.rect(s, cx + Inches(0.12), y + row_h - Inches(0.16), cell - Inches(0.24), Inches(0.06), pink)
+                y += row_h
+        ha = self.trip["holiday_analysis"]
+        if n == 1:
+            px = MARGIN + cal_w + Inches(0.6)
+            pw = W - MARGIN - px
+            self.rect(s, px, Inches(1.5), pw, Inches(4.6), WHITE)
+            self.rect(s, px, Inches(1.5), Inches(0.08), Inches(4.6), GOLD)
+            lines = []
+            for h in ha.get("my_holidays", []):
+                lines.append(f"🇲🇾 {h['date'][5:]} {h.get('weekday', '')}  {h.get('name', '')}")
+            for sh in ha.get("school_holidays", []):
+                lines.append(f"🏫 {sh['start'][5:]} → {sh['end'][5:]}  {sh.get('name', '')}")
+            for e in ha.get("destination_events", []):
+                lines.append(f"📍 {e['start'][5:]} → {e['end'][5:]}  {e.get('name', '')}")
+            if ha.get("leave_dates"):
+                lines.append(f"🗓️ {L('leave_needed', lang)}: " + ", ".join(x[5:] for x in ha["leave_dates"]))
+            for a in ha.get("alternatives", [])[:3]:
+                lines.append(f"💡 {a['start'][5:]} → {a['end'][5:]}  {a.get('note', '')}")
+            self.text(s, px + Inches(0.3), Inches(1.65), pw - Inches(0.45), Inches(0.4), L("summary", lang), size=15,
+                      bold=True, color=NAVY)
+            self.text(s, px + Inches(0.3), Inches(2.1), pw - Inches(0.45), Inches(3.9), lines or ["—"], size=12)
+        # legend
+        ly = H - Inches(1.05)
+        items = [(trip_bg, L("cal_trip", lang)), (blue, L("cal_leave", lang)), (hol_bg, L("cal_holiday", lang)),
+                 (WHITE, L("cal_weekend", lang)), (pink, L("cal_school", lang))]
+        lx = MARGIN
+        for col, lab in items:
+            sw = self.rect(s, lx, ly + Inches(0.08), Inches(0.3), Inches(0.22) if col != pink else Inches(0.08), col)
+            if col in (trip_bg, WHITE):
+                sw.line.color.rgb = GOLD if col == trip_bg else MUTED
+            self.text(s, lx + Inches(0.38), ly, Inches(1.9), Inches(0.4), lab, size=12, color=INK)
+            lx += Inches(2.3)
+        if ha.get("leave_dates") and n > 1:
+            self.text(s, MARGIN, ly + Inches(0.4), W - 2 * MARGIN, Inches(0.35),
+                      f"{L('leave_needed', lang)}: " + ", ".join(ha["leave_dates"]), size=11, color=MUTED)
+
     def flights(self):
         fl = self.trip.get("flights", [])
         if not fl:
@@ -431,6 +514,7 @@ class Deck:
         self.cover()
         self.glance()
         self.holidays()
+        self.calendar()
         self.flights()
         self.days()
         self.food()

@@ -34,13 +34,18 @@ The full question bank, with options in 3 languages, is in [references/questionn
 Run the holiday analysis (scripts live in `scripts/`; run them from that folder):
 
 ```bash
-python holidays.py check   --state SGR --country JP --start 2027-03-10 --end 2027-03-14 --lang zh --json
+# Dates known: paste the output straight into trip.json (includes 3 alternative windows)
+python holidays.py check   --state SGR --country JP --start 2027-03-10 --end 2027-03-14 --lang zh --trip-json
+# Dates flexible: cheapest-looking N-day windows, or longest trips for a leave budget
 python holidays.py windows --state SGR --country JP --days 5 --leave 3 --from 2027-02-01 --to 2027-04-30 --json
-python holidays.py windows --state SGR --country JP --leave 3 --json     # longest trips for 3 leave days
+python holidays.py windows --state SGR --country JP --leave 3 --json
+# "When should I travel this year?": every holiday bridge for the user's state
+python holidays.py hacks   --state SGR --year 2027 --max-leave 4 --lang zh
 ```
 
-- `check` gives: annual-leave days needed, public holidays in the window (with computed replacement days), school-holiday overlap, destination peak/closure periods, a fare-pressure level (low → very_high), and reasons.
-- If dates are flexible, or pressure is `high`/`very_high`, run `windows` and offer 2–3 alternatives in `holiday_analysis.alternatives`.
+- `check` gives: annual-leave days needed, public holidays in the window (with computed replacement days), school-holiday overlap, destination peak/closure periods, a fare-pressure level (low → very_high), and reasons. `--trip-json` formats it as the `holiday_analysis` block; you only write `recommendation` yourself.
+- If dates are flexible, or pressure is `high`/`very_high`, present the alternatives and explain the trade-off (leave days vs fare pressure).
+- If the user picks "help me find the best window", show the `hacks` table for their state first, then filter by destination with `windows`.
 - Kedah, Kelantan and Terengganu have a **Fri–Sat weekend**. The script handles this.
 - Islamic holiday dates are provisional. Bundled data covers late 2026–2027. For other years, web-search "cuti umum <year> <state>" and the KPM school calendar.
 - How to read the results and explain them: [references/holidays-and-pricing.md](references/holidays-and-pricing.md).
@@ -78,14 +83,19 @@ Fill `budget[]` with flights, hotel, local transport, tickets, food per day, eSI
 
 ### Step 8 — Generate the files
 
-1. Write `trip.json` following [references/trip-json-schema.md](references/trip-json-schema.md). A full working example: [examples/osaka-kyoto-5d.json](examples/osaka-kyoto-5d.json).
-2. Run:
+1. Write `trip.json` following [references/trip-json-schema.md](references/trip-json-schema.md). A full working example: [examples/osaka-kyoto-5d.json](examples/osaka-kyoto-5d.json). Put the user's budget in `meta.budget_myr_pp` so it can be checked.
+2. **Check it** and fix every ❌ (and every ⚠️ you can) before generating:
+   ```bash
+   python check_trip.py trip.json
+   ```
+   It catches an inverted FX rate, stops scheduled on their closed weekday, unresolved `open_ok: false`, food that breaks the diet, dates outside the trip, the wrong number of recommended flights, and going over budget.
+3. Run:
    ```bash
    python make_excel.py trip.json "<Title>.xlsx"
    python make_ppt.py   trip.json "<Title>.pptx"
    ```
    Requirements: `pip install openpyxl python-pptx` (preinstalled in most Claude sandboxes).
-3. Give both files to the user (save them in the outputs folder if there is one). Then give a **short chat summary**: chosen dates and why, recommended flight, total RM per person, 3 highlights, and anything the user still needs to book or verify.
+4. Give both files to the user (save them in the outputs folder if there is one). Then give a **short chat summary**: chosen dates and why, recommended flight, total RM per person, 3 highlights, and anything the user still needs to book or verify.
 
 If file generation isn't possible on the platform (for example no code execution), output the same content as Markdown tables and offer the `trip.json` so the user can run the scripts later.
 
@@ -114,4 +124,5 @@ For **any other country**, follow the same workflow using web search, and use [r
 - [ ] "In Malaysia?" verdicts on shopping and food chains
 - [ ] Entry requirements (visa / e-arrival card) for Malaysian passport holders checked this session
 - [ ] `sources` lists the URLs used, with dates checked
+- [ ] `check_trip.py` passes with 0 errors
 - [ ] Both .xlsx and .pptx generated and handed over

@@ -86,6 +86,89 @@ class HolidayTests(unittest.TestCase):
         self.assertTrue(any("Chuseok" in e["name"] or "中秋" in e["name"] for e in js["destination_events"]))
 
 
+class TripJsonAndHacksTests(unittest.TestCase):
+    def test_trip_json_block(self):
+        out = run("holidays.py", "check", "--state", "SGR", "--country", "JP", "--start", "2027-03-10",
+                  "--end", "2027-03-14", "--trip-json", "--lang", "en")
+        ha = json.loads(out)["holiday_analysis"]
+        for k in ("summary", "price_impact", "leave_needed", "leave_dates", "weekend", "my_holidays",
+                  "school_holidays", "alternatives"):
+            self.assertIn(k, ha)
+        self.assertEqual(len(ha["alternatives"]), 3)
+        for a in ha["alternatives"]:
+            self.assertFalse(a["start"] <= "2027-03-14" and "2027-03-10" <= a["end"], "alternative overlaps trip")
+
+    def test_hacks_quality(self):
+        hdata, peaks = holidays.load_data()
+        res = holidays.leave_hacks(hdata, peaks, ["SGR"], 2027, 4, "en")["SGR"]
+        self.assertTrue(res)
+        for w in res:
+            self.assertGreaterEqual(w["leave_needed"], 1)
+            self.assertGreaterEqual(w["efficiency"], 2.5)
+            self.assertTrue(w["public_holidays"])
+        starts = {(w["start"], w["end"]) for w in res}
+        self.assertIn(("2027-10-28", "2027-10-31"), starts)  # Deepavali Thu + Fri leave
+
+    def test_hacks_markdown(self):
+        out = run("holidays.py", "hacks", "--year", "2027", "--state", "KDH", "--lang", "en")
+        self.assertIn("Kedah", out)
+        self.assertIn("Fri-Sat", out)
+
+
+class CheckTripTests(unittest.TestCase):
+    def setUp(self):
+        self.trip = load_json(EXAMPLE)
+
+    def check(self, trip):
+        import check_trip
+        return check_trip.check(trip, date(2026, 11, 19))
+
+    def test_example_is_clean(self):
+        errors, _ = self.check(self.trip)
+        self.assertEqual(errors, [])
+
+    def test_inverted_fx(self):
+        self.trip["fx"]["rate_myr_per_unit"] = 34.5
+        errors, _ = self.check(self.trip)
+        self.assertTrue(any("inverted" in e for e in errors), errors)
+
+    def test_closed_weekday_conflict(self):
+        item = self.trip["itinerary"][1]["items"][1]  # Thursday 2027-03-11
+        item["closed"] = "Closed on Thursdays"
+        item["open_ok"] = True
+        errors, _ = self.check(self.trip)
+        self.assertTrue(any("Thu" in e and "closed" in e for e in errors), errors)
+
+    def test_diet_conflict(self):
+        self.trip["meta"]["preferences"]["diet"] = "halal"
+        errors, warns = self.check(self.trip)
+        self.assertTrue(any("contains-pork" in e for e in errors))
+
+    def test_one_recommended_flight(self):
+        for f in self.trip["flights"]:
+            f["recommended"] = True
+        errors, _ = self.check(self.trip)
+        self.assertTrue(any("exactly one flight" in e for e in errors))
+
+    def test_over_budget(self):
+        self.trip["meta"]["budget_myr_pp"] = 2000
+        _, warns = self.check(self.trip)
+        self.assertTrue(any("over the stated" in w for w in warns))
+
+
+class CalendarTests(unittest.TestCase):
+    def test_calendar_model(self):
+        from common import calendar_model
+        months = calendar_model(load_json(EXAMPLE))
+        self.assertEqual(len(months), 1)
+        days = [d for wk in months[0]["weeks"] for d in wk if d]
+        self.assertEqual(len(days), 31)
+        trip = [d for d in days if d["trip"]]
+        self.assertEqual(len(trip), 5)
+        self.assertEqual([d["date"].day for d in trip if d["leave"]], [12])
+        self.assertEqual([d["date"].day for d in trip if d["holiday"]], [10, 11])
+
+
 class FxTests(unittest.TestCase):
     def test_manual_rate(self):
         js = json.loads(run("fx.py", "JPY", "--rate", "0.03", "--amount", "10000", "--json"))

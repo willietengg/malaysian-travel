@@ -257,6 +257,123 @@ def find_windows(cal, peaks, country, frm: date, to: date, leave: int | None, da
     return chosen
 
 
+def summary_line(a: dict, lang: str) -> str:
+    from common import IMPACT_LABELS
+    lvl = L(a["price_impact"], lang, IMPACT_LABELS)
+    if lang == "zh":
+        return f"{a['start']} 至 {a['end']} 共 {a['total_days']} 天，需请 {a['leave_needed']} 天假；机票价格压力：{lvl}。"
+    if lang == "ms":
+        return f"{a['start']} hingga {a['end']} ({a['total_days']} hari), perlu {a['leave_needed']} hari cuti; tekanan harga tiket: {lvl}."
+    return f"{a['start']} to {a['end']} ({a['total_days']} days) needs {a['leave_needed']} day(s) of annual leave; fare pressure: {lvl}."
+
+
+def alt_note(w: dict, lang: str) -> str:
+    leave = {"zh": f"请 {w['leave_needed']} 天假", "en": f"{w['leave_needed']} leave day(s)",
+             "ms": f"{w['leave_needed']} hari cuti"}[lang]
+    bits = [leave]
+    bits += [h["name"] for h in w["public_holidays"][:2]]
+    ev = [e["name"] for e in w["destination_events"]]
+    if ev:
+        bits.append(ev[0])
+    if not w["school_holidays"] and not w["public_holidays"]:
+        bits.append({"zh": "不撞大马假期", "en": "no Malaysian holiday clash", "ms": "tiada pertembungan cuti"}[lang])
+    return " · ".join(bits)
+
+
+def alternatives_for(cal, peaks, country, a: date, b: date, lang: str, n: int, base_leave: int):
+    days = (b - a).days + 1
+    frm, to = a - timedelta(days=45), b + timedelta(days=45)
+    if cal.coverage:
+        frm, to = max(frm, cal.coverage[0]), min(to, cal.coverage[1])
+    cands = find_windows(cal, peaks, country, frm, to, base_leave + 2, days, 40, lang)
+    cands = [w for w in cands if not (d(w["start"]) <= b and a <= d(w["end"]))]
+    cands.sort(key=lambda w: (w["price_score"], w["leave_needed"], abs((d(w["start"]) - a).days)))
+    return cands[:n]
+
+
+def to_trip_block(res: dict, alts: list, lang: str) -> dict:
+    """Convert analyse() output into trip.json's holiday_analysis schema."""
+    return {
+        "summary": summary_line(res, lang),
+        "price_impact": res["price_impact"],
+        "leave_needed": res["leave_needed"],
+        "leave_dates": res["leave_dates"],
+        "weekend": res["weekend"],
+        "reasons": res["reasons"] + res["warnings"],
+        "my_holidays": [{"date": h["date"], "weekday": h["weekday"], "name": h["name"]} for h in res["public_holidays"]],
+        "school_holidays": res["school_holidays"],
+        "destination_events": [{k: e[k] for k in ("start", "end", "name", "level")} for e in res["destination_events"]],
+        "recommendation": "",
+        "alternatives": [{"start": w["start"], "end": w["end"], "leave_needed": w["leave_needed"],
+                          "price_impact": w["price_impact"], "note": alt_note(w, lang)} for w in alts],
+    }
+
+
+def leave_hacks(hdata, peaks, states: list[str], year: int, max_leave: int, lang: str):
+    """Every 'maximal' break in a year that bridges a public holiday, for 1..max_leave leave days.
+
+    Kept when it gives at least 3 more days off than the leave spent (i.e. a holiday is doing work)."""
+    out = {}
+    frm, to = date(year, 1, 1), date(year, 12, 31)
+    for st in states:
+        cal = StateCalendar(hdata, st)
+        rows = []
+        for s0 in daterange(frm, to):
+            if cal.is_off(s0 - timedelta(days=1)):
+                continue  # not maximal on the left
+            for n in range(3, 17):
+                e0 = s0 + timedelta(days=n - 1)
+                if e0 > to + timedelta(days=10):
+                    break
+                need = sum(1 for x in daterange(s0, e0) if not cal.is_off(x))
+                if need > max_leave:
+                    break
+                if cal.is_off(e0 + timedelta(days=1)) or n < need + 3:
+                    continue
+                if not any(x in cal.holidays for x in daterange(s0, e0)):
+                    continue
+                w = analyse(cal, peaks, None, s0, e0, lang)
+                w["efficiency"] = round(n / max(need, 1), 2)
+                rows.append(w)
+        # Worth it: at least 1 leave day and >= 2.5 days off per leave day
+        rows = [w for w in rows if w["leave_needed"] >= 1 and w["efficiency"] >= 2.5]
+        # Same holiday cluster: keep the longest break per leave count ...
+        best = {}
+        for w in rows:
+            key = (tuple(h["date"] for h in w["public_holidays"]), w["leave_needed"])
+            if key not in best or w["total_days"] > best[key]["total_days"]:
+                best[key] = w
+        # ... and drop options beaten by spending less leave for as many days
+        kept = [w for w in best.values()
+                if not any(o is not w and o["public_holidays"] == w["public_holidays"]
+                           and o["leave_needed"] < w["leave_needed"] and o["total_days"] >= w["total_days"]
+                           for o in best.values())]
+        out[st] = sorted(kept, key=lambda w: (w["start"], w["leave_needed"]))
+    return out
+
+
+def hacks_markdown(result: dict, hdata: dict, year: int, lang: str) -> str:
+    from common import IMPACT_LABELS
+    head = {"zh": f"# {year} 请假攻略（按州）\n\n用最少年假换最长连假。由 `holidays.py hacks` 自动生成；回教节日属预测，以宪报为准。\n",
+            "en": f"# {year} leave hacks by state\n\nLongest breaks for the fewest annual-leave days. Generated by `holidays.py hacks`; Islamic dates are provisional.\n",
+            "ms": f"# Tip cuti {year} mengikut negeri\n\nCuti panjang dengan cuti tahunan paling sedikit. Dijana oleh `holidays.py hacks`.\n"}[lang]
+    cols = {"zh": "| 日期 | 放几天 | 请几天假 | 性价比 | 学校假期? | 包含的假期 |\n|---|---|---|---|---|---|",
+            "en": "| Dates | Days off | Leave | Ratio | School hols? | Holidays inside |\n|---|---|---|---|---|---|",
+            "ms": "| Tarikh | Hari cuti | Cuti diambil | Nisbah | Cuti sekolah? | Cuti umum |\n|---|---|---|---|---|---|"}[lang]
+    lines = [head]
+    for st, rows in result.items():
+        info = hdata["states"][st]
+        lines.append(f"\n## {pick(info, lang)} ({st}) — weekend {'-'.join(info['weekend'])}\n")
+        lines.append(cols)
+        for w in rows:
+            hol = "、".join(dict.fromkeys(h["name"] for h in w["public_holidays"])) if lang == "zh" else \
+                ", ".join(dict.fromkeys(h["name"] for h in w["public_holidays"]))
+            school = "✅" if w["school_holidays"] else "—"
+            lines.append(f"| {w['start']} → {w['end']} | {w['total_days']} | {w['leave_needed']} | "
+                         f"{w['efficiency']}x | {school} | {hol} |")
+    return "\n".join(lines) + "\n"
+
+
 # ---------------------------------------------------------------------------
 # Output
 # ---------------------------------------------------------------------------
@@ -292,6 +409,9 @@ def main(argv=None):
     common_args(c)
     c.add_argument("--start", required=True)
     c.add_argument("--end", required=True)
+    c.add_argument("--trip-json", action="store_true",
+                   help="Print a ready-to-paste holiday_analysis block for trip.json")
+    c.add_argument("--alternatives", type=int, default=3, help="With --trip-json: how many alternative windows")
 
     w = sub.add_parser("windows")
     common_args(w)
@@ -303,6 +423,14 @@ def main(argv=None):
     w.add_argument("--max-days", type=int, default=16)
     w.add_argument("--top", type=int, default=8)
 
+    hk = sub.add_parser("hacks", help="Best leave-bridging windows for a whole year")
+    hk.add_argument("--year", type=int, required=True)
+    hk.add_argument("--state", default="ALL", help="State code/name, comma-separated list, or ALL")
+    hk.add_argument("--max-leave", type=int, default=4)
+    hk.add_argument("--lang", default="zh", choices=["zh", "en", "ms"])
+    hk.add_argument("--json", action="store_true")
+    hk.add_argument("--out", help="Write Markdown to this file")
+
     li = sub.add_parser("list")
     li.add_argument("--state", required=True)
     li.add_argument("--year", type=int, required=True)
@@ -311,6 +439,21 @@ def main(argv=None):
 
     args = p.parse_args(argv)
     hdata, peaks = load_data()
+    if args.cmd == "hacks":
+        states = list(hdata["states"]) if args.state.upper() == "ALL" else \
+            [resolve_state(x, hdata["states"]) for x in args.state.split(",")]
+        res = leave_hacks(hdata, peaks, states, args.year, args.max_leave, args.lang)
+        if args.json:
+            print(json.dumps(res, ensure_ascii=False, indent=2))
+            return
+        md = hacks_markdown(res, hdata, args.year, args.lang)
+        if args.out:
+            with open(args.out, "w", encoding="utf-8") as f:
+                f.write(md)
+            print(f"Saved {args.out}")
+        else:
+            print(md)
+        return
     state = resolve_state(args.state, hdata["states"])
     cal = StateCalendar(hdata, state)
     country = getattr(args, "country", None)
@@ -323,8 +466,13 @@ def main(argv=None):
         if b < a:
             sys.exit("--end is before --start")
         res = analyse(cal, peaks, country, a, b, args.lang)
-        print(json.dumps(res, ensure_ascii=False, indent=2) if args.json else "", end="")
-        if not args.json:
+        if args.trip_json:
+            alts = alternatives_for(cal, peaks, country, a, b, args.lang, args.alternatives,
+                                    res["leave_needed"]) if args.alternatives else []
+            print(json.dumps({"holiday_analysis": to_trip_block(res, alts, args.lang)}, ensure_ascii=False, indent=2))
+        elif args.json:
+            print(json.dumps(res, ensure_ascii=False, indent=2))
+        else:
             print_analysis(res, args.lang)
     elif args.cmd == "windows":
         if args.leave is None and args.days is None:

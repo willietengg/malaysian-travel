@@ -19,7 +19,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.workbook.defined_name import DefinedName
 from openpyxl.worksheet.datavalidation import DataValidation
 
-from common import (BUDGET_CAT_LABELS, CATEGORY_LABELS, NO_HOURS_CATEGORIES, DIET_LABELS, HALAL_LABELS, IMPACT_LABELS, IN_MY_LABELS, PACE_LABELS,
+from common import (WEEKDAYS_SHORT, calendar_model, BUDGET_CAT_LABELS, CATEGORY_LABELS, NO_HOURS_CATEGORIES, DIET_LABELS, HALAL_LABELS, IMPACT_LABELS, IN_MY_LABELS, PACE_LABELS,
                     WEEKDAYS, WORTH_LABELS, L, load_trip, pick, travelers_count, travelers_text)
 
 NAVY, GOLD, CREAM, RED, GREEN, GREY = "14213D", "FCA311", "FFF8E7", "C1121F", "2A9D8F", "F2F2F2"
@@ -202,6 +202,59 @@ def build(trip: dict, out: str):
             for i, v in enumerate(vals, 1):
                 ws.cell(row=r, column=i, value=v)
             style_row(ws, r, 4)
+            r += 1
+
+    # ---------------- Calendar ----------------
+    if ha:
+        ws = wb.create_sheet(L("calendar", lang)[:31])
+        title_block(ws, L("calendar", lang), "", width=7)
+        for col in range(1, 8):
+            ws.column_dimensions[get_column_letter(col)].width = 9
+        fills = {"trip": PatternFill("solid", fgColor="FFF1CC"), "leave": PatternFill("solid", fgColor="2F6FDE"),
+                 "holiday": PatternFill("solid", fgColor="FDE2E1"), "school": PatternFill("solid", fgColor="FCE4EC")}
+        gold = Side(style="medium", color=GOLD)
+        r = 4
+        for m in calendar_model(trip):
+            ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=7)
+            t = ws.cell(row=r, column=1, value=f"{m['year']}-{m['month']:02d}")
+            t.font = Font(bold=True, size=13, color=NAVY)
+            t.alignment = CENTER
+            r += 1
+            for i, wd in enumerate(WEEKDAYS_SHORT[lang], 1):
+                c = ws.cell(row=r, column=i, value=wd)
+                c.font = Font(bold=True, color="FFFFFF")
+                c.fill = PatternFill("solid", fgColor="2B3A67")
+                c.alignment = CENTER
+            r += 1
+            for week in m["weeks"]:
+                for i, dd in enumerate(week, 1):
+                    c = ws.cell(row=r, column=i)
+                    c.alignment = CENTER
+                    c.border = BORDER
+                    if dd is None:
+                        continue
+                    c.value = dd["date"].day
+                    if dd["school"]:
+                        c.fill = fills["school"]
+                    if dd["trip"]:
+                        c.fill = fills["leave"] if dd["leave"] else fills["holiday"] if dd["holiday"] else fills["trip"]
+                        c.border = Border(left=gold, right=gold, top=gold, bottom=gold)
+                    color = "FFFFFF" if dd["trip"] and dd["leave"] else RED if dd["holiday"] else \
+                        "999999" if dd["weekend"] else "222222"
+                    c.font = Font(bold=dd["trip"] or bool(dd["holiday"]), color=color)
+                    if dd["holiday"]:
+                        from openpyxl.comments import Comment
+                        c.comment = Comment(dd["holiday"], "planner")
+                ws.row_dimensions[r].height = 24
+                r += 1
+            r += 1
+        legend = [("FFF1CC", L("cal_trip", lang)), ("2F6FDE", L("cal_leave", lang)), ("FDE2E1", L("cal_holiday", lang)),
+                  ("FCE4EC", L("cal_school", lang))]
+        for col_hex, lab in legend:
+            ws.cell(row=r, column=1).fill = PatternFill("solid", fgColor=col_hex)
+            ws.cell(row=r, column=1).border = BORDER
+            ws.merge_cells(start_row=r, start_column=2, end_row=r, end_column=7)
+            ws.cell(row=r, column=2, value=lab)
             r += 1
 
     # ---------------- Flights ----------------
